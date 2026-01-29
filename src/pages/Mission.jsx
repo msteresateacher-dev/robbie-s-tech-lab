@@ -165,7 +165,7 @@ export default function Mission() {
               variant="ghost"
               size="icon"
               onClick={handleNeedHint}
-              disabled={hintsUsed >= HINTS.length}
+              disabled={hintsUsed >= (missionConfig?.hints?.length || 0)}
               className="rounded-full text-yellow-500 hover:text-yellow-600 hover:bg-yellow-50"
             >
               <Lightbulb className="w-5 h-5" />
