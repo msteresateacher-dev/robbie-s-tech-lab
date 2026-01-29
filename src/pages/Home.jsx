@@ -71,10 +71,20 @@ export default function Home() {
           <Link to={createPageUrl('StudentPortal')} className="block">
             <Button
               size="lg"
-              className="w-full h-20 text-xl rounded-2xl bg-gradient-to-r from-sky-400 to-sky-500 hover:from-sky-500 hover:to-sky-600 shadow-lg shadow-sky-200"
+              className="w-full h-20 text-xl rounded-2xl bg-gradient-to-r from-fuchsia-400 to-pink-500 hover:from-fuchsia-500 hover:to-pink-600 shadow-lg shadow-pink-200"
             >
               <Users className="w-8 h-8 mr-3" />
               Start Learning!
+            </Button>
+          </Link>
+
+          <Link to={createPageUrl('ExtraGames')} className="block">
+            <Button
+              size="lg"
+              className="w-full h-16 text-lg rounded-2xl bg-gradient-to-r from-purple-400 to-indigo-500 hover:from-purple-500 hover:to-indigo-600 shadow-lg"
+            >
+              <Sparkles className="w-6 h-6 mr-2" />
+              Extra Fun Games!
             </Button>
           </Link>
 
