@@ -51,6 +51,7 @@ import Home from './pages/Home';
 import StudentPortal from './pages/StudentPortal';
 import Mission from './pages/Mission';
 import TeacherDashboard from './pages/TeacherDashboard';
+import MissionSelect from './pages/MissionSelect';
 
 
 export const PAGES = {
@@ -58,6 +59,7 @@ export const PAGES = {
     "StudentPortal": StudentPortal,
     "Mission": Mission,
     "TeacherDashboard": TeacherDashboard,
+    "MissionSelect": MissionSelect,
 }
 
 export const pagesConfig = {

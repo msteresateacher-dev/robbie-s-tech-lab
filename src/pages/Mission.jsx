@@ -1,4 +1,4 @@
-import React, { useState, useEffect, useRef } from 'react';
+import React, { useState, useRef } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import { Link, useNavigate } from 'react-router-dom';
 import { createPageUrl } from '@/utils';
@@ -8,40 +8,47 @@ import { ArrowLeft, Home, Lightbulb, Loader2 } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import RobbieFace from '@/components/RobbieFace';
 import SpeechBubble from '@/components/SpeechBubble';
-import DragDropSequence from '@/components/DragDropSequence';
-import ProgressBar from '@/components/ProgressBar';
+import WakeUpRobbie, { wakeUpRobbieConfig } from '@/components/missions/WakeUpRobbie';
+import HardwareAnatomy, { hardwareAnatomyConfig } from '@/components/missions/HardwareAnatomy';
+import InputOutput, { inputOutputConfig } from '@/components/missions/InputOutput';
+import RobbiesRace, { robbiesRaceConfig } from '@/components/missions/RobbiesRace';
 
-const MISSION_STEPS = [
-  { id: 'wake', emoji: '☀️', label: 'Open your eyes' },
-  { id: 'stretch', emoji: '🙆', label: 'Stretch your arms' },
-  { id: 'brush', emoji: '🪥', label: 'Brush your teeth' },
-  { id: 'dress', emoji: '👕', label: 'Get dressed' },
-  { id: 'eat', emoji: '🥣', label: 'Eat breakfast' }
-];
-
-const CORRECT_ORDER = ['wake', 'stretch', 'brush', 'dress', 'eat'];
-
-const HINTS = [
-  "Hmm, what do you do first thing when you wake up? I bet it starts with your eyes!",
-  "Think about what happens in the morning. First we wake up, then we stretch our sleepy arms!",
-  "Oops! Let me help. We open our eyes first, stretch, brush teeth, get dressed, then eat breakfast!"
-];
-
-const INTRO_MESSAGES = [
-  { text: "Oh no! I forgot how to start my morning!", emotion: 'surprised' },
-  { text: "Can you help me put these steps in the right order?", emotion: 'encouraging' },
-  { text: "This is called SEQUENCING - putting things in the right order. Just like computers do!", emotion: 'excited' }
-];
+const MISSION_CONFIGS = {
+  wake_up_robbie: {
+    title: 'Wake Up Robbie',
+    component: WakeUpRobbie,
+    config: wakeUpRobbieConfig
+  },
+  hardware_anatomy: {
+    title: 'Hardware Anatomy',
+    component: HardwareAnatomy,
+    config: hardwareAnatomyConfig
+  },
+  input_output: {
+    title: 'Input & Output',
+    component: InputOutput,
+    config: inputOutputConfig
+  },
+  robbies_race: {
+    title: 'Robbie\'s Big Race',
+    component: RobbiesRace,
+    config: robbiesRaceConfig
+  }
+};
 
 export default function Mission() {
   const navigate = useNavigate();
   const queryClient = useQueryClient();
   const urlParams = new URLSearchParams(window.location.search);
   const studentId = urlParams.get('studentId');
+  const missionId = urlParams.get('missionId') || 'wake_up_robbie';
   
-  const [currentPhase, setCurrentPhase] = useState('intro'); // intro, playing, complete
-  const [introIndex, setIntroIndex] = useState(0);
-  const [robbieEmotion, setRobbieEmotion] = useState('sleepy');
+  const missionData = MISSION_CONFIGS[missionId];
+  const MissionComponent = missionData?.component;
+  const missionConfig = missionData?.config;
+  
+  const [currentPhase, setCurrentPhase] = useState('playing');
+  const [robbieEmotion, setRobbieEmotion] = useState(missionConfig?.emotion || 'happy');
   const [isSpeaking, setIsSpeaking] = useState(false);
   const [hintsUsed, setHintsUsed] = useState(0);
   const [currentHint, setCurrentHint] = useState('');
@@ -67,32 +74,16 @@ export default function Mission() {
     mutationFn: (data) => base44.entities.MissionSession.create(data)
   });
 
-  // Intro sequence
-  useEffect(() => {
-    if (currentPhase === 'intro' && introIndex < INTRO_MESSAGES.length) {
-      setRobbieEmotion(INTRO_MESSAGES[introIndex].emotion);
-    }
-  }, [introIndex, currentPhase]);
-
-  const advanceIntro = () => {
-    if (introIndex < INTRO_MESSAGES.length - 1) {
-      setIntroIndex(prev => prev + 1);
-    } else {
-      setCurrentPhase('playing');
-      setRobbieEmotion('thinking');
-    }
-  };
-
   const handleNeedHint = () => {
-    if (hintsUsed < HINTS.length) {
-      setCurrentHint(HINTS[hintsUsed]);
+    if (missionConfig?.hints && hintsUsed < missionConfig.hints.length) {
+      setCurrentHint(missionConfig.hints[hintsUsed]);
       setShowHint(true);
       setHintsUsed(prev => prev + 1);
       setRobbieEmotion('encouraging');
       
       setTimeout(() => {
         setShowHint(false);
-        setRobbieEmotion('thinking');
+        setRobbieEmotion(missionConfig?.emotion || 'happy');
       }, 5000);
     }
   };
@@ -111,11 +102,11 @@ export default function Mission() {
     await createSessionMutation.mutateAsync({
       student_id: studentId,
       student_name: student?.name,
-      mission_name: 'Wake Up Robbie',
+      mission_name: missionData?.title || 'Mission',
       completed: true,
       hints_used: hintsUsed,
       time_spent_seconds: timeSpent,
-      struggles: hintsUsed > 1 ? ['sequencing'] : []
+      struggles: hintsUsed > 1 ? [missionId] : []
     });
 
     // Update student stats
@@ -131,8 +122,21 @@ export default function Mission() {
   };
 
   const handleGoHome = () => {
-    navigate(createPageUrl('Home'));
+    navigate(createPageUrl('MissionSelect') + `?studentId=${studentId}`);
   };
+
+  if (!MissionComponent) {
+    return (
+      <div className="min-h-screen bg-gradient-to-b from-amber-50 to-sky-50 flex items-center justify-center">
+        <div className="text-center">
+          <p className="text-xl text-gray-600">Mission not found</p>
+          <Button onClick={handleGoHome} className="mt-4">
+            Go Back
+          </Button>
+        </div>
+      </div>
+    );
+  }
 
   if (isLoading) {
     return (
@@ -153,7 +157,7 @@ export default function Mission() {
             </Button>
           </Link>
           <div className="text-center">
-            <h1 className="text-lg font-bold text-gray-800">Wake Up Robbie!</h1>
+            <h1 className="text-lg font-bold text-gray-800">{missionData?.title}</h1>
             <p className="text-sm text-gray-500">{student?.name}'s Mission</p>
           </div>
           {currentPhase === 'playing' && (
@@ -172,117 +176,52 @@ export default function Mission() {
       </header>
 
       <main className="px-4 py-6 max-w-2xl mx-auto">
-        {/* Progress */}
-        {currentPhase === 'playing' && (
-          <div className="mb-6">
-            <ProgressBar 
-              currentStep={attempts > 0 ? 1 : 0} 
-              totalSteps={1} 
-              label="Mission Progress"
-            />
-          </div>
-        )}
-
         {/* Robbie */}
         <motion.div 
-          className="flex flex-col items-center"
+          className="flex flex-col items-center mb-6"
           layout
         >
           <RobbieFace
             emotion={robbieEmotion}
             speaking={isSpeaking}
-            size={currentPhase === 'playing' ? 'medium' : 'large'}
+            size="medium"
           />
-
-          {/* Speech bubble */}
-          <div className="mt-6 w-full">
-            <AnimatePresence mode="wait">
-              {currentPhase === 'intro' && (
-                <motion.div
-                  key="intro"
-                  initial={{ opacity: 0, y: 20 }}
-                  animate={{ opacity: 1, y: 0 }}
-                  exit={{ opacity: 0, y: -20 }}
-                >
-                  <SpeechBubble
-                    message={INTRO_MESSAGES[introIndex].text}
-                    visible={true}
-                    onSpeakStart={() => setIsSpeaking(true)}
-                    onSpeakEnd={() => setIsSpeaking(false)}
-                  />
-                  <Button
-                    onClick={advanceIntro}
-                    className="w-full mt-4 h-14 text-lg rounded-2xl bg-sky-400 hover:bg-sky-500"
-                  >
-                    {introIndex < INTRO_MESSAGES.length - 1 ? 'Next' : "Let's Help Robbie!"}
-                  </Button>
-                </motion.div>
-              )}
-
-              {currentPhase === 'playing' && showHint && (
-                <motion.div
-                  key="hint"
-                  initial={{ opacity: 0, scale: 0.9 }}
-                  animate={{ opacity: 1, scale: 1 }}
-                  exit={{ opacity: 0 }}
-                >
-                  <SpeechBubble
-                    message={currentHint}
-                    visible={true}
-                    onSpeakStart={() => setIsSpeaking(true)}
-                    onSpeakEnd={() => setIsSpeaking(false)}
-                  />
-                </motion.div>
-              )}
-
-              {currentPhase === 'complete' && (
-                <motion.div
-                  key="complete"
-                  initial={{ opacity: 0, scale: 0.8 }}
-                  animate={{ opacity: 1, scale: 1 }}
-                >
-                  <SpeechBubble
-                    message={`Wow, ${student?.name}! You're a SEQUENCING superstar! Now I know how to start my day!`}
-                    visible={true}
-                    onSpeakStart={() => setIsSpeaking(true)}
-                    onSpeakEnd={() => setIsSpeaking(false)}
-                  />
-                </motion.div>
-              )}
-            </AnimatePresence>
-          </div>
         </motion.div>
 
-        {/* Game area */}
-        <AnimatePresence>
-          {currentPhase === 'playing' && (
+        {/* Mission Component */}
+        <AnimatePresence mode="wait">
+          {currentPhase === 'playing' && MissionComponent && (
             <motion.div
+              key="mission"
               initial={{ opacity: 0, y: 30 }}
               animate={{ opacity: 1, y: 0 }}
               exit={{ opacity: 0, y: -30 }}
-              className="mt-8"
             >
-              <div className="text-center mb-4">
-                <p className="text-gray-600 font-medium">
-                  Drag the steps into the right order!
-                </p>
-              </div>
-              <DragDropSequence
-                steps={MISSION_STEPS}
-                correctOrder={CORRECT_ORDER}
+              <MissionComponent
                 onComplete={handleComplete}
-                onAttempt={handleAttempt}
                 onNeedHint={handleNeedHint}
+                onAttempt={handleAttempt}
+                currentHint={currentHint}
+                showHint={showHint}
               />
             </motion.div>
           )}
 
           {currentPhase === 'complete' && (
             <motion.div
+              key="complete"
               initial={{ opacity: 0, y: 30 }}
               animate={{ opacity: 1, y: 0 }}
-              className="mt-8 text-center"
+              className="text-center"
             >
+              <div className="mb-6">
+                <SpeechBubble
+                  message={`Amazing work, ${student?.name}! You're a tech superstar! 🌟`}
+                  visible={true}
+                  onSpeakStart={() => setIsSpeaking(true)}
+                  onSpeakEnd={() => setIsSpeaking(false)}
+                />
+              </div>
               {/* Celebration */}
               <div className="bg-white rounded-3xl p-8 shadow-xl border-4 border-yellow-200">
                 <div className="text-6xl mb-4">🏆</div>
@@ -308,13 +247,21 @@ export default function Mission() {
                 </div>
               </div>
 
-              <Button
-                onClick={handleGoHome}
-                className="mt-6 h-14 px-8 text-lg rounded-2xl bg-gradient-to-r from-sky-400 to-sky-500"
-              >
-                <Home className="w-5 h-5 mr-2" />
-                Back Home
-              </Button>
+              <div className="flex gap-3">
+                <Button
+                  onClick={handleGoHome}
+                  variant="outline"
+                  className="flex-1 h-14 px-6 text-lg rounded-2xl border-2"
+                >
+                  More Missions
+                </Button>
+                <Button
+                  onClick={() => window.location.reload()}
+                  className="flex-1 h-14 px-6 text-lg rounded-2xl bg-gradient-to-r from-green-400 to-emerald-500"
+                >
+                  Play Again!
+                </Button>
+              </div>
             </motion.div>
           )}
         </AnimatePresence>

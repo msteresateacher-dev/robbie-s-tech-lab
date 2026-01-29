@@ -53,7 +53,7 @@ export default function StudentPortal() {
 
   const handleStartMission = () => {
     if (selectedStudent) {
-      navigate(createPageUrl('Mission') + `?studentId=${selectedStudent.id}`);
+      navigate(createPageUrl('MissionSelect') + `?studentId=${selectedStudent.id}`);
     }
   };
 
