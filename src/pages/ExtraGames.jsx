@@ -3,7 +3,9 @@ import {
   Cpu, MousePointer2, Globe, RefreshCw,
   Trophy, Type, Camera, Sparkles, Zap, BrainCircuit,
   Palette, Bug, Music, Share2, Filter, Lightbulb, Home, Droplets, ArrowLeft,
-  Spade, Plus, Minus, Users, Volume2, Backpack, Trash2
+  Spade, Plus, Minus, Users, Volume2, Backpack, Trash2, Monitor, Keyboard,
+  Power, Lock, Timer, Heart, Binary, Database, Network, Headphones, Cable,
+  Puzzle, Tablet, MapPin, Cloud, Image
 } from 'lucide-react';
 import { Link } from 'react-router-dom';
 import { createPageUrl } from '@/utils';
@@ -61,6 +63,47 @@ const ROBBIE_SAYINGS = [
   { text: "Put your toys away, please!", icon: <Sparkles /> }
 ];
 
+const CABLE_TYPES = [
+  { id: 1, cable: '🔌', device: '💻', name: 'Power Cable', match: 'laptop' },
+  { id: 2, cable: '📱', device: '🔋', name: 'USB Cable', match: 'phone' },
+  { id: 3, cable: '🎧', device: '📻', name: 'Audio Cable', match: 'speaker' }
+];
+
+const COMPUTER_PARTS = [
+  { id: 'monitor', name: 'Monitor', icon: '🖥️', position: { x: 2, y: 1 } },
+  { id: 'keyboard', name: 'Keyboard', icon: '⌨️', position: { x: 2, y: 3 } },
+  { id: 'mouse', name: 'Mouse', icon: '🖱️', position: { x: 3, y: 3 } },
+  { id: 'cpu', name: 'Computer', icon: '💻', position: { x: 1, y: 2 } }
+];
+
+const PASSWORD_PATTERNS = [
+  { pattern: ['🔴', '🔵', '🟡'], name: 'Rainbow' },
+  { pattern: ['⭐', '💎', '⭐'], name: 'Star Diamond' },
+  { pattern: ['🍎', '🍊', '🍎'], name: 'Apple Orange' }
+];
+
+const KINDNESS_SCENARIOS = [
+  { text: 'Say "Great job!" to a friend', kind: true, emoji: '😊' },
+  { text: 'Call someone a mean name', kind: false, emoji: '😢' },
+  { text: 'Share your toy with others', kind: true, emoji: '🤝' },
+  { text: 'Take without asking', kind: false, emoji: '😠' }
+];
+
+const BROOKLYN_LOCATIONS = [
+  { name: 'Library', icon: '📚', task: 'Help organize books!', emoji: '📖' },
+  { name: 'Park', icon: '🌳', task: 'Clean up the playground!', emoji: '🧹' },
+  { name: 'School', icon: '🏫', task: 'Welcome new students!', emoji: '👋' }
+];
+
+const DATA_ITEMS = [
+  { id: 1, type: 'photo', icon: '📷', category: 'images' },
+  { id: 2, type: 'number', icon: '🔢', category: 'numbers' },
+  { id: 3, type: 'color', icon: '🎨', category: 'colors' },
+  { id: 4, type: 'photo', icon: '📸', category: 'images' },
+  { id: 5, type: 'number', icon: '➕', category: 'numbers' },
+  { id: 6, type: 'color', icon: '🌈', category: 'colors' }
+];
+
 export default function ExtraGames() {
   const [view, setView] = useState('menu'); 
   const [score, setScore] = useState(0);
@@ -90,6 +133,27 @@ export default function ExtraGames() {
   const [tagScore, setTagScore] = useState(0);
   const [tagTargets, setTagTargets] = useState([]);
   const [sayingIndex, setSayingIndex] = useState(0);
+  
+  // New concept games
+  const [mouseTargets, setMouseTargets] = useState([]);
+  const [mouseClicks, setMouseClicks] = useState(0);
+  const [keyPressed, setKeyPressed] = useState('');
+  const [screenItems, setScreenItems] = useState([]);
+  const [powerOn, setPowerOn] = useState(false);
+  const [currentPassword, setCurrentPassword] = useState([]);
+  const [screenTime, setScreenTime] = useState(300);
+  const [timerRunning, setTimerRunning] = useState(false);
+  const [scenarioIndex, setScenarioIndex] = useState(0);
+  const [binaryLights, setBinaryLights] = useState([0,0,0,0]);
+  const [dataSort, setDataSort] = useState({});
+  const [networkNodes, setNetworkNodes] = useState([]);
+  const [musicSequence, setMusicSequence] = useState([]);
+  const [cableMatch, setCableMatch] = useState(null);
+  const [partsPlaced, setPartsPlaced] = useState([]);
+  const [touchVsType, setTouchVsType] = useState({ touch: 0, type: 0 });
+  const [brooklynLocation, setBrooklynLocation] = useState(0);
+  const [weatherData, setWeatherData] = useState({ temp: 65, condition: 'sunny' });
+  const [photoGallery, setPhotoGallery] = useState([]);
 
   // --- AUDIO HELPERS ---
   const speak = (text) => {
@@ -233,6 +297,139 @@ export default function ExtraGames() {
     setSayingIndex((sayingIndex + 1) % ROBBIE_SAYINGS.length);
   };
 
+  // --- NEW GAME FUNCTIONS ---
+  const spawnMouseTarget = () => {
+    setMouseTargets([{ x: Math.random() * 80, y: Math.random() * 80, id: Date.now() }]);
+  };
+
+  const hitTarget = () => {
+    setMouseClicks(mouseClicks + 1);
+    setScore(s => s + 5);
+    speak("Nice click!");
+    spawnMouseTarget();
+  };
+
+  const handleKeyPress = (key) => {
+    setKeyPressed(key);
+    setScore(s => s + 5);
+    speak(`You pressed ${key}!`);
+  };
+
+  const togglePower = () => {
+    setPowerOn(!powerOn);
+    speak(powerOn ? "Turning off safely!" : "Powering on!");
+  };
+
+  const addToPassword = (symbol) => {
+    if (currentPassword.length < 3) {
+      setCurrentPassword([...currentPassword, symbol]);
+    }
+  };
+
+  const checkPassword = () => {
+    const correct = PASSWORD_PATTERNS[0].pattern;
+    if (JSON.stringify(currentPassword) === JSON.stringify(correct)) {
+      setScore(s => s + 20);
+      speak("Password correct! Great memory!");
+    } else {
+      speak("Try again!");
+    }
+    setCurrentPassword([]);
+  };
+
+  const startScreenTimer = () => {
+    setTimerRunning(true);
+    setScreenTime(300);
+    const interval = setInterval(() => {
+      setScreenTime(t => {
+        if (t <= 1) {
+          clearInterval(interval);
+          setTimerRunning(false);
+          speak("Time for a break!");
+          return 0;
+        }
+        return t - 1;
+      });
+    }, 1000);
+  };
+
+  const checkKindness = (kind) => {
+    if (KINDNESS_SCENARIOS[scenarioIndex].kind === kind) {
+      setScore(s => s + 15);
+      speak(kind ? "That's so kind!" : "Good job knowing that's not nice!");
+    } else {
+      speak("Think about how that makes others feel.");
+    }
+    setScenarioIndex((scenarioIndex + 1) % KINDNESS_SCENARIOS.length);
+  };
+
+  const toggleBinary = (index) => {
+    const newLights = [...binaryLights];
+    newLights[index] = newLights[index] === 0 ? 1 : 0;
+    setBinaryLights(newLights);
+    setScore(s => s + 2);
+  };
+
+  const sortDataItem = (item, category) => {
+    if (item.category === category) {
+      setScore(s => s + 10);
+      speak("Great sorting!");
+    }
+  };
+
+  const sendNetworkMessage = () => {
+    speak("Sending message through the network!");
+    setScore(s => s + 15);
+  };
+
+  const playMusicNote = (note) => {
+    setMusicSequence([...musicSequence, note]);
+    setScore(s => s + 5);
+  };
+
+  const matchCable = (cable, device) => {
+    if (cable.match === device) {
+      speak("Perfect match!");
+      setScore(s => s + 15);
+    }
+  };
+
+  const placePart = (part) => {
+    if (!partsPlaced.includes(part.id)) {
+      setPartsPlaced([...partsPlaced, part.id]);
+      setScore(s => s + 10);
+      speak(`Great! You placed the ${part.name}!`);
+    }
+  };
+
+  const compareInput = (type) => {
+    setTouchVsType({ ...touchVsType, [type]: touchVsType[type] + 1 });
+    setScore(s => s + 5);
+  };
+
+  const helpBrooklyn = () => {
+    speak(BROOKLYN_LOCATIONS[brooklynLocation].task);
+    setBrooklynLocation((brooklynLocation + 1) % BROOKLYN_LOCATIONS.length);
+    setScore(s => s + 20);
+  };
+
+  const checkWeather = () => {
+    const temps = [60, 65, 70, 75];
+    const conditions = ['sunny', 'cloudy', 'rainy'];
+    setWeatherData({
+      temp: temps[Math.floor(Math.random() * temps.length)],
+      condition: conditions[Math.floor(Math.random() * conditions.length)]
+    });
+    speak(`It's ${weatherData.condition} and ${weatherData.temp} degrees!`);
+  };
+
+  const takePhoto = () => {
+    const photos = ['🌉', '🏙️', '🌳', '🏫', '📚'];
+    setPhotoGallery([...photoGallery, photos[Math.floor(Math.random() * photos.length)]]);
+    speak("Photo captured!");
+    setScore(s => s + 10);
+  };
+
   // --- RENDER MENU ---
   const MenuBtn = ({ icon, label, color, onClick }) => (
     <motion.button 
@@ -280,19 +477,217 @@ export default function ExtraGames() {
               exit={{ opacity: 0, scale: 0.95 }}
               className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4"
             >
-              <MenuBtn icon={<Spade />} label="Go Fish" color="bg-teal-500" onClick={() => { setView('gofish'); startGoFish(); }} />
-              <MenuBtn icon={<Plus />} label="Math Fun" color="bg-rose-500" onClick={() => { setView('math'); generateMathProblem(); }} />
-              <MenuBtn icon={<Users />} label="Tag Game" color="bg-lime-500" onClick={() => setView('tag')} />
-              <MenuBtn icon={<Volume2 />} label="Robbie Says" color="bg-violet-500" onClick={() => setView('sayings')} />
-              <MenuBtn icon={<Music />} label="Dance Party" color="bg-pink-500" onClick={() => setView('dance')} />
-              <MenuBtn icon={<Palette />} label="Pixel Painter" color="bg-purple-500" onClick={() => setView('painter')} />
-              <MenuBtn icon={<Bug />} label="Bug Hunter" color="bg-red-500" onClick={() => setView('bug')} />
-              <MenuBtn icon={<Zap />} label="Circuit Lab" color="bg-yellow-500" onClick={() => setView('circuit')} />
-              <MenuBtn icon={<Filter />} label="Sorting Hat" color="bg-green-500" onClick={() => setView('sort')} />
-              <MenuBtn icon={<Share2 />} label="Signal Share" color="bg-blue-500" onClick={() => setView('signal')} />
-              <MenuBtn icon={<Type />} label="Letter Hunt" color="bg-indigo-500" onClick={() => setView('letters')} />
-              <MenuBtn icon={<Droplets />} label="Eco-AI" color="bg-cyan-500" onClick={() => setView('eco')} />
-              <MenuBtn icon={<Camera />} label="Stop Motion" color="bg-orange-500" onClick={() => setView('movie')} />
+              {/* Basic Concepts */}
+              <MenuBtn icon={<MousePointer2 />} label="Mouse Skills" color="bg-sky-500" onClick={() => { setView('mouse'); spawnMouseTarget(); }} />
+              <MenuBtn icon={<Keyboard />} label="Keyboard Fun" color="bg-slate-500" onClick={() => setView('keyboard')} />
+              <MenuBtn icon={<Monitor />} label="Screen World" color="bg-emerald-500" onClick={() => setView('screen')} />
+              <MenuBtn icon={<Power />} label="Power On/Off" color="bg-stone-500" onClick={() => setView('power')} />
+              
+              {/* Safety */}
+              <MenuBtn icon={<Lock />} label="Password" color="bg-amber-500" onClick={() => setView('password')} />
+              <MenuBtn icon={<Timer />} label="Screen Time" color="bg-teal-500" onClick={() => setView('timer')} />
+              <MenuBtn icon={<Heart />} label="Be Kind" color="bg-pink-500" onClick={() => setView('kindness')} />
+              
+              {/* Advanced */}
+              <MenuBtn icon={<Binary />} label="Binary Lights" color="bg-indigo-500" onClick={() => setView('binary')} />
+              <MenuBtn icon={<Database />} label="Data Detective" color="bg-purple-500" onClick={() => setView('data')} />
+              <MenuBtn icon={<Network />} label="Network" color="bg-blue-500" onClick={() => setView('network')} />
+              <MenuBtn icon={<Headphones />} label="Music Code" color="bg-violet-500" onClick={() => setView('music')} />
+              
+              {/* Physical */}
+              <MenuBtn icon={<Cable />} label="Cables" color="bg-orange-500" onClick={() => setView('cables')} />
+              <MenuBtn icon={<Puzzle />} label="Parts Puzzle" color="bg-red-500" onClick={() => setView('parts')} />
+              <MenuBtn icon={<Tablet />} label="Touch vs Type" color="bg-fuchsia-500" onClick={() => setView('touchtype')} />
+              
+              {/* Brooklyn */}
+              <MenuBtn icon={<MapPin />} label="Helper Bot" color="bg-green-500" onClick={() => setView('brooklyn')} />
+              <MenuBtn icon={<Cloud />} label="Weather" color="bg-cyan-500" onClick={() => setView('weather')} />
+              <MenuBtn icon={<Image />} label="Photo Memory" color="bg-rose-500" onClick={() => setView('photos')} />
+              
+              {/* Original Games */}
+              <MenuBtn icon={<Spade />} label="Go Fish" color="bg-teal-600" onClick={() => { setView('gofish'); startGoFish(); }} />
+              <MenuBtn icon={<Plus />} label="Math Fun" color="bg-rose-600" onClick={() => { setView('math'); generateMathProblem(); }} />
+              <MenuBtn icon={<Users />} label="Tag Game" color="bg-lime-600" onClick={() => setView('tag')} />
+            </motion.div>
+          )}
+
+          {/* MOUSE SKILLS */}
+          {view === 'mouse' && (
+            <motion.div key="mouse" initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} className="bg-white p-10 rounded-[3rem] shadow-2xl">
+              <h2 className="text-4xl font-black mb-8 text-sky-600 text-center">Mouse Skills Training!</h2>
+              <div className="relative bg-sky-50 rounded-3xl h-96 mb-6 border-4 border-sky-200">
+                {mouseTargets.map(target => (
+                  <button key={target.id} onClick={hitTarget} className="absolute bg-sky-500 text-white p-8 rounded-full text-4xl hover:scale-110 transition-transform animate-pulse" style={{ left: `${target.x}%`, top: `${target.y}%` }}>🎯</button>
+                ))}
+              </div>
+              <div className="text-center mb-6"><p className="text-3xl font-black text-sky-600">Clicks: {mouseClicks}</p></div>
+              <button onClick={() => setView('menu')} className="bg-gray-100 p-6 rounded-2xl font-bold w-full">Back</button>
+            </motion.div>
+          )}
+
+          {/* KEYBOARD DISCOVERY */}
+          {view === 'keyboard' && (
+            <motion.div key="keyboard" initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} className="bg-white p-10 rounded-[3rem] shadow-2xl">
+              <h2 className="text-4xl font-black mb-8 text-slate-600 text-center">Keyboard Discovery!</h2>
+              <div className="bg-slate-50 p-8 rounded-3xl mb-6 min-h-[150px] flex items-center justify-center"><div className="text-6xl font-black">{keyPressed || '❓'}</div></div>
+              <div className="grid grid-cols-3 gap-4 mb-6">
+                <button onClick={() => handleKeyPress('SPACE')} className="bg-slate-600 text-white p-8 rounded-2xl font-black">SPACE</button>
+                <button onClick={() => handleKeyPress('ENTER')} className="bg-slate-600 text-white p-8 rounded-2xl font-black">ENTER</button>
+                <button onClick={() => handleKeyPress('DELETE')} className="bg-red-500 text-white p-8 rounded-2xl font-black">DELETE</button>
+              </div>
+              <button onClick={() => setView('menu')} className="bg-gray-100 p-6 rounded-2xl font-bold w-full">Back</button>
+            </motion.div>
+          )}
+
+          {/* SCREEN VS REAL */}
+          {view === 'screen' && (
+            <motion.div key="screen" initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} className="bg-white p-10 rounded-[3rem] shadow-2xl">
+              <h2 className="text-4xl font-black mb-8 text-emerald-600 text-center">Screen vs Real World!</h2>
+              <div className="grid grid-cols-2 gap-6 mb-8">
+                <div className="bg-emerald-50 p-8 rounded-2xl border-4 border-emerald-300"><h3 className="text-2xl font-bold mb-4">On Screen 📱</h3><div className="text-6xl">🎮 📷 🎨</div></div>
+                <div className="bg-amber-50 p-8 rounded-2xl border-4 border-amber-300"><h3 className="text-2xl font-bold mb-4">In Real Life 🌍</h3><div className="text-6xl">⚽ 🌳 🎨</div></div>
+              </div>
+              <button onClick={() => { speak("Some things are on screens, some are real!"); setScore(s => s + 10); }} className="bg-emerald-600 text-white p-8 rounded-3xl font-black text-xl w-full mb-4">LEARN MORE</button>
+              <button onClick={() => setView('menu')} className="bg-gray-100 p-6 rounded-2xl font-bold w-full">Back</button>
+            </motion.div>
+          )}
+
+          {/* POWER ON/OFF */}
+          {view === 'power' && (
+            <motion.div key="power" initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} className="bg-white p-10 rounded-[3rem] shadow-2xl text-center">
+              <h2 className="text-4xl font-black mb-8 text-stone-600">Power Safety!</h2>
+              <div className={`text-9xl mb-8 transition-all ${powerOn ? 'opacity-100' : 'opacity-30'}`}>💻</div>
+              <button onClick={togglePower} className={`p-12 rounded-3xl font-black text-2xl w-full mb-6 ${powerOn ? 'bg-red-500' : 'bg-green-500'} text-white`}>{powerOn ? '⏻ POWER OFF' : '⏻ POWER ON'}</button>
+              <button onClick={() => setView('menu')} className="bg-gray-100 p-6 rounded-2xl font-bold w-full">Back</button>
+            </motion.div>
+          )}
+
+          {/* PASSWORD PROTECTOR */}
+          {view === 'password' && (
+            <motion.div key="password" initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} className="bg-white p-10 rounded-[3rem] shadow-2xl text-center">
+              <h2 className="text-4xl font-black mb-8 text-amber-600">Password Protector!</h2>
+              <div className="bg-amber-50 p-8 rounded-3xl mb-6"><p className="text-lg mb-4">Remember the pattern: {PASSWORD_PATTERNS[0].pattern.join(' ')}</p><div className="text-6xl">{currentPassword.join(' ') || '___'}</div></div>
+              <div className="grid grid-cols-4 gap-4 mb-6">{['🔴','🔵','🟡','⭐','💎','🍎','🍊'].map((s,i) => (<button key={i} onClick={() => addToPassword(s)} className="bg-amber-200 p-6 rounded-2xl text-4xl hover:bg-amber-300">{s}</button>))}</div>
+              <div className="flex gap-3"><button onClick={() => setView('menu')} className="bg-gray-100 p-6 rounded-2xl font-bold flex-1">Back</button><button onClick={checkPassword} className="bg-amber-600 text-white p-6 rounded-2xl font-black flex-1">CHECK</button><button onClick={() => setCurrentPassword([])} className="bg-red-500 text-white p-6 rounded-2xl font-bold flex-1">CLEAR</button></div>
+            </motion.div>
+          )}
+
+          {/* SCREEN TIME HELPER */}
+          {view === 'timer' && (
+            <motion.div key="timer" initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} className="bg-white p-10 rounded-[3rem] shadow-2xl text-center">
+              <h2 className="text-4xl font-black mb-8 text-teal-600">Screen Time Helper!</h2>
+              <div className="text-8xl font-black mb-8">{Math.floor(screenTime/60)}:{(screenTime%60).toString().padStart(2,'0')}</div>
+              <button onClick={startScreenTimer} disabled={timerRunning} className="bg-teal-600 text-white p-8 rounded-3xl font-black text-xl w-full mb-6 disabled:opacity-50">{timerRunning ? 'Timer Running...' : 'START 5 MIN TIMER'}</button>
+              <button onClick={() => setView('menu')} className="bg-gray-100 p-6 rounded-2xl font-bold w-full">Back</button>
+            </motion.div>
+          )}
+
+          {/* NICE ONLINE FRIEND */}
+          {view === 'kindness' && (
+            <motion.div key="kindness" initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} className="bg-white p-10 rounded-[3rem] shadow-2xl text-center">
+              <h2 className="text-4xl font-black mb-8 text-pink-600">Be a Kind Friend!</h2>
+              <div className="bg-pink-50 p-12 rounded-3xl mb-8"><div className="text-6xl mb-4">{KINDNESS_SCENARIOS[scenarioIndex].emoji}</div><p className="text-2xl font-bold">{KINDNESS_SCENARIOS[scenarioIndex].text}</p></div>
+              <div className="grid grid-cols-2 gap-4 mb-6"><button onClick={() => checkKindness(true)} className="bg-green-500 text-white p-8 rounded-3xl font-black text-xl">😊 KIND</button><button onClick={() => checkKindness(false)} className="bg-red-500 text-white p-8 rounded-3xl font-black text-xl">😢 NOT KIND</button></div>
+              <button onClick={() => setView('menu')} className="bg-gray-100 p-6 rounded-2xl font-bold w-full">Back</button>
+            </motion.div>
+          )}
+
+          {/* BINARY BASICS */}
+          {view === 'binary' && (
+            <motion.div key="binary" initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} className="bg-white p-10 rounded-[3rem] shadow-2xl text-center">
+              <h2 className="text-4xl font-black mb-8 text-indigo-600">Binary Lights!</h2>
+              <p className="text-gray-600 mb-8">Click to turn lights ON (1) or OFF (0)</p>
+              <div className="flex justify-center gap-6 mb-8">{binaryLights.map((light,i) => (<button key={i} onClick={() => toggleBinary(i)} className={`w-24 h-24 rounded-full ${light ? 'bg-yellow-400 shadow-[0_0_30px_gold]' : 'bg-gray-300'}`}><div className="text-3xl font-black">{light}</div></button>))}</div>
+              <div className="text-2xl font-bold mb-8">Binary: {binaryLights.join('')}</div>
+              <button onClick={() => setView('menu')} className="bg-gray-100 p-6 rounded-2xl font-bold w-full">Back</button>
+            </motion.div>
+          )}
+
+          {/* DATA DETECTIVE */}
+          {view === 'data' && (
+            <motion.div key="data" initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} className="bg-white p-10 rounded-[3rem] shadow-2xl text-center">
+              <h2 className="text-4xl font-black mb-8 text-purple-600">Data Detective!</h2>
+              <div className="grid grid-cols-3 gap-4 mb-8">{DATA_ITEMS.map(item => (<div key={item.id} className="bg-purple-100 p-6 rounded-2xl text-5xl cursor-pointer hover:scale-105 transition-transform" onClick={() => sortDataItem(item, item.category)}>{item.icon}</div>))}</div>
+              <div className="grid grid-cols-3 gap-4 mb-6"><div className="bg-blue-100 p-6 rounded-2xl font-bold">📷 Images</div><div className="bg-green-100 p-6 rounded-2xl font-bold">🔢 Numbers</div><div className="bg-pink-100 p-6 rounded-2xl font-bold">🎨 Colors</div></div>
+              <button onClick={() => setView('menu')} className="bg-gray-100 p-6 rounded-2xl font-bold w-full">Back</button>
+            </motion.div>
+          )}
+
+          {/* NETWORK NAVIGATOR */}
+          {view === 'network' && (
+            <motion.div key="network" initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} className="bg-white p-10 rounded-[3rem] shadow-2xl text-center">
+              <h2 className="text-4xl font-black mb-8 text-blue-600">Network Navigator!</h2>
+              <div className="bg-blue-50 p-12 rounded-3xl mb-8"><div className="flex justify-around items-center text-6xl"><div>💻</div><div>↔️</div><div>🌐</div><div>↔️</div><div>💻</div></div></div>
+              <button onClick={sendNetworkMessage} className="bg-blue-600 text-white p-8 rounded-3xl font-black text-xl w-full mb-6">SEND MESSAGE!</button>
+              <button onClick={() => setView('menu')} className="bg-gray-100 p-6 rounded-2xl font-bold w-full">Back</button>
+            </motion.div>
+          )}
+
+          {/* CODE COMPOSER */}
+          {view === 'music' && (
+            <motion.div key="music" initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} className="bg-white p-10 rounded-[3rem] shadow-2xl text-center">
+              <h2 className="text-4xl font-black mb-8 text-violet-600">Music Code Composer!</h2>
+              <div className="bg-violet-50 p-8 rounded-3xl mb-8 min-h-[100px] flex justify-center gap-2 flex-wrap">{musicSequence.map((note,i) => (<div key={i} className="text-4xl">{note}</div>))}</div>
+              <div className="grid grid-cols-4 gap-4 mb-6">{['🎵','🎶','🎼','🎹'].map((note,i) => (<button key={i} onClick={() => playMusicNote(note)} className="bg-violet-500 text-white p-8 rounded-2xl text-4xl hover:bg-violet-600">{note}</button>))}</div>
+              <div className="flex gap-3"><button onClick={() => setView('menu')} className="bg-gray-100 p-6 rounded-2xl font-bold flex-1">Back</button><button onClick={() => setMusicSequence([])} className="bg-violet-600 text-white p-6 rounded-2xl font-bold flex-1">CLEAR</button></div>
+            </motion.div>
+          )}
+
+          {/* CABLE CONNECTOR */}
+          {view === 'cables' && (
+            <motion.div key="cables" initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} className="bg-white p-10 rounded-[3rem] shadow-2xl text-center">
+              <h2 className="text-4xl font-black mb-8 text-orange-600">Cable Connector!</h2>
+              <div className="grid grid-cols-2 gap-8 mb-8">{CABLE_TYPES.map(cable => (<div key={cable.id} className="bg-orange-50 p-8 rounded-2xl cursor-pointer hover:bg-orange-100" onClick={() => matchCable(cable, cable.match)}><div className="text-6xl mb-4">{cable.cable} → {cable.device}</div><p className="font-bold">{cable.name}</p></div>))}</div>
+              <button onClick={() => setView('menu')} className="bg-gray-100 p-6 rounded-2xl font-bold w-full">Back</button>
+            </motion.div>
+          )}
+
+          {/* PARTS PUZZLE */}
+          {view === 'parts' && (
+            <motion.div key="parts" initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} className="bg-white p-10 rounded-[3rem] shadow-2xl text-center">
+              <h2 className="text-4xl font-black mb-8 text-red-600">Parts Puzzle!</h2>
+              <div className="grid grid-cols-4 gap-4 mb-8" style={{gridTemplateRows: 'repeat(4, 100px)'}}>{COMPUTER_PARTS.map(part => (<button key={part.id} onClick={() => placePart(part)} className={`text-6xl ${partsPlaced.includes(part.id) ? 'opacity-30' : ''}`} style={{gridColumn: part.position.x, gridRow: part.position.y}}>{part.icon}</button>))}</div>
+              <p className="text-2xl font-bold mb-6">Parts Placed: {partsPlaced.length}/4</p>
+              <button onClick={() => setView('menu')} className="bg-gray-100 p-6 rounded-2xl font-bold w-full">Back</button>
+            </motion.div>
+          )}
+
+          {/* TOUCH VS TYPE */}
+          {view === 'touchtype' && (
+            <motion.div key="touchtype" initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} className="bg-white p-10 rounded-[3rem] shadow-2xl text-center">
+              <h2 className="text-4xl font-black mb-8 text-fuchsia-600">Touch vs Type!</h2>
+              <div className="grid grid-cols-2 gap-8 mb-8"><button onClick={() => compareInput('touch')} className="bg-fuchsia-100 p-12 rounded-3xl hover:bg-fuchsia-200"><div className="text-6xl mb-4">📱</div><p className="font-bold text-xl">TOUCH: {touchVsType.touch}</p></button><button onClick={() => compareInput('type')} className="bg-blue-100 p-12 rounded-3xl hover:bg-blue-200"><div className="text-6xl mb-4">⌨️</div><p className="font-bold text-xl">TYPE: {touchVsType.type}</p></button></div>
+              <button onClick={() => setView('menu')} className="bg-gray-100 p-6 rounded-2xl font-bold w-full">Back</button>
+            </motion.div>
+          )}
+
+          {/* COMMUNITY HELPER BOT */}
+          {view === 'brooklyn' && (
+            <motion.div key="brooklyn" initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} className="bg-white p-10 rounded-[3rem] shadow-2xl text-center">
+              <h2 className="text-4xl font-black mb-8 text-green-600">Brooklyn Helper Bot!</h2>
+              <div className="bg-green-50 p-12 rounded-3xl mb-8"><div className="text-8xl mb-4">{BROOKLYN_LOCATIONS[brooklynLocation].icon}</div><h3 className="text-3xl font-black mb-2">{BROOKLYN_LOCATIONS[brooklynLocation].name}</h3><p className="text-xl">{BROOKLYN_LOCATIONS[brooklynLocation].task}</p></div>
+              <button onClick={helpBrooklyn} className="bg-green-600 text-white p-8 rounded-3xl font-black text-xl w-full mb-6">HELP BROOKLYN! {BROOKLYN_LOCATIONS[brooklynLocation].emoji}</button>
+              <button onClick={() => setView('menu')} className="bg-gray-100 p-6 rounded-2xl font-bold w-full">Back</button>
+            </motion.div>
+          )}
+
+          {/* WEATHER REPORTER */}
+          {view === 'weather' && (
+            <motion.div key="weather" initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} className="bg-white p-10 rounded-[3rem] shadow-2xl text-center">
+              <h2 className="text-4xl font-black mb-8 text-cyan-600">Weather Reporter!</h2>
+              <div className="bg-cyan-50 p-12 rounded-3xl mb-8"><div className="text-8xl mb-4">{weatherData.condition === 'sunny' ? '☀️' : weatherData.condition === 'cloudy' ? '☁️' : '🌧️'}</div><p className="text-5xl font-black">{weatherData.temp}°F</p><p className="text-2xl capitalize mt-4">{weatherData.condition}</p></div>
+              <button onClick={checkWeather} className="bg-cyan-600 text-white p-8 rounded-3xl font-black text-xl w-full mb-6">CHECK WEATHER 🌡️</button>
+              <button onClick={() => setView('menu')} className="bg-gray-100 p-6 rounded-2xl font-bold w-full">Back</button>
+            </motion.div>
+          )}
+
+          {/* PHOTO MEMORY */}
+          {view === 'photos' && (
+            <motion.div key="photos" initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} className="bg-white p-10 rounded-[3rem] shadow-2xl text-center">
+              <h2 className="text-4xl font-black mb-8 text-rose-600">Photo Memory!</h2>
+              <div className="bg-rose-50 p-8 rounded-3xl mb-8 min-h-[200px] grid grid-cols-4 gap-4">{photoGallery.map((photo,i) => (<div key={i} className="text-6xl">{photo}</div>))}</div>
+              <button onClick={takePhoto} className="bg-rose-600 text-white p-8 rounded-3xl font-black text-xl w-full mb-6">📷 TAKE PHOTO</button>
+              <div className="flex gap-3"><button onClick={() => setView('menu')} className="bg-gray-100 p-6 rounded-2xl font-bold flex-1">Back</button><button onClick={() => setPhotoGallery([])} className="bg-rose-200 p-6 rounded-2xl font-bold flex-1">Clear Gallery</button></div>
             </motion.div>
           )}
 
