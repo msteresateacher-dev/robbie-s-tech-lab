@@ -6,16 +6,24 @@ import { GraduationCap, Users, Sparkles } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import RobbieFace from '@/components/RobbieFace';
 import SpeechBubble from '@/components/SpeechBubble';
+import VoiceSelector, { VOICE_OPTIONS } from '@/components/VoiceSelector';
 
 export default function Home() {
   const [robbieEmotion, setRobbieEmotion] = useState('happy');
   const [isSpeaking, setIsSpeaking] = useState(false);
   const [hasInteracted, setHasInteracted] = useState(false);
+  const [currentVoice, setCurrentVoice] = useState('friendly');
+  const [voiceSettings, setVoiceSettings] = useState(VOICE_OPTIONS[0]);
 
   const handleRobbieClick = () => {
     setHasInteracted(true);
     setRobbieEmotion('excited');
     setTimeout(() => setRobbieEmotion('happy'), 2000);
+  };
+
+  const handleVoiceChange = (voice) => {
+    setCurrentVoice(voice.id);
+    setVoiceSettings(voice);
   };
 
   return (
@@ -57,8 +65,20 @@ export default function Home() {
               visible={true}
               onSpeakStart={() => setIsSpeaking(true)}
               onSpeakEnd={() => setIsSpeaking(false)}
+              voiceSettings={voiceSettings}
             />
           </div>
+
+          {/* Voice Selector */}
+          <motion.div
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 1 }}
+            transition={{ delay: 0.3 }}
+            className="mt-6 bg-white/80 backdrop-blur rounded-2xl p-4 shadow-lg"
+          >
+            <p className="text-sm text-gray-600 text-center mb-3 font-medium">Choose Robbie's Voice:</p>
+            <VoiceSelector currentVoice={currentVoice} onVoiceChange={handleVoiceChange} />
+          </motion.div>
         </motion.div>
 
         {/* Action Buttons */}

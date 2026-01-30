@@ -7,7 +7,8 @@ export default function SpeechBubble({
   visible = true, 
   onSpeakStart,
   onSpeakEnd,
-  autoSpeak = true 
+  autoSpeak = true,
+  voiceSettings = { rate: 0.85, pitch: 1.2 }
 }) {
   const [displayedText, setDisplayedText] = useState('');
   const [isSpeaking, setIsSpeaking] = useState(false);
@@ -39,8 +40,8 @@ export default function SpeechBubble({
     window.speechSynthesis.cancel();
     
     const utterance = new SpeechSynthesisUtterance(text);
-    utterance.rate = 0.85;
-    utterance.pitch = 1.2;
+    utterance.rate = voiceSettings.rate;
+    utterance.pitch = voiceSettings.pitch;
     
     // Try to find a friendly voice
     const voices = window.speechSynthesis.getVoices();
