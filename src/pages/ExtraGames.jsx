@@ -2,7 +2,8 @@ import React, { useState } from 'react';
 import { 
   Cpu, MousePointer2, Globe, RefreshCw,
   Trophy, Type, Camera, Sparkles, Zap, BrainCircuit,
-  Palette, Bug, Music, Share2, Filter, Lightbulb, Home, Droplets, ArrowLeft
+  Palette, Bug, Music, Share2, Filter, Lightbulb, Home, Droplets, ArrowLeft,
+  Spade, Plus, Minus, Users, Volume2, Backpack, Trash2
 } from 'lucide-react';
 import { Link } from 'react-router-dom';
 import { createPageUrl } from '@/utils';
@@ -41,6 +42,25 @@ const QWERTY_ROWS = [
   ["Z", "X", "C", "V", "B", "N", "M"]
 ];
 
+const GO_FISH_CARDS = [
+  { id: 1, number: 1, icon: "🐟" },
+  { id: 2, number: 1, icon: "🐟" },
+  { id: 3, number: 2, icon: "🐠" },
+  { id: 4, number: 2, icon: "🐠" },
+  { id: 5, number: 3, icon: "🦈" },
+  { id: 6, number: 3, icon: "🦈" },
+  { id: 7, number: 4, icon: "🐙" },
+  { id: 8, number: 4, icon: "🐙" },
+  { id: 9, number: 5, icon: "🦀" },
+  { id: 10, number: 5, icon: "🦀" }
+];
+
+const ROBBIE_SAYINGS = [
+  { text: "Time to clean up, friends!", icon: <Trash2 /> },
+  { text: "Put this in your backpack!", icon: <Backpack /> },
+  { text: "Put your toys away, please!", icon: <Sparkles /> }
+];
+
 export default function ExtraGames() {
   const [view, setView] = useState('menu'); 
   const [score, setScore] = useState(0);
@@ -58,6 +78,18 @@ export default function ExtraGames() {
   const [sceneImages, setSceneImages] = useState({});
   const [isGenerating, setIsGenerating] = useState(false);
   const [ecoStatus, setEcoStatus] = useState('idle');
+  
+  // New game states
+  const [playerHand, setPlayerHand] = useState([]);
+  const [computerHand, setComputerHand] = useState([]);
+  const [fishDeck, setFishDeck] = useState([]);
+  const [playerMatches, setPlayerMatches] = useState(0);
+  const [computerMatches, setComputerMatches] = useState(0);
+  const [mathProblem, setMathProblem] = useState({ num1: 0, num2: 0, operation: '+', answer: 0 });
+  const [tagRunning, setTagRunning] = useState(false);
+  const [tagScore, setTagScore] = useState(0);
+  const [tagTargets, setTagTargets] = useState([]);
+  const [sayingIndex, setSayingIndex] = useState(0);
 
   // --- AUDIO HELPERS ---
   const speak = (text) => {
@@ -123,6 +155,84 @@ export default function ExtraGames() {
     }
   };
 
+  // --- GO FISH GAME ---
+  const startGoFish = () => {
+    const shuffled = [...GO_FISH_CARDS].sort(() => Math.random() - 0.5);
+    setPlayerHand(shuffled.slice(0, 3));
+    setComputerHand(shuffled.slice(3, 6));
+    setFishDeck(shuffled.slice(6));
+    setPlayerMatches(0);
+    setComputerMatches(0);
+    speak("Let's play Go Fish!");
+  };
+
+  const askForCard = (number) => {
+    const hasCard = computerHand.find(c => c.number === number);
+    if (hasCard) {
+      setPlayerHand([...playerHand, hasCard]);
+      setComputerHand(computerHand.filter(c => c.id !== hasCard.id));
+      speak("I have that card! Here you go!");
+      setScore(s => s + 10);
+    } else {
+      speak("Go fish!");
+      if (fishDeck.length > 0) {
+        setPlayerHand([...playerHand, fishDeck[0]]);
+        setFishDeck(fishDeck.slice(1));
+      }
+    }
+  };
+
+  // --- MATH GAME ---
+  const generateMathProblem = () => {
+    const operations = ['+', '-'];
+    const op = operations[Math.floor(Math.random() * operations.length)];
+    const num1 = Math.floor(Math.random() * 10) + 1;
+    const num2 = op === '-' ? Math.floor(Math.random() * num1) : Math.floor(Math.random() * 10) + 1;
+    const answer = op === '+' ? num1 + num2 : num1 - num2;
+    setMathProblem({ num1, num2, operation: op, answer });
+  };
+
+  const checkMathAnswer = (userAnswer) => {
+    if (userAnswer === mathProblem.answer) {
+      setScore(s => s + 15);
+      speak("Amazing! You're so smart!");
+      generateMathProblem();
+    } else {
+      speak("Not quite! Try again, friend!");
+    }
+  };
+
+  // --- TAG GAME ---
+  const startTagGame = () => {
+    setTagRunning(true);
+    setTagScore(0);
+    const targets = Array(6).fill(0).map((_, i) => ({
+      id: i,
+      x: Math.random() * 80,
+      y: Math.random() * 80,
+      caught: false
+    }));
+    setTagTargets(targets);
+    speak("Let's play tag! Catch all the friends!");
+  };
+
+  const catchTarget = (id) => {
+    setTagTargets(tagTargets.map(t => t.id === id ? { ...t, caught: true } : t));
+    setTagScore(tagScore + 1);
+    setScore(s => s + 10);
+    speak("Tagged!");
+    if (tagScore + 1 === 6) {
+      speak("You caught everyone! Great job!");
+      setTimeout(() => setTagRunning(false), 2000);
+    }
+  };
+
+  // --- BROKEN RECORD ---
+  const playSaying = () => {
+    speak(ROBBIE_SAYINGS[sayingIndex].text);
+    setSayingIndex((sayingIndex + 1) % ROBBIE_SAYINGS.length);
+  };
+
   // --- RENDER MENU ---
   const MenuBtn = ({ icon, label, color, onClick }) => (
     <motion.button 
@@ -170,6 +280,10 @@ export default function ExtraGames() {
               exit={{ opacity: 0, scale: 0.95 }}
               className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4"
             >
+              <MenuBtn icon={<Spade />} label="Go Fish" color="bg-teal-500" onClick={() => { setView('gofish'); startGoFish(); }} />
+              <MenuBtn icon={<Plus />} label="Math Fun" color="bg-rose-500" onClick={() => { setView('math'); generateMathProblem(); }} />
+              <MenuBtn icon={<Users />} label="Tag Game" color="bg-lime-500" onClick={() => setView('tag')} />
+              <MenuBtn icon={<Volume2 />} label="Robbie Says" color="bg-violet-500" onClick={() => setView('sayings')} />
               <MenuBtn icon={<Music />} label="Dance Party" color="bg-pink-500" onClick={() => setView('dance')} />
               <MenuBtn icon={<Palette />} label="Pixel Painter" color="bg-purple-500" onClick={() => setView('painter')} />
               <MenuBtn icon={<Bug />} label="Bug Hunter" color="bg-red-500" onClick={() => setView('bug')} />
@@ -179,6 +293,160 @@ export default function ExtraGames() {
               <MenuBtn icon={<Type />} label="Letter Hunt" color="bg-indigo-500" onClick={() => setView('letters')} />
               <MenuBtn icon={<Droplets />} label="Eco-AI" color="bg-cyan-500" onClick={() => setView('eco')} />
               <MenuBtn icon={<Camera />} label="Stop Motion" color="bg-orange-500" onClick={() => setView('movie')} />
+            </motion.div>
+          )}
+
+          {/* GO FISH */}
+          {view === 'gofish' && (
+            <motion.div
+              key="gofish"
+              initial={{ opacity: 0, y: 20 }}
+              animate={{ opacity: 1, y: 0 }}
+              className="bg-white p-10 rounded-[3rem] shadow-2xl text-center"
+            >
+              <h2 className="text-4xl font-black mb-8 text-teal-600">Go Fish!</h2>
+              <div className="mb-8">
+                <p className="text-gray-600 mb-4">Your Hand:</p>
+                <div className="flex justify-center gap-4 flex-wrap">
+                  {playerHand.map(card => (
+                    <div key={card.id} className="bg-teal-100 p-6 rounded-2xl text-5xl border-4 border-teal-300">
+                      {card.icon}
+                    </div>
+                  ))}
+                </div>
+              </div>
+              <div className="mb-8">
+                <p className="text-gray-600 mb-4">Ask Robbie for:</p>
+                <div className="grid grid-cols-5 gap-3 max-w-md mx-auto">
+                  {[1, 2, 3, 4, 5].map(num => (
+                    <button
+                      key={num}
+                      onClick={() => askForCard(num)}
+                      className="bg-teal-500 text-white p-6 rounded-2xl font-black text-3xl hover:bg-teal-600"
+                    >
+                      {num}
+                    </button>
+                  ))}
+                </div>
+              </div>
+              <div className="flex gap-4 text-xl font-bold mb-6">
+                <div className="flex-1 bg-green-100 p-4 rounded-2xl">
+                  Your Matches: {playerMatches}
+                </div>
+                <div className="flex-1 bg-pink-100 p-4 rounded-2xl">
+                  Robbie: {computerMatches}
+                </div>
+              </div>
+              <div className="flex gap-3">
+                <button onClick={() => setView('menu')} className="bg-gray-100 p-6 rounded-2xl font-bold flex-1">Back</button>
+                <button onClick={startGoFish} className="bg-teal-600 text-white p-6 rounded-2xl font-black flex-1">New Game</button>
+              </div>
+            </motion.div>
+          )}
+
+          {/* MATH FUN */}
+          {view === 'math' && (
+            <motion.div
+              key="math"
+              initial={{ opacity: 0, y: 20 }}
+              animate={{ opacity: 1, y: 0 }}
+              className="bg-white p-10 rounded-[3rem] shadow-2xl text-center"
+            >
+              <h2 className="text-4xl font-black mb-8 text-rose-600">Math Fun!</h2>
+              <div className="bg-rose-50 p-12 rounded-3xl mb-8">
+                <p className="text-7xl font-black text-gray-800 mb-8">
+                  {mathProblem.num1} {mathProblem.operation} {mathProblem.num2} = ?
+                </p>
+                <div className="grid grid-cols-5 gap-3 max-w-md mx-auto">
+                  {[0, 1, 2, 3, 4, 5, 6, 7, 8, 9].map(num => (
+                    <button
+                      key={num}
+                      onClick={() => checkMathAnswer(num)}
+                      className="bg-rose-500 text-white p-6 rounded-2xl font-black text-3xl hover:bg-rose-600 transition-colors"
+                    >
+                      {num}
+                    </button>
+                  ))}
+                </div>
+              </div>
+              <div className="flex gap-3">
+                <button onClick={() => setView('menu')} className="bg-gray-100 p-6 rounded-2xl font-bold flex-1">Back</button>
+                <button onClick={generateMathProblem} className="bg-rose-600 text-white p-6 rounded-2xl font-black flex-1">New Problem</button>
+              </div>
+            </motion.div>
+          )}
+
+          {/* TAG GAME */}
+          {view === 'tag' && (
+            <motion.div
+              key="tag"
+              initial={{ opacity: 0, y: 20 }}
+              animate={{ opacity: 1, y: 0 }}
+              className="bg-white p-10 rounded-[3rem] shadow-2xl"
+            >
+              <h2 className="text-4xl font-black mb-8 text-lime-600 text-center">Tag Game!</h2>
+              {!tagRunning ? (
+                <div className="text-center">
+                  <div className="text-8xl mb-8">🏃</div>
+                  <button onClick={startTagGame} className="bg-lime-600 text-white p-8 rounded-3xl font-black text-2xl mb-6 w-full">
+                    START TAG!
+                  </button>
+                  <button onClick={() => setView('menu')} className="bg-gray-100 p-6 rounded-2xl font-bold w-full">Back</button>
+                </div>
+              ) : (
+                <>
+                  <div className="relative bg-lime-50 rounded-3xl h-96 mb-6 border-4 border-lime-200 overflow-hidden">
+                    {tagTargets.map(target => !target.caught && (
+                      <button
+                        key={target.id}
+                        onClick={() => catchTarget(target.id)}
+                        className="absolute bg-lime-500 text-white p-4 rounded-full text-3xl hover:scale-110 transition-transform animate-bounce"
+                        style={{ left: `${target.x}%`, top: `${target.y}%` }}
+                      >
+                        😊
+                      </button>
+                    ))}
+                  </div>
+                  <div className="text-center mb-6">
+                    <p className="text-3xl font-black text-lime-600">Tagged: {tagScore} / 6</p>
+                  </div>
+                  <button onClick={() => setView('menu')} className="bg-gray-100 p-6 rounded-2xl font-bold w-full">Back to Menu</button>
+                </>
+              )}
+            </motion.div>
+          )}
+
+          {/* ROBBIE SAYS */}
+          {view === 'sayings' && (
+            <motion.div
+              key="sayings"
+              initial={{ opacity: 0, y: 20 }}
+              animate={{ opacity: 1, y: 0 }}
+              className="bg-white p-10 rounded-[3rem] shadow-2xl text-center"
+            >
+              <h2 className="text-4xl font-black mb-8 text-violet-600">Robbie Says...</h2>
+              <div className="bg-violet-50 p-12 rounded-3xl mb-8 min-h-[200px] flex items-center justify-center">
+                <div className="text-3xl font-bold text-gray-700">
+                  {ROBBIE_SAYINGS[sayingIndex].text}
+                </div>
+              </div>
+              <div className="grid grid-cols-3 gap-4 mb-6">
+                {ROBBIE_SAYINGS.map((saying, i) => (
+                  <button
+                    key={i}
+                    onClick={() => { setSayingIndex(i); speak(saying.text); }}
+                    className="bg-violet-500 text-white p-6 rounded-2xl font-bold hover:bg-violet-600 transition-colors"
+                  >
+                    {saying.icon}
+                  </button>
+                ))}
+              </div>
+              <div className="flex gap-3">
+                <button onClick={() => setView('menu')} className="bg-gray-100 p-6 rounded-2xl font-bold flex-1">Back</button>
+                <button onClick={playSaying} className="bg-violet-600 text-white p-8 rounded-3xl font-black text-2xl flex-[2]">
+                  🔊 ROBBIE SPEAK!
+                </button>
+              </div>
             </motion.div>
           )}
 
