@@ -413,14 +413,25 @@ export default function ExtraGames() {
     setScore(s => s + 20);
   };
 
-  const checkWeather = () => {
-    const temps = [60, 65, 70, 75];
-    const conditions = ['sunny', 'cloudy', 'rainy'];
-    setWeatherData({
-      temp: temps[Math.floor(Math.random() * temps.length)],
-      condition: conditions[Math.floor(Math.random() * conditions.length)]
-    });
-    speak(`It's ${weatherData.condition} and ${weatherData.temp} degrees!`);
+  const checkWeather = async () => {
+    speak("Checking Harlem weather with my sensors!");
+    try {
+      const result = await base44.integrations.Core.InvokeLLM({
+        prompt: "What is the current temperature in Harlem, NY and weather condition (sunny, cloudy, or rainy)? Give me just the temperature number and condition.",
+        add_context_from_internet: true,
+        response_json_schema: {
+          type: "object",
+          properties: {
+            temp: { type: "number" },
+            condition: { type: "string" }
+          }
+        }
+      });
+      setWeatherData(result);
+      speak(`It's ${result.condition} and ${result.temp} degrees in Harlem!`);
+    } catch (error) {
+      speak("Having trouble with my weather sensors!");
+    }
   };
 
   const takePhoto = () => {
@@ -819,7 +830,7 @@ export default function ExtraGames() {
               animate={{ opacity: 1, y: 0 }}
               className="bg-white p-10 rounded-[3rem] shadow-2xl text-center"
             >
-              <h2 className="text-4xl font-black mb-8 text-violet-600">Robbie Says...</h2>
+              <h2 className="text-4xl font-black mb-8 text-violet-600">Broken Record!</h2>
               <div className="bg-violet-50 p-12 rounded-3xl mb-8 min-h-[200px] flex items-center justify-center">
                 <div className="text-3xl font-bold text-gray-700">
                   {ROBBIE_SAYINGS[sayingIndex].text}
