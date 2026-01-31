@@ -59,6 +59,11 @@ export default function TeacherDashboard() {
               <ArrowLeft className="w-5 h-5" />
             </Button>
           </Link>
+          <Link to={createPageUrl('TeacherResources')}>
+            <Button variant="outline" className="rounded-full">
+              📚 Resource Center
+            </Button>
+          </Link>
           <h1 className="text-xl font-bold text-gray-800">Teacher Dashboard</h1>
           <div className="w-10" />
         </div>

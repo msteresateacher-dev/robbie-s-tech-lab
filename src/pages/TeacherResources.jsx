@@ -1,0 +1,427 @@
+import React, { useState } from 'react';
+import { Link } from 'react-router-dom';
+import { createPageUrl } from '@/utils';
+import { 
+  ArrowLeft, BookOpen, Lightbulb, Calendar, CheckCircle, 
+  Users, Puzzle, Hand, Book, Scissors, MousePointer2,
+  Keyboard, Monitor, Power, Lock, Heart, Binary, Network,
+  Cable, MapPin, Sparkles, Download
+} from 'lucide-react';
+import { Button } from '@/components/ui/button';
+import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
+import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
+
+const WEEKLY_CURRICULUM = [
+  {
+    week: 1,
+    title: "Introduction to Computers",
+    theme: "What is a Computer?",
+    games: ["Screen World", "Parts Puzzle", "Power On/Off"],
+    lowTech: [
+      "Use cardboard boxes to build a 'pretend computer'",
+      "Create a Robbie puppet for storytelling",
+      "Bring real keyboard, mouse, and monitor to touch",
+      "Read books about computers and robots"
+    ],
+    activities: [
+      "Circle time: Show real computer parts",
+      "Story: 'Robbie Wakes Up' introduction",
+      "Hands-on: Let children touch and explore real keyboard",
+      "Game time: Screen World (15 min max)"
+    ],
+    tips: "Keep sessions short (15-20 min). Focus on vocabulary: computer, screen, keyboard, mouse."
+  },
+  {
+    week: 2,
+    title: "Input & Output Basics",
+    theme: "How We Talk to Computers",
+    games: ["Mouse Skills", "Keyboard Fun", "Touch vs Type"],
+    lowTech: [
+      "Use toy phone to explain 'touch' input",
+      "Create large floor keyboard with tape/paper",
+      "Play 'Simon Says' with keyboard commands",
+      "Make paper mouse that children move around"
+    ],
+    activities: [
+      "Demo: Teacher types and shows output on screen",
+      "Activity: Children press real keyboard keys",
+      "Movement: 'Keyboard Dance' - call out keys, kids jump to them",
+      "Game time: Mouse Skills practice"
+    ],
+    tips: "Celebrate every click and keypress! Build motor skills confidence first."
+  },
+  {
+    week: 3,
+    title: "Staying Safe Online",
+    theme: "Being Kind & Safe",
+    games: ["Password Protector", "Be Kind", "Screen Time Helper"],
+    lowTech: [
+      "Use colored blocks as 'password patterns'",
+      "Create emotion cards for kindness scenarios",
+      "Use sand timer to show screen time breaks",
+      "Role-play with puppets: nice vs not-nice words"
+    ],
+    activities: [
+      "Story: 'Robbie Keeps Secrets Safe'",
+      "Practice: Create patterns with blocks (passwords)",
+      "Discussion: What makes a good friend online?",
+      "Timer activity: Set 5-min timer for play, then break"
+    ],
+    tips: "Use simple language. Connect digital concepts to real-world social skills."
+  },
+  {
+    week: 4,
+    title: "How Computers Think",
+    theme: "Binary, Data & Sorting",
+    games: ["Binary Lights", "Data Detective", "Sorting Hat"],
+    lowTech: [
+      "Use flashlights for ON/OFF (binary)",
+      "Sort real objects by color, size, shape",
+      "Use light switches to demonstrate binary",
+      "Create sorting bins with pictures"
+    ],
+    activities: [
+      "Demo: Lights ON (1) and OFF (0) with flashlights",
+      "Sorting center: Let children sort toys by category",
+      "Pattern making: Create binary patterns with blocks",
+      "Game time: Binary Lights and Data Detective"
+    ],
+    tips: "Don't worry about the word 'binary' - focus on ON/OFF patterns. Make it playful!"
+  },
+  {
+    week: 5,
+    title: "Connections & Communication",
+    theme: "How Computers Connect",
+    games: ["Cables", "Network Navigator", "Signal Share"],
+    lowTech: [
+      "Use yarn/rope to show 'connections' between kids",
+      "Create obstacle course for 'data traveling'",
+      "String phone (cups + string) for messages",
+      "Real cables for children to match and plug in"
+    ],
+    activities: [
+      "Demo: Show real USB cables, charging cables",
+      "Activity: 'Human Network' - pass message person-to-person",
+      "Matching: Let children connect real cables to devices",
+      "Game time: Network and Cables games"
+    ],
+    tips: "Use their experience with phone charging, TV cables. Make it tangible!"
+  },
+  {
+    week: 6,
+    title: "Brooklyn Tech Heroes",
+    theme: "Computers Help Our Community",
+    games: ["Helper Bot", "Weather Reporter", "Photo Memory"],
+    lowTech: [
+      "Take neighborhood walk with pretend cameras",
+      "Create weather chart for classroom",
+      "Make Brooklyn landmark art projects",
+      "Interview community helpers about tech use"
+    ],
+    activities: [
+      "Field trip: Visit school library/office to see computers in use",
+      "Project: Create Brooklyn photo collage",
+      "Weather: Check real Harlem weather together",
+      "Celebration: 'Tech Fair' showing what they learned"
+    ],
+    tips: "End with celebration! Show parents what children learned. Share student progress."
+  }
+];
+
+const LOW_TECH_TOOLS = [
+  { category: "Puppets & Props", items: ["Robbie puppet for storytelling", "Felt board computer parts", "Cardboard box 'computer'", "Stuffed animal 'students'"] },
+  { category: "Manipulatives", items: ["Real keyboard to touch", "Unplugged mouse", "Colored blocks for patterns", "Flashlights for binary"] },
+  { category: "Books & Stories", items: ["Books about computers", "Homemade Robbie stories", "Picture cards of tech", "Social stories about screens"] },
+  { category: "Movement", items: ["Floor keyboard (tape)", "Keyboard dance mat", "Simon Says tech edition", "Human network game"] },
+  { category: "Art & Craft", items: ["Draw computers", "Build robots with boxes", "Create cable matching games", "Brooklyn photo projects"] },
+  { category: "Sensory", items: ["Sand timers for screen time", "Touch real keyboards", "Feel different cables", "Light/dark switches"] }
+];
+
+const TEACHING_STRATEGIES = [
+  { title: "Keep It Short", description: "15-20 min max per session. Preschoolers need movement!", icon: <Calendar /> },
+  { title: "Hands-On First", description: "Let them touch real keyboards, mice before using app", icon: <Hand /> },
+  { title: "Connect to Real Life", description: "Link digital concepts to their daily experiences", icon: <Users /> },
+  { title: "Use Robbie's Voice", description: "Make Robbie a classroom friend, use puppet for teaching", icon: <Sparkles /> },
+  { title: "Celebrate Progress", description: "Track missions completed, praise motor skill development", icon: <CheckCircle /> },
+  { title: "Balance Screen Time", description: "1 digital game = 2 low-tech activities. Always balance!", icon: <Monitor /> }
+];
+
+export default function TeacherResources() {
+  const [selectedWeek, setSelectedWeek] = useState(1);
+
+  return (
+    <div className="min-h-screen bg-gradient-to-b from-purple-50 via-pink-50 to-orange-50 pb-12">
+      {/* Header */}
+      <header className="sticky top-0 z-10 bg-white/90 backdrop-blur-lg border-b border-gray-100 px-4 py-4">
+        <div className="max-w-6xl mx-auto flex items-center justify-between">
+          <Link to={createPageUrl('TeacherDashboard')}>
+            <Button variant="ghost" size="icon" className="rounded-full">
+              <ArrowLeft className="w-5 h-5" />
+            </Button>
+          </Link>
+          <div className="text-center">
+            <h1 className="text-2xl font-bold text-gray-800">Teacher Resource Center</h1>
+            <p className="text-sm text-gray-500">6-Week Computer Course Guide</p>
+          </div>
+          <div className="w-10" />
+        </div>
+      </header>
+
+      <main className="px-4 pt-6 max-w-6xl mx-auto">
+        {/* Introduction Card */}
+        <Card className="mb-8 bg-gradient-to-r from-fuchsia-100 to-pink-100 border-fuchsia-200">
+          <CardHeader>
+            <CardTitle className="flex items-center gap-3 text-2xl">
+              <BookOpen className="w-8 h-8 text-fuchsia-600" />
+              How to Use Robbie's Tech Lab
+            </CardTitle>
+          </CardHeader>
+          <CardContent className="space-y-4">
+            <div className="bg-white/80 p-6 rounded-2xl">
+              <h3 className="font-bold text-lg mb-3 text-gray-800">For Educators:</h3>
+              <ul className="space-y-2 text-gray-700">
+                <li className="flex items-start gap-2">
+                  <CheckCircle className="w-5 h-5 text-green-600 mt-0.5 flex-shrink-0" />
+                  <span><strong>Hybrid Learning:</strong> Combine digital missions with hands-on activities (puppets, real keyboards, movement games)</span>
+                </li>
+                <li className="flex items-start gap-2">
+                  <CheckCircle className="w-5 h-5 text-green-600 mt-0.5 flex-shrink-0" />
+                  <span><strong>Student Portal:</strong> Each child gets their own profile - track their progress, missions completed, and areas of struggle</span>
+                </li>
+                <li className="flex items-start gap-2">
+                  <CheckCircle className="w-5 h-5 text-green-600 mt-0.5 flex-shrink-0" />
+                  <span><strong>Short Sessions:</strong> Keep digital time to 15-20 minutes, surrounded by 30+ minutes of low-tech activities</span>
+                </li>
+                <li className="flex items-start gap-2">
+                  <CheckCircle className="w-5 h-5 text-green-600 mt-0.5 flex-shrink-0" />
+                  <span><strong>Differentiation:</strong> Some students excel with mouse skills, others with concepts - celebrate all growth!</span>
+                </li>
+                <li className="flex items-start gap-2">
+                  <CheckCircle className="w-5 h-5 text-green-600 mt-0.5 flex-shrink-0" />
+                  <span><strong>Parent Communication:</strong> Share progress from Teacher Dashboard, explain what children are learning</span>
+                </li>
+              </ul>
+            </div>
+          </CardContent>
+        </Card>
+
+        {/* Tabs */}
+        <Tabs defaultValue="curriculum" className="mb-8">
+          <TabsList className="grid grid-cols-3 w-full mb-6">
+            <TabsTrigger value="curriculum">6-Week Plan</TabsTrigger>
+            <TabsTrigger value="lowtech">Low-Tech Tools</TabsTrigger>
+            <TabsTrigger value="strategies">Teaching Tips</TabsTrigger>
+          </TabsList>
+
+          {/* Curriculum Tab */}
+          <TabsContent value="curriculum" className="space-y-6">
+            <div className="grid md:grid-cols-6 gap-3 mb-6">
+              {WEEKLY_CURRICULUM.map((week) => (
+                <button
+                  key={week.week}
+                  onClick={() => setSelectedWeek(week.week)}
+                  className={`p-4 rounded-2xl font-bold transition-all ${
+                    selectedWeek === week.week
+                      ? 'bg-fuchsia-500 text-white shadow-lg scale-105'
+                      : 'bg-white text-gray-600 hover:bg-fuchsia-50'
+                  }`}
+                >
+                  Week {week.week}
+                </button>
+              ))}
+            </div>
+
+            {WEEKLY_CURRICULUM.filter(w => w.week === selectedWeek).map((week) => (
+              <Card key={week.week} className="border-fuchsia-200">
+                <CardHeader className="bg-gradient-to-r from-fuchsia-50 to-pink-50">
+                  <div className="flex items-center gap-3 mb-2">
+                    <div className="bg-fuchsia-500 text-white px-4 py-2 rounded-full font-black">
+                      Week {week.week}
+                    </div>
+                    <div>
+                      <CardTitle className="text-2xl">{week.title}</CardTitle>
+                      <p className="text-gray-600 font-semibold mt-1">Theme: {week.theme}</p>
+                    </div>
+                  </div>
+                </CardHeader>
+                <CardContent className="pt-6 space-y-6">
+                  {/* Digital Games */}
+                  <div>
+                    <h4 className="font-bold text-lg mb-3 flex items-center gap-2">
+                      <Monitor className="w-5 h-5 text-fuchsia-600" />
+                      Digital Games This Week:
+                    </h4>
+                    <div className="flex flex-wrap gap-2">
+                      {week.games.map((game, i) => (
+                        <span key={i} className="bg-fuchsia-100 text-fuchsia-700 px-4 py-2 rounded-full font-semibold">
+                          {game}
+                        </span>
+                      ))}
+                    </div>
+                  </div>
+
+                  {/* Low-Tech Activities */}
+                  <div>
+                    <h4 className="font-bold text-lg mb-3 flex items-center gap-2">
+                      <Puzzle className="w-5 h-5 text-orange-600" />
+                      Low-Tech Materials Needed:
+                    </h4>
+                    <ul className="grid md:grid-cols-2 gap-2">
+                      {week.lowTech.map((item, i) => (
+                        <li key={i} className="flex items-start gap-2 bg-orange-50 p-3 rounded-xl">
+                          <Scissors className="w-4 h-4 text-orange-600 mt-1 flex-shrink-0" />
+                          <span className="text-gray-700">{item}</span>
+                        </li>
+                      ))}
+                    </ul>
+                  </div>
+
+                  {/* Daily Activities */}
+                  <div>
+                    <h4 className="font-bold text-lg mb-3 flex items-center gap-2">
+                      <Calendar className="w-5 h-5 text-green-600" />
+                      Sample Daily Activities:
+                    </h4>
+                    <div className="space-y-2">
+                      {week.activities.map((activity, i) => (
+                        <div key={i} className="flex items-start gap-3 bg-green-50 p-4 rounded-xl">
+                          <div className="bg-green-500 text-white w-6 h-6 rounded-full flex items-center justify-center font-bold text-sm flex-shrink-0">
+                            {i + 1}
+                          </div>
+                          <p className="text-gray-700">{activity}</p>
+                        </div>
+                      ))}
+                    </div>
+                  </div>
+
+                  {/* Teaching Tips */}
+                  <div className="bg-yellow-50 border-2 border-yellow-200 p-5 rounded-2xl">
+                    <div className="flex items-start gap-3">
+                      <Lightbulb className="w-6 h-6 text-yellow-600 flex-shrink-0 mt-1" />
+                      <div>
+                        <h4 className="font-bold text-yellow-900 mb-2">Teaching Tips:</h4>
+                        <p className="text-gray-700">{week.tips}</p>
+                      </div>
+                    </div>
+                  </div>
+                </CardContent>
+              </Card>
+            ))}
+          </TabsContent>
+
+          {/* Low-Tech Tools Tab */}
+          <TabsContent value="lowtech">
+            <Card>
+              <CardHeader>
+                <CardTitle className="flex items-center gap-3">
+                  <Puzzle className="w-7 h-7 text-orange-600" />
+                  Low-Tech Tools to Teach High-Tech Concepts
+                </CardTitle>
+                <p className="text-gray-600 mt-2">
+                  Physical materials help preschoolers understand abstract digital concepts. Use these tools before, during, and after digital lessons!
+                </p>
+              </CardHeader>
+              <CardContent>
+                <div className="grid md:grid-cols-2 gap-6">
+                  {LOW_TECH_TOOLS.map((category, i) => (
+                    <div key={i} className="bg-gradient-to-br from-orange-50 to-pink-50 p-6 rounded-2xl border-2 border-orange-200">
+                      <h3 className="font-bold text-xl mb-4 text-orange-900">{category.category}</h3>
+                      <ul className="space-y-2">
+                        {category.items.map((item, j) => (
+                          <li key={j} className="flex items-start gap-2">
+                            <CheckCircle className="w-4 h-4 text-orange-600 mt-1 flex-shrink-0" />
+                            <span className="text-gray-700">{item}</span>
+                          </li>
+                        ))}
+                      </ul>
+                    </div>
+                  ))}
+                </div>
+
+                <div className="mt-8 bg-blue-50 border-2 border-blue-200 p-6 rounded-2xl">
+                  <h3 className="font-bold text-lg mb-3 text-blue-900">Why Low-Tech Matters:</h3>
+                  <p className="text-gray-700 mb-3">
+                    Preschoolers learn best through <strong>hands-on, multi-sensory experiences</strong>. Before they click a digital mouse, let them hold a real one. Before they learn about binary, let them flip light switches. The physical world makes the digital world make sense!
+                  </p>
+                  <p className="text-gray-700 font-semibold">
+                    📌 Rule of Thumb: For every 15 minutes of screen time, plan 30+ minutes of related hands-on activities.
+                  </p>
+                </div>
+              </CardContent>
+            </Card>
+          </TabsContent>
+
+          {/* Teaching Strategies Tab */}
+          <TabsContent value="strategies">
+            <div className="grid md:grid-cols-2 gap-6 mb-8">
+              {TEACHING_STRATEGIES.map((strategy, i) => (
+                <Card key={i} className="border-purple-200">
+                  <CardHeader className="bg-gradient-to-r from-purple-50 to-pink-50">
+                    <CardTitle className="flex items-center gap-3">
+                      {strategy.icon}
+                      {strategy.title}
+                    </CardTitle>
+                  </CardHeader>
+                  <CardContent className="pt-4">
+                    <p className="text-gray-700">{strategy.description}</p>
+                  </CardContent>
+                </Card>
+              ))}
+            </div>
+
+            <Card className="bg-gradient-to-r from-green-50 to-emerald-50 border-green-200">
+              <CardHeader>
+                <CardTitle className="text-2xl">Sample Daily Schedule</CardTitle>
+              </CardHeader>
+              <CardContent>
+                <div className="space-y-3">
+                  <div className="bg-white p-4 rounded-xl border-2 border-green-200">
+                    <strong className="text-green-700">Morning (10:00-10:30) - Tech Time</strong>
+                    <ul className="ml-6 mt-2 space-y-1 text-gray-700">
+                      <li>• Circle: Introduce today's concept with Robbie puppet (5 min)</li>
+                      <li>• Hands-on: Touch real tech materials (5 min)</li>
+                      <li>• Digital: Students rotate through 1-2 missions (15 min)</li>
+                      <li>• Debrief: What did Robbie teach us? (5 min)</li>
+                    </ul>
+                  </div>
+                  <div className="bg-white p-4 rounded-xl border-2 border-blue-200">
+                    <strong className="text-blue-700">Afternoon (2:00-2:30) - Hands-On Extension</strong>
+                    <ul className="ml-6 mt-2 space-y-1 text-gray-700">
+                      <li>• Low-tech activity related to morning lesson</li>
+                      <li>• Art project, movement game, or building challenge</li>
+                      <li>• Small group work with teacher support</li>
+                    </ul>
+                  </div>
+                </div>
+              </CardContent>
+            </Card>
+          </TabsContent>
+        </Tabs>
+
+        {/* Quick Reference Card */}
+        <Card className="bg-gradient-to-r from-fuchsia-500 to-pink-500 text-white">
+          <CardContent className="pt-6">
+            <h3 className="text-2xl font-bold mb-4 flex items-center gap-3">
+              <Sparkles className="w-7 h-7" />
+              Quick Game Progression Guide
+            </h3>
+            <div className="grid md:grid-cols-3 gap-4 text-sm">
+              <div className="bg-white/20 backdrop-blur p-4 rounded-xl">
+                <h4 className="font-bold mb-2">Weeks 1-2: Basics</h4>
+                <p>Screen World → Parts Puzzle → Mouse Skills → Keyboard Fun</p>
+              </div>
+              <div className="bg-white/20 backdrop-blur p-4 rounded-xl">
+                <h4 className="font-bold mb-2">Weeks 3-4: Safety & Logic</h4>
+                <p>Password → Be Kind → Screen Time → Binary → Data Detective</p>
+              </div>
+              <div className="bg-white/20 backdrop-blur p-4 rounded-xl">
+                <h4 className="font-bold mb-2">Weeks 5-6: Connections</h4>
+                <p>Cables → Network → Brooklyn Helper → Weather → Photo Memory</p>
+              </div>
+            </div>
+          </CardContent>
+        </Card>
+      </main>
+    </div>
+  );
+}
