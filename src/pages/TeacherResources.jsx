@@ -17,6 +17,7 @@ const WEEKLY_CURRICULUM = [
     title: "Introduction to Computers",
     theme: "What is a Computer?",
     games: ["Screen World", "Parts Puzzle", "Power On/Off"],
+    nysStandards: ["PreK.IC.1", "PreK.IC.3", "PreK.NSD.2", "PreK.DL.1"],
     lowTech: [
       "Use cardboard boxes to build a 'pretend computer'",
       "Create a Robbie puppet for storytelling",
@@ -36,6 +37,7 @@ const WEEKLY_CURRICULUM = [
     title: "Input & Output Basics",
     theme: "How We Talk to Computers",
     games: ["Mouse Skills", "Keyboard Fun", "Touch vs Type"],
+    nysStandards: ["PreK.NSD.1", "PreK.DL.1", "PreK.CT.5"],
     lowTech: [
       "Use toy phone to explain 'touch' input",
       "Create large floor keyboard with tape/paper",
@@ -55,6 +57,7 @@ const WEEKLY_CURRICULUM = [
     title: "Staying Safe Online",
     theme: "Being Kind & Safe",
     games: ["Password Protector", "Be Kind", "Screen Time Helper"],
+    nysStandards: ["PreK.IC.2", "PreK.IC.4", "PreK.CY.1", "PreK.CY.2", "PreK.DL.5"],
     lowTech: [
       "Use colored blocks as 'password patterns'",
       "Create emotion cards for kindness scenarios",
@@ -74,6 +77,7 @@ const WEEKLY_CURRICULUM = [
     title: "How Computers Think",
     theme: "Binary, Data & Sorting",
     games: ["Binary Lights", "Data Detective", "Sorting Hat"],
+    nysStandards: ["PreK.CT.1", "PreK.CT.2", "PreK.CT.3"],
     lowTech: [
       "Use flashlights for ON/OFF (binary)",
       "Sort real objects by color, size, shape",
@@ -93,6 +97,7 @@ const WEEKLY_CURRICULUM = [
     title: "Connections & Communication",
     theme: "How Computers Connect",
     games: ["Cables", "Network Navigator", "Signal Share"],
+    nysStandards: ["PreK.NSD.4", "PreK.NSD.5", "PreK.DL.2"],
     lowTech: [
       "Use yarn/rope to show 'connections' between kids",
       "Create obstacle course for 'data traveling'",
@@ -112,6 +117,7 @@ const WEEKLY_CURRICULUM = [
     title: "Brooklyn Tech Heroes",
     theme: "Computers Help Our Community",
     games: ["Helper Bot", "Weather Reporter", "Photo Memory"],
+    nysStandards: ["PreK.CT.4", "PreK.DL.3", "PreK.DL.4"],
     lowTech: [
       "Take neighborhood walk with pretend cameras",
       "Create weather chart for classroom",
@@ -146,8 +152,46 @@ const TEACHING_STRATEGIES = [
   { title: "Balance Screen Time", description: "1 digital game = 2 low-tech activities. Always balance!", icon: <Monitor /> }
 ];
 
+const NYS_STANDARDS_PRESCHOOL = {
+  "Impacts of Computing": [
+    { code: "PreK.IC.1", standard: "Notice and identify when technology is being used (toys, tablets, computers)", games: ["Screen World", "Parts Puzzle", "Power On/Off"] },
+    { code: "PreK.IC.2", standard: "Follow simple classroom rules about using devices (taking turns, being gentle)", games: ["Be Kind", "Screen Time Helper"] },
+    { code: "PreK.IC.3", standard: "Point to and name technology in the classroom and home", games: ["Parts Puzzle", "Touch vs Type"] },
+    { code: "PreK.IC.4", standard: "Identify what is okay to share with friends vs keep private", games: ["Password Protector", "Be Kind"] }
+  ],
+  "Computational Thinking": [
+    { code: "PreK.CT.1", standard: "Notice simple patterns (colors, sounds, shapes) and predict what comes next", games: ["Binary Lights", "Data Detective", "Password Protector"] },
+    { code: "PreK.CT.2", standard: "Identify things we can count and sort (toys, colors, sizes)", games: ["Data Detective", "Sorting Hat"] },
+    { code: "PreK.CT.3", standard: "Put information into groups and show it (blocks, pictures)", games: ["Sorting Hat", "Photo Memory"] },
+    { code: "PreK.CT.4", standard: "Break a big job into little steps (getting dressed, cleaning up)", games: ["Wake Up Robbie", "Helper Bot"] },
+    { code: "PreK.CT.5", standard: "Follow simple directions with 2-3 steps", games: ["Wake Up Robbie", "Robbie's Race"] },
+    { code: "PreK.CT.6", standard: "Do tasks in order (first, next, last)", games: ["Wake Up Robbie", "Music Code"] },
+    { code: "PreK.CT.7", standard: "Notice when we do the same thing over and over", games: ["Broken Record", "Dance Party"] }
+  ],
+  "Networks & System Design": [
+    { code: "PreK.NSD.1", standard: "Touch, click, or press to make computers do things", games: ["Mouse Skills", "Keyboard Fun", "Input & Output"] },
+    { code: "PreK.NSD.2", standard: "Point to parts of a computer (screen, keyboard, mouse)", games: ["Hardware Anatomy", "Parts Puzzle"] },
+    { code: "PreK.NSD.3", standard: "Ask for help when technology isn't working", games: ["Bug Hunter", "Power On/Off"] },
+    { code: "PreK.NSD.4", standard: "Understand that messages travel from one place to another", games: ["Network Navigator", "Signal Share"] },
+    { code: "PreK.NSD.5", standard: "Know that computers and tablets can save pictures and information", games: ["Photo Memory"] }
+  ],
+  "Cybersecurity": [
+    { code: "PreK.CY.1", standard: "Know that some things are private (passwords, addresses)", games: ["Password Protector"] },
+    { code: "PreK.CY.2", standard: "Understand that passwords keep things safe", games: ["Password Protector"] },
+    { code: "PreK.CY.3", standard: "Ask a grown-up before clicking on new things", games: ["Be Kind"] }
+  ],
+  "Digital Literacy": [
+    { code: "PreK.DL.1", standard: "Explore and press keys on a keyboard (space, enter, delete)", games: ["Keyboard Fun", "Letter Hunt"] },
+    { code: "PreK.DL.2", standard: "Share ideas using technology with teacher help", games: ["Photo Memory", "Music Code"] },
+    { code: "PreK.DL.3", standard: "Understand that computers can help us find information", games: ["Weather Reporter"] },
+    { code: "PreK.DL.4", standard: "Make something using a computer or tablet", games: ["Pixel Painter", "Photo Memory"] },
+    { code: "PreK.DL.5", standard: "Be kind and helpful when using technology", games: ["Be Kind", "Helper Bot"] }
+  ]
+};
+
 export default function TeacherResources() {
   const [selectedWeek, setSelectedWeek] = useState(1);
+  const [selectedStandard, setSelectedStandard] = useState(null);
 
   return (
     <div className="min-h-screen bg-gradient-to-b from-purple-50 via-pink-50 to-orange-50 pb-12">
@@ -205,13 +249,157 @@ export default function TeacherResources() {
           </CardContent>
         </Card>
 
+        {/* NYS Standards Overview */}
+        <Card className="mb-8 bg-gradient-to-r from-blue-100 to-indigo-100 border-blue-200">
+          <CardHeader>
+            <CardTitle className="flex items-center gap-3 text-2xl">
+              <BookOpen className="w-8 h-8 text-blue-600" />
+              NYS Computer Science & Digital Fluency Standards (PreK Adapted)
+            </CardTitle>
+            <p className="text-gray-700 mt-2">
+              Aligned with New York State Education Department K-12 Computer Science Standards, developmentally adapted for ages 3-5
+            </p>
+          </CardHeader>
+          <CardContent>
+            <div className="grid md:grid-cols-2 gap-4">
+              {Object.entries(NYS_STANDARDS_PRESCHOOL).map(([area, standards]) => (
+                <div key={area} className="bg-white p-5 rounded-2xl shadow-sm">
+                  <h4 className="font-bold text-lg mb-3 text-blue-900">{area}</h4>
+                  <p className="text-sm text-gray-600 mb-2">{standards.length} PreK Standards</p>
+                  <button 
+                    onClick={() => setSelectedStandard(area)}
+                    className="text-blue-600 text-sm font-semibold hover:underline"
+                  >
+                    View Details →
+                  </button>
+                </div>
+              ))}
+            </div>
+          </CardContent>
+        </Card>
+
+        {/* Standards Detail Modal */}
+        {selectedStandard && (
+          <Card className="mb-8 border-4 border-blue-400">
+            <CardHeader className="bg-blue-50">
+              <div className="flex items-center justify-between">
+                <CardTitle className="text-2xl text-blue-900">{selectedStandard}</CardTitle>
+                <button 
+                  onClick={() => setSelectedStandard(null)}
+                  className="text-gray-500 hover:text-gray-700 text-2xl"
+                >
+                  ✕
+                </button>
+              </div>
+            </CardHeader>
+            <CardContent className="pt-6">
+              <div className="space-y-4">
+                {NYS_STANDARDS_PRESCHOOL[selectedStandard].map((std) => (
+                  <div key={std.code} className="bg-blue-50 p-5 rounded-xl border-2 border-blue-200">
+                    <div className="flex items-start gap-4">
+                      <div className="bg-blue-600 text-white px-3 py-1 rounded-lg text-sm font-bold flex-shrink-0">
+                        {std.code}
+                      </div>
+                      <div className="flex-1">
+                        <p className="text-gray-800 font-semibold mb-3">{std.standard}</p>
+                        <div className="flex flex-wrap gap-2">
+                          <span className="text-xs text-gray-600 font-semibold">Related Games:</span>
+                          {std.games.map((game, i) => (
+                            <span key={i} className="bg-white px-3 py-1 rounded-full text-sm text-blue-700 font-medium border border-blue-200">
+                              {game}
+                            </span>
+                          ))}
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                ))}
+              </div>
+            </CardContent>
+          </Card>
+        )}
+
         {/* Tabs */}
         <Tabs defaultValue="curriculum" className="mb-8">
-          <TabsList className="grid grid-cols-3 w-full mb-6">
+          <TabsList className="grid grid-cols-4 w-full mb-6">
+            <TabsTrigger value="standards">NYS Standards</TabsTrigger>
             <TabsTrigger value="curriculum">6-Week Plan</TabsTrigger>
             <TabsTrigger value="lowtech">Low-Tech Tools</TabsTrigger>
             <TabsTrigger value="strategies">Teaching Tips</TabsTrigger>
           </TabsList>
+
+          {/* NYS Standards Tab */}
+          <TabsContent value="standards">
+            <Card>
+              <CardHeader>
+                <CardTitle className="flex items-center gap-3">
+                  <CheckCircle className="w-7 h-7 text-green-600" />
+                  How Robbie's Lab Meets NYS Standards
+                </CardTitle>
+                <p className="text-gray-600 mt-2">
+                  Every game and mission is designed to meet specific PreK-adapted NYS Computer Science & Digital Fluency Standards
+                </p>
+              </CardHeader>
+              <CardContent className="space-y-6">
+                {Object.entries(NYS_STANDARDS_PRESCHOOL).map(([area, standards]) => (
+                  <div key={area}>
+                    <h3 className="text-xl font-bold text-gray-800 mb-4 pb-2 border-b-2 border-gray-200">
+                      {area}
+                    </h3>
+                    <div className="grid gap-3">
+                      {standards.map((std) => (
+                        <div key={std.code} className="bg-gradient-to-r from-blue-50 to-indigo-50 p-4 rounded-xl border border-blue-200">
+                          <div className="flex items-start gap-3">
+                            <span className="bg-blue-600 text-white px-2 py-1 rounded text-xs font-bold flex-shrink-0 mt-1">
+                              {std.code}
+                            </span>
+                            <div className="flex-1">
+                              <p className="text-gray-800 mb-2 font-medium">{std.standard}</p>
+                              <div className="flex flex-wrap gap-1.5">
+                                {std.games.map((game, i) => (
+                                  <span key={i} className="bg-white px-2 py-0.5 rounded-full text-xs text-blue-700 font-semibold border border-blue-300">
+                                    {game}
+                                  </span>
+                                ))}
+                              </div>
+                            </div>
+                          </div>
+                        </div>
+                      ))}
+                    </div>
+                  </div>
+                ))}
+
+                <div className="bg-green-50 border-2 border-green-300 p-6 rounded-2xl mt-8">
+                  <h3 className="font-bold text-xl text-green-900 mb-3 flex items-center gap-2">
+                    <Sparkles className="w-6 h-6" />
+                    Developmentally Appropriate for Ages 3-5
+                  </h3>
+                  <p className="text-gray-700 mb-3">
+                    These PreK standards are adapted from NYS K-1 standards to be appropriate for preschoolers:
+                  </p>
+                  <ul className="space-y-2 text-gray-700">
+                    <li className="flex items-start gap-2">
+                      <CheckCircle className="w-5 h-5 text-green-600 mt-0.5 flex-shrink-0" />
+                      <span><strong>Concrete over Abstract:</strong> Focus on touching, seeing, and doing rather than theoretical concepts</span>
+                    </li>
+                    <li className="flex items-start gap-2">
+                      <CheckCircle className="w-5 h-5 text-green-600 mt-0.5 flex-shrink-0" />
+                      <span><strong>Simplified Language:</strong> "Put things in groups" instead of "data organization and visualization"</span>
+                    </li>
+                    <li className="flex items-start gap-2">
+                      <CheckCircle className="w-5 h-5 text-green-600 mt-0.5 flex-shrink-0" />
+                      <span><strong>Teacher Guided:</strong> All activities assume adult support and scaffolding</span>
+                    </li>
+                    <li className="flex items-start gap-2">
+                      <CheckCircle className="w-5 h-5 text-green-600 mt-0.5 flex-shrink-0" />
+                      <span><strong>Play-Based:</strong> Learning through games, songs, movement, and hands-on exploration</span>
+                    </li>
+                  </ul>
+                </div>
+              </CardContent>
+            </Card>
+          </TabsContent>
 
           {/* Curriculum Tab */}
           <TabsContent value="curriculum" className="space-y-6">
@@ -245,6 +433,21 @@ export default function TeacherResources() {
                   </div>
                 </CardHeader>
                 <CardContent className="pt-6 space-y-6">
+                  {/* NYS Standards */}
+                  <div className="bg-blue-50 p-5 rounded-2xl border-2 border-blue-200">
+                    <h4 className="font-bold text-lg mb-3 flex items-center gap-2 text-blue-900">
+                      <CheckCircle className="w-5 h-5 text-blue-600" />
+                      NYS Standards Addressed:
+                    </h4>
+                    <div className="flex flex-wrap gap-2">
+                      {week.nysStandards.map((code, i) => (
+                        <span key={i} className="bg-blue-600 text-white px-3 py-1 rounded-lg font-bold text-sm">
+                          {code}
+                        </span>
+                      ))}
+                    </div>
+                  </div>
+
                   {/* Digital Games */}
                   <div>
                     <h4 className="font-bold text-lg mb-3 flex items-center gap-2">
