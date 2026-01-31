@@ -10,6 +10,7 @@ import {
 import { Button } from '@/components/ui/button';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
+import StandardsPDFGenerator from '@/components/StandardsPDFGenerator';
 
 const WEEKLY_CURRICULUM = [
   {
@@ -252,13 +253,18 @@ export default function TeacherResources() {
         {/* NYS Standards Overview */}
         <Card className="mb-8 bg-gradient-to-r from-blue-100 to-indigo-100 border-blue-200">
           <CardHeader>
-            <CardTitle className="flex items-center gap-3 text-2xl">
-              <BookOpen className="w-8 h-8 text-blue-600" />
-              NYS Computer Science & Digital Fluency Standards (PreK Adapted)
-            </CardTitle>
-            <p className="text-gray-700 mt-2">
-              Aligned with New York State Education Department K-12 Computer Science Standards, developmentally adapted for ages 3-5
-            </p>
+            <div className="flex items-start justify-between">
+              <div>
+                <CardTitle className="flex items-center gap-3 text-2xl">
+                  <BookOpen className="w-8 h-8 text-blue-600" />
+                  NYS Computer Science & Digital Fluency Standards (PreK Adapted)
+                </CardTitle>
+                <p className="text-gray-700 mt-2">
+                  Aligned with New York State Education Department K-12 Computer Science Standards, developmentally adapted for ages 3-5
+                </p>
+              </div>
+              <StandardsPDFGenerator />
+            </div>
           </CardHeader>
           <CardContent>
             <div className="grid md:grid-cols-2 gap-4">
