@@ -519,6 +519,7 @@ export default function ExtraGames() {
               <MenuBtn icon={<Spade />} label="Go Fish" color="bg-teal-600" onClick={() => { setView('gofish'); startGoFish(); }} />
               <MenuBtn icon={<Plus />} label="Math Fun" color="bg-rose-600" onClick={() => { setView('math'); generateMathProblem(); }} />
               <MenuBtn icon={<Users />} label="Tag Game" color="bg-lime-600" onClick={() => setView('tag')} />
+              <MenuBtn icon={<Volume2 />} label="Broken Record" color="bg-violet-600" onClick={() => setView('sayings')} />
             </motion.div>
           )}
 
