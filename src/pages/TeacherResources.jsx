@@ -5,7 +5,8 @@ import {
   ArrowLeft, BookOpen, Lightbulb, Calendar, CheckCircle, 
   Users, Puzzle, Hand, Book, Scissors, MousePointer2,
   Keyboard, Monitor, Power, Lock, Heart, Binary, Network,
-  Cable, MapPin, Sparkles, Download
+  Cable, MapPin, Sparkles, Download, Video, Mic, MicOff,
+  Clock, Shield
 } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
@@ -562,6 +563,286 @@ export default function TeacherResources() {
 
           {/* Teaching Strategies Tab */}
           <TabsContent value="strategies">
+            {/* Zoom & Video Call Guidance */}
+            <Card className="mb-8 bg-gradient-to-r from-indigo-100 to-blue-100 border-indigo-300">
+              <CardHeader>
+                <CardTitle className="flex items-center gap-3 text-2xl">
+                  <Video className="w-8 h-8 text-indigo-600" />
+                  Zoom & Video Call Guidance for Preschoolers
+                </CardTitle>
+                <p className="text-gray-700 mt-2">
+                  Essential digital safety and skills for virtual learning
+                </p>
+              </CardHeader>
+              <CardContent className="space-y-6">
+                {/* Screen Time Guidelines */}
+                <div className="bg-white p-6 rounded-2xl border-2 border-indigo-200">
+                  <h3 className="font-bold text-xl mb-4 flex items-center gap-3 text-indigo-900">
+                    <Clock className="w-6 h-6 text-indigo-600" />
+                    Recommended Screen Time for Ages 3-5
+                  </h3>
+                  <div className="space-y-3">
+                    <div className="flex items-start gap-3">
+                      <CheckCircle className="w-5 h-5 text-green-600 mt-1 flex-shrink-0" />
+                      <div>
+                        <strong className="text-gray-800">Total Daily Maximum: 60-90 minutes</strong>
+                        <p className="text-gray-600 text-sm mt-1">Include all screens: educational apps, TV, video calls</p>
+                      </div>
+                    </div>
+                    <div className="flex items-start gap-3">
+                      <CheckCircle className="w-5 h-5 text-green-600 mt-1 flex-shrink-0" />
+                      <div>
+                        <strong className="text-gray-800">Zoom Sessions: 15-20 minutes maximum</strong>
+                        <p className="text-gray-600 text-sm mt-1">Take a 5-minute movement break every 15 minutes</p>
+                      </div>
+                    </div>
+                    <div className="flex items-start gap-3">
+                      <CheckCircle className="w-5 h-5 text-green-600 mt-1 flex-shrink-0" />
+                      <div>
+                        <strong className="text-gray-800">Robbie's Lab: 15-20 minutes per session</strong>
+                        <p className="text-gray-600 text-sm mt-1">1-2 missions per day, balanced with 30+ minutes of hands-on activities</p>
+                      </div>
+                    </div>
+                    <div className="flex items-start gap-3">
+                      <CheckCircle className="w-5 h-5 text-green-600 mt-1 flex-shrink-0" />
+                      <div>
+                        <strong className="text-gray-800">Break Schedule: Every 15-20 minutes</strong>
+                        <p className="text-gray-600 text-sm mt-1">Stand up, stretch, jump, dance - get their bodies moving!</p>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+
+                {/* Zoom Skills to Teach */}
+                <div className="bg-white p-6 rounded-2xl border-2 border-blue-200">
+                  <h3 className="font-bold text-xl mb-4 flex items-center gap-3 text-blue-900">
+                    <Mic className="w-6 h-6 text-blue-600" />
+                    Essential Zoom Skills for Preschoolers
+                  </h3>
+                  <div className="grid md:grid-cols-2 gap-4">
+                    <div className="bg-blue-50 p-4 rounded-xl">
+                      <div className="flex items-center gap-2 mb-3">
+                        <div className="bg-blue-600 text-white p-2 rounded-lg">
+                          <Mic className="w-5 h-5" />
+                        </div>
+                        <h4 className="font-bold text-gray-800">Mute/Unmute</h4>
+                      </div>
+                      <ul className="space-y-2 text-sm text-gray-700">
+                        <li className="flex items-start gap-2">
+                          <span className="text-blue-600 font-bold">•</span>
+                          <span>Practice: "Red button = quiet, Green button = talk"</span>
+                        </li>
+                        <li className="flex items-start gap-2">
+                          <span className="text-blue-600 font-bold">•</span>
+                          <span>Use visual cues: hand signals for mute/unmute</span>
+                        </li>
+                        <li className="flex items-start gap-2">
+                          <span className="text-blue-600 font-bold">•</span>
+                          <span>Reminder: "Check your button before you talk!"</span>
+                        </li>
+                      </ul>
+                    </div>
+
+                    <div className="bg-green-50 p-4 rounded-xl">
+                      <div className="flex items-center gap-2 mb-3">
+                        <div className="bg-green-600 text-white p-2 rounded-lg">
+                          <Hand className="w-5 h-5" />
+                        </div>
+                        <h4 className="font-bold text-gray-800">Raise Hand/Reactions</h4>
+                      </div>
+                      <ul className="space-y-2 text-sm text-gray-700">
+                        <li className="flex items-start gap-2">
+                          <span className="text-green-600 font-bold">•</span>
+                          <span>Show them the "Raise Hand" button for questions</span>
+                        </li>
+                        <li className="flex items-start gap-2">
+                          <span className="text-green-600 font-bold">•</span>
+                          <span>Teach 👍 and ❤️ reactions for positive feedback</span>
+                        </li>
+                        <li className="flex items-start gap-2">
+                          <span className="text-green-600 font-bold">•</span>
+                          <span>Practice: "Show me a thumbs up if you can see Robbie!"</span>
+                        </li>
+                      </ul>
+                    </div>
+
+                    <div className="bg-purple-50 p-4 rounded-xl">
+                      <div className="flex items-center gap-2 mb-3">
+                        <div className="bg-purple-600 text-white p-2 rounded-lg">
+                          <Video className="w-5 h-5" />
+                        </div>
+                        <h4 className="font-bold text-gray-800">Camera On/Off</h4>
+                      </div>
+                      <ul className="space-y-2 text-sm text-gray-700">
+                        <li className="flex items-start gap-2">
+                          <span className="text-purple-600 font-bold">•</span>
+                          <span>Teacher decides when camera should be on/off</span>
+                        </li>
+                        <li className="flex items-start gap-2">
+                          <span className="text-purple-600 font-bold">•</span>
+                          <span>Teach: "Camera shows your face to friends"</span>
+                        </li>
+                        <li className="flex items-start gap-2">
+                          <span className="text-purple-600 font-bold">•</span>
+                          <span>Privacy tip: Blur background or virtual background</span>
+                        </li>
+                      </ul>
+                    </div>
+
+                    <div className="bg-orange-50 p-4 rounded-xl">
+                      <div className="flex items-center gap-2 mb-3">
+                        <div className="bg-orange-600 text-white p-2 rounded-lg">
+                          <Users className="w-5 h-5" />
+                        </div>
+                        <h4 className="font-bold text-gray-800">Breakout Rooms</h4>
+                      </div>
+                      <ul className="space-y-2 text-sm text-gray-700">
+                        <li className="flex items-start gap-2">
+                          <span className="text-orange-600 font-bold">•</span>
+                          <span>Explain: "Like moving to a small group table"</span>
+                        </li>
+                        <li className="flex items-start gap-2">
+                          <span className="text-orange-600 font-bold">•</span>
+                          <span>Show "Join" button - click when you see it</span>
+                        </li>
+                        <li className="flex items-start gap-2">
+                          <span className="text-orange-600 font-bold">•</span>
+                          <span>Teach: "Ask for Help" button if confused</span>
+                        </li>
+                      </ul>
+                    </div>
+                  </div>
+                </div>
+
+                {/* Digital Safety Practices */}
+                <div className="bg-white p-6 rounded-2xl border-2 border-red-200">
+                  <h3 className="font-bold text-xl mb-4 flex items-center gap-3 text-red-900">
+                    <Shield className="w-6 h-6 text-red-600" />
+                    Digital Safety Best Practices
+                  </h3>
+                  <div className="space-y-4">
+                    <div className="bg-red-50 p-4 rounded-xl">
+                      <h4 className="font-bold text-gray-800 mb-2 flex items-center gap-2">
+                        <Lock className="w-5 h-5 text-red-600" />
+                        Password & Login Safety
+                      </h4>
+                      <ul className="space-y-2 text-gray-700">
+                        <li className="flex items-start gap-2">
+                          <CheckCircle className="w-4 h-4 text-red-600 mt-1 flex-shrink-0" />
+                          <span><strong>Never share passwords</strong> - even with friends. Passwords are like secrets we keep safe.</span>
+                        </li>
+                        <li className="flex items-start gap-2">
+                          <CheckCircle className="w-4 h-4 text-red-600 mt-1 flex-shrink-0" />
+                          <span><strong>Adult helps with login</strong> - Teacher or parent enters Zoom passwords, not students.</span>
+                        </li>
+                        <li className="flex items-start gap-2">
+                          <CheckCircle className="w-4 h-4 text-red-600 mt-1 flex-shrink-0" />
+                          <span><strong>Don't write passwords down</strong> where others can see them.</span>
+                        </li>
+                        <li className="flex items-start gap-2">
+                          <CheckCircle className="w-4 h-4 text-red-600 mt-1 flex-shrink-0" />
+                          <span><strong>Use the Password Protector game</strong> to practice pattern-based "passwords" safely.</span>
+                        </li>
+                      </ul>
+                    </div>
+
+                    <div className="bg-yellow-50 p-4 rounded-xl">
+                      <h4 className="font-bold text-gray-800 mb-2">What's Private? What's Okay to Share?</h4>
+                      <div className="grid md:grid-cols-2 gap-4 mt-3">
+                        <div>
+                          <p className="font-bold text-red-700 mb-2">❌ Keep Private (Don't Share on Zoom):</p>
+                          <ul className="text-sm text-gray-700 space-y-1">
+                            <li>• Home address or apartment number</li>
+                            <li>• Phone number</li>
+                            <li>• Where you are right now</li>
+                            <li>• Parents' work information</li>
+                            <li>• Passwords or login information</li>
+                          </ul>
+                        </div>
+                        <div>
+                          <p className="font-bold text-green-700 mb-2">✅ Okay to Share:</p>
+                          <ul className="text-sm text-gray-700 space-y-1">
+                            <li>• Your first name</li>
+                            <li>• What you're learning in school</li>
+                            <li>• Your favorite color or toy</li>
+                            <li>• How you're feeling (happy, sad)</li>
+                            <li>• Things you made or drew</li>
+                          </ul>
+                        </div>
+                      </div>
+                    </div>
+
+                    <div className="bg-blue-50 p-4 rounded-xl">
+                      <h4 className="font-bold text-gray-800 mb-2">Before Clicking Anything:</h4>
+                      <ul className="space-y-2 text-gray-700">
+                        <li className="flex items-start gap-2">
+                          <CheckCircle className="w-4 h-4 text-blue-600 mt-1 flex-shrink-0" />
+                          <span><strong>Ask a grown-up first!</strong> Never click links sent in Zoom chat without teacher permission.</span>
+                        </li>
+                        <li className="flex items-start gap-2">
+                          <CheckCircle className="w-4 h-4 text-blue-600 mt-1 flex-shrink-0" />
+                          <span><strong>Stay in the Zoom meeting</strong> - Don't leave unless teacher says it's okay.</span>
+                        </li>
+                        <li className="flex items-start gap-2">
+                          <CheckCircle className="w-4 h-4 text-blue-600 mt-1 flex-shrink-0" />
+                          <span><strong>If something feels wrong</strong> - Tell a grown-up immediately. It's always okay to ask for help!</span>
+                        </li>
+                      </ul>
+                    </div>
+
+                    <div className="bg-green-50 p-4 rounded-xl">
+                      <h4 className="font-bold text-gray-800 mb-2">Good Digital Citizenship:</h4>
+                      <ul className="space-y-2 text-gray-700">
+                        <li className="flex items-start gap-2">
+                          <Heart className="w-4 h-4 text-green-600 mt-1 flex-shrink-0" />
+                          <span><strong>Be kind online</strong> - Same rules as in-person: use nice words, take turns talking.</span>
+                        </li>
+                        <li className="flex items-start gap-2">
+                          <Heart className="w-4 h-4 text-green-600 mt-1 flex-shrink-0" />
+                          <span><strong>Listen when others talk</strong> - Mute yourself and pay attention.</span>
+                        </li>
+                        <li className="flex items-start gap-2">
+                          <Heart className="w-4 h-4 text-green-600 mt-1 flex-shrink-0" />
+                          <span><strong>Share the screen time</strong> - Everyone gets a turn to participate.</span>
+                        </li>
+                        <li className="flex items-start gap-2">
+                          <Heart className="w-4 h-4 text-green-600 mt-1 flex-shrink-0" />
+                          <span><strong>Respect others' homes</strong> - Don't make comments about what you see in backgrounds.</span>
+                        </li>
+                      </ul>
+                    </div>
+                  </div>
+                </div>
+
+                {/* Teacher Tips for Virtual Learning */}
+                <div className="bg-indigo-50 p-6 rounded-2xl border-2 border-indigo-300">
+                  <h3 className="font-bold text-lg mb-3 text-indigo-900">Teacher Tips for Virtual Learning Success:</h3>
+                  <ul className="space-y-2 text-gray-700">
+                    <li className="flex items-start gap-2">
+                      <Lightbulb className="w-5 h-5 text-indigo-600 mt-0.5 flex-shrink-0" />
+                      <span><strong>Practice sessions:</strong> Do a "Zoom practice" week before starting curriculum - learn buttons in a playful way.</span>
+                    </li>
+                    <li className="flex items-start gap-2">
+                      <Lightbulb className="w-5 h-5 text-indigo-600 mt-0.5 flex-shrink-0" />
+                      <span><strong>Visual reminders:</strong> Create picture cards showing Zoom buttons and their meanings - display during calls.</span>
+                    </li>
+                    <li className="flex items-start gap-2">
+                      <Lightbulb className="w-5 h-5 text-indigo-600 mt-0.5 flex-shrink-0" />
+                      <span><strong>Co-viewing recommended:</strong> Have parents/caregivers nearby during Zoom sessions for preschoolers.</span>
+                    </li>
+                    <li className="flex items-start gap-2">
+                      <Lightbulb className="w-5 h-5 text-indigo-600 mt-0.5 flex-shrink-0" />
+                      <span><strong>Use waiting room feature:</strong> Admit students one at a time, greet them personally, check their setup.</span>
+                    </li>
+                    <li className="flex items-start gap-2">
+                      <Lightbulb className="w-5 h-5 text-indigo-600 mt-0.5 flex-shrink-0" />
+                      <span><strong>Movement breaks are essential:</strong> Every 10-15 minutes, do a stretch, dance, or "find something blue in your room!"</span>
+                    </li>
+                  </ul>
+                </div>
+              </CardContent>
+            </Card>
+
             <div className="grid md:grid-cols-2 gap-6 mb-8">
               {TEACHING_STRATEGIES.map((strategy, i) => (
                 <Card key={i} className="border-purple-200">
