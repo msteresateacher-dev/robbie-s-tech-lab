@@ -108,6 +108,73 @@ export default function ExtraGames() {
   const [view, setView] = useState('menu'); 
   const [score, setScore] = useState(0);
   const [isSpeaking, setIsSpeaking] = useState(false);
+
+  // Keyboard input handling
+  React.useEffect(() => {
+    const handleKeyDown = (e) => {
+      // Only respond to keyboard when not in menu
+      if (view === 'menu') return;
+
+      // Prevent default browser behaviors for game keys
+      if (['Space', 'Enter', 'ArrowUp', 'ArrowDown', 'ArrowLeft', 'ArrowRight'].includes(e.code)) {
+        e.preventDefault();
+      }
+
+      // Keyboard game - any letter/number key
+      if (view === 'keyboard' && e.key.length === 1) {
+        handleKeyPress(e.key.toUpperCase());
+      }
+
+      // Space, Enter, Delete for keyboard game
+      if (view === 'keyboard') {
+        if (e.code === 'Space') handleKeyPress('SPACE');
+        if (e.code === 'Enter') handleKeyPress('ENTER');
+        if (e.code === 'Delete' || e.code === 'Backspace') handleKeyPress('DELETE');
+      }
+
+      // Letter hunt - any letter key
+      if (view === 'letters' && /^[A-Z]$/i.test(e.key)) {
+        checkLetter(e.key.toUpperCase());
+      }
+
+      // Binary lights - number keys 1-4
+      if (view === 'binary' && /^[1-4]$/.test(e.key)) {
+        toggleBinary(parseInt(e.key) - 1);
+      }
+
+      // Math game - number keys 0-9
+      if (view === 'math' && /^[0-9]$/.test(e.key)) {
+        checkMathAnswer(parseInt(e.key));
+      }
+
+      // Arrow keys for bug hunter
+      if (view === 'bug') {
+        if (e.code === 'ArrowUp' || e.code === 'ArrowDown' || e.code === 'ArrowLeft' || e.code === 'ArrowRight') {
+          const directions = { ArrowUp: 'up', ArrowDown: 'down', ArrowLeft: 'left', ArrowRight: 'right' };
+          // Trigger bug finding on arrow press
+          setScore(s => s + 5);
+          speak(`You pressed ${directions[e.code]}!`);
+        }
+      }
+
+      // Escape key - return to menu from any game
+      if (e.code === 'Escape' && view !== 'menu') {
+        setView('menu');
+      }
+
+      // Spacebar interactions for various games
+      if (e.code === 'Space') {
+        if (view === 'mouse') hitTarget();
+        if (view === 'power') togglePower();
+        if (view === 'sayings') playSaying();
+        if (view === 'network') sendNetworkMessage();
+        if (view === 'brooklyn') helpBrooklyn();
+      }
+    };
+
+    window.addEventListener('keydown', handleKeyDown);
+    return () => window.removeEventListener('keydown', handleKeyDown);
+  }, [view, targetLetter, binaryLights, mathProblem, mouseTargets]);
   
   // Game States
   const [danceSequence, setDanceSequence] = useState([]);
@@ -541,11 +608,14 @@ export default function ExtraGames() {
           {view === 'keyboard' && (
             <motion.div key="keyboard" initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} className="bg-white p-10 rounded-[3rem] shadow-2xl">
               <h2 className="text-4xl font-black mb-8 text-slate-600 text-center">Keyboard Discovery!</h2>
-              <div className="bg-slate-50 p-8 rounded-3xl mb-6 min-h-[150px] flex items-center justify-center"><div className="text-6xl font-black">{keyPressed || '❓'}</div></div>
+              <div className="bg-gradient-to-br from-slate-50 to-blue-50 p-8 rounded-3xl mb-6 min-h-[150px] flex flex-col items-center justify-center border-4 border-slate-200">
+                <div className="text-6xl font-black mb-2">{keyPressed || '❓'}</div>
+                <p className="text-sm text-slate-500 font-semibold">⌨️ Try pressing any key on your keyboard!</p>
+              </div>
               <div className="grid grid-cols-3 gap-4 mb-6">
-                <button onClick={() => handleKeyPress('SPACE')} className="bg-slate-600 text-white p-8 rounded-2xl font-black">SPACE</button>
-                <button onClick={() => handleKeyPress('ENTER')} className="bg-slate-600 text-white p-8 rounded-2xl font-black">ENTER</button>
-                <button onClick={() => handleKeyPress('DELETE')} className="bg-red-500 text-white p-8 rounded-2xl font-black">DELETE</button>
+                <button onClick={() => handleKeyPress('SPACE')} className="bg-slate-600 text-white p-8 rounded-2xl font-black hover:bg-slate-700">SPACE</button>
+                <button onClick={() => handleKeyPress('ENTER')} className="bg-slate-600 text-white p-8 rounded-2xl font-black hover:bg-slate-700">ENTER</button>
+                <button onClick={() => handleKeyPress('DELETE')} className="bg-red-500 text-white p-8 rounded-2xl font-black hover:bg-red-600">DELETE</button>
               </div>
               <button onClick={() => setView('menu')} className="bg-gray-100 p-6 rounded-2xl font-bold w-full">Back</button>
             </motion.div>
@@ -608,7 +678,8 @@ export default function ExtraGames() {
           {view === 'binary' && (
             <motion.div key="binary" initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} className="bg-white p-10 rounded-[3rem] shadow-2xl text-center">
               <h2 className="text-4xl font-black mb-8 text-indigo-600">Binary Lights!</h2>
-              <p className="text-gray-600 mb-8">Click to turn lights ON (1) or OFF (0)</p>
+              <p className="text-gray-600 mb-4">Click lights or press keys 1-4 to toggle ON (1) or OFF (0)</p>
+              <p className="text-sm text-indigo-500 font-semibold mb-8">⌨️ Try keyboard numbers 1, 2, 3, 4!</p>
               <div className="flex justify-center gap-6 mb-8">{binaryLights.map((light,i) => (<button key={i} onClick={() => toggleBinary(i)} className={`w-24 h-24 rounded-full ${light ? 'bg-yellow-400 shadow-[0_0_30px_gold]' : 'bg-gray-300'}`}><div className="text-3xl font-black">{light}</div></button>))}</div>
               <div className="text-2xl font-bold mb-8">Binary: {binaryLights.join('')}</div>
               <button onClick={() => setView('menu')} className="bg-gray-100 p-6 rounded-2xl font-bold w-full">Back</button>
@@ -761,9 +832,10 @@ export default function ExtraGames() {
             >
               <h2 className="text-4xl font-black mb-8 text-rose-600">Math Fun!</h2>
               <div className="bg-rose-50 p-12 rounded-3xl mb-8">
-                <p className="text-7xl font-black text-gray-800 mb-8">
+                <p className="text-7xl font-black text-gray-800 mb-4">
                   {mathProblem.num1} {mathProblem.operation} {mathProblem.num2} = ?
                 </p>
+                <p className="text-sm text-rose-500 font-semibold">⌨️ Press number keys 0-9 or click below!</p>
                 <div className="grid grid-cols-5 gap-3 max-w-md mx-auto">
                   {[0, 1, 2, 3, 4, 5, 6, 7, 8, 9].map(num => (
                     <button
@@ -955,6 +1027,7 @@ export default function ExtraGames() {
               <div className="text-center mb-8">
                 <p className="text-slate-400 font-black uppercase tracking-widest mb-2">Find the letter</p>
                 <div className="text-9xl font-black text-indigo-600">{targetLetter}</div>
+                <p className="text-sm text-slate-500 font-semibold mt-4">⌨️ Press the key on your keyboard or click below!</p>
               </div>
               <div className="bg-slate-900 p-6 rounded-[2rem] border-b-[12px] border-black mb-6">
                 {QWERTY_ROWS.map((row, idx) => (
