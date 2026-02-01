@@ -108,73 +108,6 @@ export default function ExtraGames() {
   const [view, setView] = useState('menu'); 
   const [score, setScore] = useState(0);
   const [isSpeaking, setIsSpeaking] = useState(false);
-
-  // Keyboard input handling
-  React.useEffect(() => {
-    const handleKeyDown = (e) => {
-      // Only respond to keyboard when not in menu
-      if (view === 'menu') return;
-
-      // Prevent default browser behaviors for game keys
-      if (['Space', 'Enter', 'ArrowUp', 'ArrowDown', 'ArrowLeft', 'ArrowRight'].includes(e.code)) {
-        e.preventDefault();
-      }
-
-      // Keyboard game - any letter/number key
-      if (view === 'keyboard' && e.key.length === 1) {
-        handleKeyPress(e.key.toUpperCase());
-      }
-
-      // Space, Enter, Delete for keyboard game
-      if (view === 'keyboard') {
-        if (e.code === 'Space') handleKeyPress('SPACE');
-        if (e.code === 'Enter') handleKeyPress('ENTER');
-        if (e.code === 'Delete' || e.code === 'Backspace') handleKeyPress('DELETE');
-      }
-
-      // Letter hunt - any letter key
-      if (view === 'letters' && /^[A-Z]$/i.test(e.key)) {
-        checkLetter(e.key.toUpperCase());
-      }
-
-      // Binary lights - number keys 1-4
-      if (view === 'binary' && /^[1-4]$/.test(e.key)) {
-        toggleBinary(parseInt(e.key) - 1);
-      }
-
-      // Math game - number keys 0-9
-      if (view === 'math' && /^[0-9]$/.test(e.key)) {
-        checkMathAnswer(parseInt(e.key));
-      }
-
-      // Arrow keys for bug hunter
-      if (view === 'bug') {
-        if (e.code === 'ArrowUp' || e.code === 'ArrowDown' || e.code === 'ArrowLeft' || e.code === 'ArrowRight') {
-          const directions = { ArrowUp: 'up', ArrowDown: 'down', ArrowLeft: 'left', ArrowRight: 'right' };
-          // Trigger bug finding on arrow press
-          setScore(s => s + 5);
-          speak(`You pressed ${directions[e.code]}!`);
-        }
-      }
-
-      // Escape key - return to menu from any game
-      if (e.code === 'Escape' && view !== 'menu') {
-        setView('menu');
-      }
-
-      // Spacebar interactions for various games
-      if (e.code === 'Space') {
-        if (view === 'mouse') hitTarget();
-        if (view === 'power') togglePower();
-        if (view === 'sayings') playSaying();
-        if (view === 'network') sendNetworkMessage();
-        if (view === 'brooklyn') helpBrooklyn();
-      }
-    };
-
-    window.addEventListener('keydown', handleKeyDown);
-    return () => window.removeEventListener('keydown', handleKeyDown);
-  }, [view, targetLetter, binaryLights, mathProblem, mouseTargets]);
   
   // Game States
   const [danceSequence, setDanceSequence] = useState([]);
@@ -221,6 +154,61 @@ export default function ExtraGames() {
   const [brooklynLocation, setBrooklynLocation] = useState(0);
   const [weatherData, setWeatherData] = useState({ temp: 65, condition: 'sunny' });
   const [photoGallery, setPhotoGallery] = useState([]);
+
+  // --- KEYBOARD INPUT HANDLING ---
+  React.useEffect(() => {
+    const handleKeyDown = (e) => {
+      if (view === 'menu') return;
+
+      if (['Space', 'Enter', 'ArrowUp', 'ArrowDown', 'ArrowLeft', 'ArrowRight'].includes(e.code)) {
+        e.preventDefault();
+      }
+
+      if (view === 'keyboard' && e.key.length === 1) {
+        handleKeyPress(e.key.toUpperCase());
+      }
+
+      if (view === 'keyboard') {
+        if (e.code === 'Space') handleKeyPress('SPACE');
+        if (e.code === 'Enter') handleKeyPress('ENTER');
+        if (e.code === 'Delete' || e.code === 'Backspace') handleKeyPress('DELETE');
+      }
+
+      if (view === 'letters' && /^[A-Z]$/i.test(e.key)) {
+        checkLetter(e.key.toUpperCase());
+      }
+
+      if (view === 'binary' && /^[1-4]$/.test(e.key)) {
+        toggleBinary(parseInt(e.key) - 1);
+      }
+
+      if (view === 'math' && /^[0-9]$/.test(e.key)) {
+        checkMathAnswer(parseInt(e.key));
+      }
+
+      if (view === 'bug') {
+        if (e.code === 'ArrowUp' || e.code === 'ArrowDown' || e.code === 'ArrowLeft' || e.code === 'ArrowRight') {
+          setScore(s => s + 5);
+          speak(`Arrow key pressed!`);
+        }
+      }
+
+      if (e.code === 'Escape' && view !== 'menu') {
+        setView('menu');
+      }
+
+      if (e.code === 'Space') {
+        if (view === 'mouse' && mouseTargets.length > 0) hitTarget();
+        if (view === 'power') togglePower();
+        if (view === 'sayings') playSaying();
+        if (view === 'network') sendNetworkMessage();
+        if (view === 'brooklyn') helpBrooklyn();
+      }
+    };
+
+    window.addEventListener('keydown', handleKeyDown);
+    return () => window.removeEventListener('keydown', handleKeyDown);
+  }, [view]);
 
   // --- AUDIO HELPERS ---
   const speak = (text) => {
