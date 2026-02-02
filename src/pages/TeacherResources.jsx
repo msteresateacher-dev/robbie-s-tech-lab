@@ -6,7 +6,7 @@ import {
   Users, Puzzle, Hand, Book, Scissors, MousePointer2,
   Keyboard, Monitor, Power, Lock, Heart, Binary, Network,
   Cable, MapPin, Sparkles, Download, Video, Mic, MicOff,
-  Clock, Shield
+  Clock, Shield, AlertCircle
 } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
