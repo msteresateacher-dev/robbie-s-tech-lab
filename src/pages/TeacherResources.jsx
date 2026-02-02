@@ -285,6 +285,226 @@ export default function TeacherResources() {
           </CardContent>
         </Card>
 
+        {/* Anti-Bullying & Digital Kindness Section */}
+        <Card className="mb-8 bg-gradient-to-r from-pink-100 to-rose-100 border-pink-300">
+          <CardHeader>
+            <CardTitle className="flex items-center gap-3 text-2xl">
+              <Heart className="w-8 h-8 text-pink-600" />
+              Anti-Bullying & Digital Kindness for Young Learners
+            </CardTitle>
+            <p className="text-gray-700 mt-2">
+              Teaching preschoolers about kindness online and the harm of negative comments
+            </p>
+          </CardHeader>
+          <CardContent className="space-y-6">
+            {/* Understanding Mean Comments */}
+            <div className="bg-white p-6 rounded-2xl border-2 border-pink-200">
+              <h3 className="font-bold text-xl mb-4 flex items-center gap-2 text-pink-900">
+                <AlertCircle className="w-6 h-6 text-pink-600" />
+                What Are Mean Comments? (Ages 3-5)
+              </h3>
+              <div className="space-y-3 text-gray-700">
+                <p className="font-semibold">Help children understand:</p>
+                <ul className="space-y-2 ml-4">
+                  <li className="flex items-start gap-2">
+                    <span className="text-pink-600 font-bold mt-1">•</span>
+                    <span><strong>Mean comments are words that hurt feelings</strong> - just like in real life, words on screens can make us sad</span>
+                  </li>
+                  <li className="flex items-start gap-2">
+                    <span className="text-pink-600 font-bold mt-1">•</span>
+                    <span><strong>Examples for preschoolers:</strong> "You're not my friend," "That's ugly," "Go away," or ignoring someone on purpose</span>
+                  </li>
+                  <li className="flex items-start gap-2">
+                    <span className="text-pink-600 font-bold mt-1">•</span>
+                    <span><strong>Online vs In-Person:</strong> Mean words hurt the same whether we say them face-to-face or on a screen</span>
+                  </li>
+                  <li className="flex items-start gap-2">
+                    <span className="text-pink-600 font-bold mt-1">•</span>
+                    <span><strong>Simple rule:</strong> "If it makes you feel sad, it's not okay to say to others"</span>
+                  </li>
+                </ul>
+              </div>
+            </div>
+
+            {/* How Negative Comments Hurt */}
+            <div className="bg-white p-6 rounded-2xl border-2 border-rose-200">
+              <h3 className="font-bold text-xl mb-4 flex items-center gap-2 text-rose-900">
+                <Heart className="w-6 h-6 text-rose-600" />
+                Why Mean Comments Hurt
+              </h3>
+              <div className="grid md:grid-cols-2 gap-4">
+                <div className="bg-rose-50 p-4 rounded-xl">
+                  <h4 className="font-bold text-gray-800 mb-2">😢 Feelings Get Hurt</h4>
+                  <p className="text-sm text-gray-700">Mean words make our hearts feel sad and heavy. Even on a computer, words can make us cry.</p>
+                </div>
+                <div className="bg-rose-50 p-4 rounded-xl">
+                  <h4 className="font-bold text-gray-800 mb-2">😔 Friends Feel Left Out</h4>
+                  <p className="text-sm text-gray-700">When we say mean things or leave someone out online, they feel lonely and sad.</p>
+                </div>
+                <div className="bg-rose-50 p-4 rounded-xl">
+                  <h4 className="font-bold text-gray-800 mb-2">😰 Some Kids Get Scared</h4>
+                  <p className="text-sm text-gray-700">Mean comments can make children feel afraid to use computers or play with friends.</p>
+                </div>
+                <div className="bg-rose-50 p-4 rounded-xl">
+                  <h4 className="font-bold text-gray-800 mb-2">💔 It's Hard to Forget</h4>
+                  <p className="text-sm text-gray-700">Unlike spoken words, mean things written online stay there. We can see them again and again.</p>
+                </div>
+              </div>
+            </div>
+
+            {/* Being a Kind Digital Friend */}
+            <div className="bg-white p-6 rounded-2xl border-2 border-green-200">
+              <h3 className="font-bold text-xl mb-4 flex items-center gap-2 text-green-900">
+                <CheckCircle className="w-6 h-6 text-green-600" />
+                How to Be a Kind Digital Friend
+              </h3>
+              <div className="space-y-3">
+                <div className="flex items-start gap-3 bg-green-50 p-4 rounded-xl">
+                  <span className="text-3xl">😊</span>
+                  <div>
+                    <h4 className="font-bold text-gray-800">Use Nice Words</h4>
+                    <p className="text-sm text-gray-700">Say things like "Great job!", "I like your picture!", "You're a good friend!"</p>
+                  </div>
+                </div>
+                <div className="flex items-start gap-3 bg-green-50 p-4 rounded-xl">
+                  <span className="text-3xl">🤝</span>
+                  <div>
+                    <h4 className="font-bold text-gray-800">Include Everyone</h4>
+                    <p className="text-sm text-gray-700">If we're playing an online game, invite everyone to join. No leaving friends out.</p>
+                  </div>
+                </div>
+                <div className="flex items-start gap-3 bg-green-50 p-4 rounded-xl">
+                  <span className="text-3xl">🛑</span>
+                  <div>
+                    <h4 className="font-bold text-gray-800">Think Before We Type</h4>
+                    <p className="text-sm text-gray-700">Before sending a message, ask: "Would this make me happy if someone said it to me?"</p>
+                  </div>
+                </div>
+                <div className="flex items-start gap-3 bg-green-50 p-4 rounded-xl">
+                  <span className="text-3xl">💪</span>
+                  <div>
+                    <h4 className="font-bold text-gray-800">Stand Up for Friends</h4>
+                    <p className="text-sm text-gray-700">If we see someone being mean online, we can tell a grown-up and be kind to the friend who got hurt.</p>
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            {/* What to Do If You Experience It */}
+            <div className="bg-white p-6 rounded-2xl border-2 border-orange-200">
+              <h3 className="font-bold text-xl mb-4 flex items-center gap-2 text-orange-900">
+                <Users className="w-6 h-6 text-orange-600" />
+                What to Do If Someone Is Mean Online
+              </h3>
+              <div className="space-y-3">
+                <div className="bg-orange-50 p-4 rounded-xl">
+                  <h4 className="font-bold text-gray-800 mb-2 flex items-center gap-2">
+                    <span className="bg-orange-600 text-white w-6 h-6 rounded-full flex items-center justify-center text-sm font-bold">1</span>
+                    Tell a Grown-Up Right Away
+                  </h4>
+                  <p className="text-sm text-gray-700 ml-8">Tell your teacher, parent, or another trusted adult. They can help make it stop.</p>
+                </div>
+                <div className="bg-orange-50 p-4 rounded-xl">
+                  <h4 className="font-bold text-gray-800 mb-2 flex items-center gap-2">
+                    <span className="bg-orange-600 text-white w-6 h-6 rounded-full flex items-center justify-center text-sm font-bold">2</span>
+                    Don't Respond with Mean Words Back
+                  </h4>
+                  <p className="text-sm text-gray-700 ml-8">Being mean back doesn't help. Walk away from the screen and get help from an adult.</p>
+                </div>
+                <div className="bg-orange-50 p-4 rounded-xl">
+                  <h4 className="font-bold text-gray-800 mb-2 flex items-center gap-2">
+                    <span className="bg-orange-600 text-white w-6 h-6 rounded-full flex items-center justify-center text-sm font-bold">3</span>
+                    Remember: It's Not Your Fault
+                  </h4>
+                  <p className="text-sm text-gray-700 ml-8">If someone is mean to you, it's not because of anything you did. You deserve to be treated with kindness.</p>
+                </div>
+                <div className="bg-orange-50 p-4 rounded-xl">
+                  <h4 className="font-bold text-gray-800 mb-2 flex items-center gap-2">
+                    <span className="bg-orange-600 text-white w-6 h-6 rounded-full flex items-center justify-center text-sm font-bold">4</span>
+                    Take a Break from Screens
+                  </h4>
+                  <p className="text-sm text-gray-700 ml-8">It's okay to take a break and do something fun offline - play outside, read a book, or draw.</p>
+                </div>
+              </div>
+            </div>
+
+            {/* Teacher Strategies */}
+            <div className="bg-white p-6 rounded-2xl border-2 border-blue-200">
+              <h3 className="font-bold text-xl mb-4 flex items-center gap-2 text-blue-900">
+                <BookOpen className="w-6 h-6 text-blue-600" />
+                Teaching Strategies for Educators
+              </h3>
+              <div className="space-y-3 text-gray-700">
+                <div className="flex items-start gap-3">
+                  <Lightbulb className="w-5 h-5 text-blue-600 mt-1 flex-shrink-0" />
+                  <div>
+                    <h4 className="font-bold mb-1">Use "Be Kind" Game in Robbie's Lab</h4>
+                    <p className="text-sm">The app includes a kindness game - use it to practice identifying kind vs unkind scenarios in a safe way.</p>
+                  </div>
+                </div>
+                <div className="flex items-start gap-3">
+                  <Lightbulb className="w-5 h-5 text-blue-600 mt-1 flex-shrink-0" />
+                  <div>
+                    <h4 className="font-bold mb-1">Role-Play with Robbie Puppet</h4>
+                    <p className="text-sm">Use the Robbie puppet to act out scenarios where someone receives a mean comment - discuss how it feels and what to do.</p>
+                  </div>
+                </div>
+                <div className="flex items-start gap-3">
+                  <Lightbulb className="w-5 h-5 text-blue-600 mt-1 flex-shrink-0" />
+                  <div>
+                    <h4 className="font-bold mb-1">Create a "Kind Words" Wall</h4>
+                    <p className="text-sm">Post examples of kind comments children can use online and offline. Practice them daily.</p>
+                  </div>
+                </div>
+                <div className="flex items-start gap-3">
+                  <Lightbulb className="w-5 h-5 text-blue-600 mt-1 flex-shrink-0" />
+                  <div>
+                    <h4 className="font-bold mb-1">Monitor Digital Interactions Closely</h4>
+                    <p className="text-sm">At this age, all online activity should be supervised. Watch for negative comments and address them immediately.</p>
+                  </div>
+                </div>
+                <div className="flex items-start gap-3">
+                  <Lightbulb className="w-5 h-5 text-blue-600 mt-1 flex-shrink-0" />
+                  <div>
+                    <h4 className="font-bold mb-1">Connect to Real-Life Kindness</h4>
+                    <p className="text-sm">Link digital kindness to classroom behavior. "We use kind words with our friends AND on screens."</p>
+                  </div>
+                </div>
+                <div className="flex items-start gap-3">
+                  <Lightbulb className="w-5 h-5 text-blue-600 mt-1 flex-shrink-0" />
+                  <div>
+                    <h4 className="font-bold mb-1">Parent Communication</h4>
+                    <p className="text-sm">Share this anti-bullying guidance with families so they can reinforce the same messages at home.</p>
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            {/* Simple Lessons */}
+            <div className="bg-gradient-to-r from-purple-50 to-pink-50 p-6 rounded-2xl border-2 border-purple-200">
+              <h3 className="font-bold text-xl mb-4 text-purple-900">5-Minute Mini Lessons</h3>
+              <div className="grid md:grid-cols-2 gap-4">
+                <div className="bg-white p-4 rounded-xl">
+                  <h4 className="font-bold text-purple-700 mb-2">📖 Story Time</h4>
+                  <p className="text-sm text-gray-700">"Robbie Gets a Mean Message" - Create a story where Robbie receives a mean comment, feels sad, tells a teacher, and learns about kindness.</p>
+                </div>
+                <div className="bg-white p-4 rounded-xl">
+                  <h4 className="font-bold text-purple-700 mb-2">🎭 Act It Out</h4>
+                  <p className="text-sm text-gray-700">Have students act out receiving a nice comment vs a mean comment. Notice the different feelings.</p>
+                </div>
+                <div className="bg-white p-4 rounded-xl">
+                  <h4 className="font-bold text-purple-700 mb-2">🎨 Draw Feelings</h4>
+                  <p className="text-sm text-gray-700">Draw faces showing how mean comments make us feel vs how kind comments make us feel.</p>
+                </div>
+                <div className="bg-white p-4 rounded-xl">
+                  <h4 className="font-bold text-purple-700 mb-2">🗣️ Practice Kind Comments</h4>
+                  <p className="text-sm text-gray-700">Go around the circle - each child says one kind thing to the person next to them. Celebrate positive words!</p>
+                </div>
+              </div>
+            </div>
+          </CardContent>
+        </Card>
+
         {/* Standards Detail Modal */}
         {selectedStandard && (
           <Card className="mb-8 border-4 border-blue-400">
