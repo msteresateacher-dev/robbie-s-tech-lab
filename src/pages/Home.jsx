@@ -8,7 +8,7 @@ import RobbieFace from '@/components/RobbieFace';
 import SpeechBubble from '@/components/SpeechBubble';
 import VoiceSelector, { VOICE_OPTIONS } from '@/components/VoiceSelector';
 import { useLanguage } from '@/components/LanguageContext';
-import { getTranslation } from '@/utils/translations';
+import { getTranslation } from '@/components/translations';
 import LanguageToggle from '@/components/LanguageToggle';
 
 export default function Home() {
