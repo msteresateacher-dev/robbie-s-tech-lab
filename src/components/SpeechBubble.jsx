@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react';
+import React, { useEffect, useState, useRef } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import { Volume2 } from 'lucide-react';
 
@@ -13,6 +13,8 @@ export default function SpeechBubble({
   const [displayedText, setDisplayedText] = useState('');
   const [isSpeaking, setIsSpeaking] = useState(false);
   const [voicesLoaded, setVoicesLoaded] = useState(false);
+  const lastMessageRef = useRef('');
+  const utteranceRef = useRef(null);
 
   // Load voices
   useEffect(() => {
@@ -31,12 +33,20 @@ export default function SpeechBubble({
     return () => {
       if ('speechSynthesis' in window) {
         window.speechSynthesis.onvoiceschanged = null;
+        window.speechSynthesis.cancel();
       }
     };
   }, []);
 
   useEffect(() => {
-    if (visible && message) {
+    if (visible && message && message !== lastMessageRef.current) {
+      lastMessageRef.current = message;
+      
+      // Cancel any ongoing speech
+      if (window.speechSynthesis.speaking) {
+        window.speechSynthesis.cancel();
+      }
+      
       setDisplayedText('');
       let index = 0;
       let hasSpoken = false;
@@ -50,7 +60,7 @@ export default function SpeechBubble({
           // Speak after typing completes
           if (autoSpeak && voicesLoaded && !hasSpoken) {
             hasSpoken = true;
-            setTimeout(() => speakMessage(message), 200);
+            setTimeout(() => speakMessage(message), 300);
           }
         }
       }, 30);
@@ -62,12 +72,7 @@ export default function SpeechBubble({
   }, [message, visible, autoSpeak, voicesLoaded]);
 
   const speakMessage = (text) => {
-    if (!('speechSynthesis' in window)) return;
-    
-    // Only cancel if we're going to speak something new
-    if (window.speechSynthesis.speaking) {
-      window.speechSynthesis.cancel();
-    }
+    if (!('speechSynthesis' in window) || !voicesLoaded) return;
     
     const utterance = new SpeechSynthesisUtterance(text);
     utterance.rate = voiceSettings.rate;
@@ -93,18 +98,20 @@ export default function SpeechBubble({
     utterance.onend = () => {
       setIsSpeaking(false);
       onSpeakEnd?.();
+      utteranceRef.current = null;
     };
 
     utterance.onerror = (e) => {
-      console.log('Speech error:', e);
+      if (e.error !== 'canceled' && e.error !== 'interrupted') {
+        console.log('Speech error:', e.error);
+      }
       setIsSpeaking(false);
       onSpeakEnd?.();
+      utteranceRef.current = null;
     };
 
-    // Small delay to ensure cancel completes
-    setTimeout(() => {
-      window.speechSynthesis.speak(utterance);
-    }, 50);
+    utteranceRef.current = utterance;
+    window.speechSynthesis.speak(utterance);
   };
 
   const handleReplay = () => {
