@@ -13,8 +13,12 @@ import { Button } from '@/components/ui/button';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Badge } from '@/components/ui/badge';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
+import LanguageToggle from '@/components/LanguageToggle';
+import { useLanguage } from '@/components/LanguageContext';
+import { t } from '@/components/translations';
 
 export default function TeacherDashboard() {
+  const { language } = useLanguage();
   const [selectedStudent, setSelectedStudent] = useState(null);
 
   const { data: students = [], isLoading: studentsLoading } = useQuery({
@@ -61,11 +65,11 @@ export default function TeacherDashboard() {
           </Link>
           <Link to={createPageUrl('TeacherResources')}>
             <Button variant="outline" className="rounded-full">
-              📚 Resource Center
+              📚 {t('resourceCenter', language)}
             </Button>
           </Link>
-          <h1 className="text-xl font-bold text-gray-800">Teacher Dashboard</h1>
-          <div className="w-10" />
+          <h1 className="text-xl font-bold text-gray-800">{t('teacherDashboard', language)}</h1>
+          <LanguageToggle />
         </div>
       </header>
 

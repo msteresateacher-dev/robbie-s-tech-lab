@@ -10,6 +10,9 @@ import {
 import { Link } from 'react-router-dom';
 import { createPageUrl } from '@/utils';
 import { motion, AnimatePresence } from 'framer-motion';
+import LanguageToggle from '@/components/LanguageToggle';
+import { useLanguage } from '@/components/LanguageContext';
+import { t } from '@/components/translations';
 
 const apiKey = ""; 
 
@@ -105,6 +108,7 @@ const DATA_ITEMS = [
 ];
 
 export default function ExtraGames() {
+  const { language } = useLanguage();
   const [view, setView] = useState('menu'); 
   const [score, setScore] = useState(0);
   const [isSpeaking, setIsSpeaking] = useState(false);

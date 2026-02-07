@@ -107,6 +107,44 @@ export const translations = {
     voiceFriendly: "Friendly",
     voiceRobot: "Robot",
     voiceHigh: "High & Fun",
+    
+    // Score and Progress
+    score: "Score",
+    robotsLab: "Robbie's Lab",
+    brooklynCampus: "BROOKLYN CAMPUS",
+    
+    // Extra Games descriptions
+    mouseSkillsDesc: "Practice clicking targets!",
+    keyboardDesc: "Discover keyboard keys!",
+    screenDesc: "Screen vs Real World!",
+    powerDesc: "Learn to power on/off safely!",
+    passwordDesc: "Create safe passwords!",
+    timerDesc: "Manage screen time!",
+    kindnessDesc: "Be kind online!",
+    binaryDesc: "Learn ON/OFF patterns!",
+    dataDesc: "Sort and organize data!",
+    networkDesc: "How computers connect!",
+    musicDesc: "Make music with code!",
+    cablesDesc: "Connect the right cables!",
+    partsDesc: "Build a computer!",
+    touchDesc: "Touch vs keyboard input!",
+    helperDesc: "Help your community!",
+    weatherDesc: "Check the weather!",
+    photoDesc: "Take and save photos!",
+    
+    // Mission completion
+    missionComplete: "Mission Complete!",
+    timeTaken: "Time Taken",
+    attemptsUsed: "Attempts",
+    goHome: "Go Home",
+    nextMission: "Next Mission",
+    
+    // Resource Center
+    resourceCenter: "Resource Center",
+    weeklyPlan: "6-Week Plan",
+    lowTechTools: "Low-Tech Tools",
+    teachingTips: "Teaching Tips",
+    nysStandards: "NYS Standards",
   },
   es: {
     // Home Page
@@ -216,6 +254,44 @@ export const translations = {
     voiceFriendly: "Amigable",
     voiceRobot: "Robot",
     voiceHigh: "Agudo y Divertido",
+    
+    // Score and Progress
+    score: "Puntuación",
+    robotsLab: "Laboratorio de Robbie",
+    brooklynCampus: "CAMPUS BROOKLYN",
+    
+    // Extra Games descriptions
+    mouseSkillsDesc: "¡Practica haciendo clic en objetivos!",
+    keyboardDesc: "¡Descubre las teclas del teclado!",
+    screenDesc: "¡Pantalla vs Mundo Real!",
+    powerDesc: "¡Aprende a encender/apagar de forma segura!",
+    passwordDesc: "¡Crea contraseñas seguras!",
+    timerDesc: "¡Administra el tiempo de pantalla!",
+    kindnessDesc: "¡Sé amable en línea!",
+    binaryDesc: "¡Aprende patrones de ENCENDIDO/APAGADO!",
+    dataDesc: "¡Ordena y organiza datos!",
+    networkDesc: "¡Cómo se conectan las computadoras!",
+    musicDesc: "¡Haz música con código!",
+    cablesDesc: "¡Conecta los cables correctos!",
+    partsDesc: "¡Construye una computadora!",
+    touchDesc: "¡Entrada táctil vs teclado!",
+    helperDesc: "¡Ayuda a tu comunidad!",
+    weatherDesc: "¡Consulta el clima!",
+    photoDesc: "¡Toma y guarda fotos!",
+    
+    // Mission completion
+    missionComplete: "¡Misión Completa!",
+    timeTaken: "Tiempo Tomado",
+    attemptsUsed: "Intentos",
+    goHome: "Ir a Inicio",
+    nextMission: "Siguiente Misión",
+    
+    // Resource Center
+    resourceCenter: "Centro de Recursos",
+    weeklyPlan: "Plan de 6 Semanas",
+    lowTechTools: "Herramientas Sin Tecnología",
+    teachingTips: "Consejos de Enseñanza",
+    nysStandards: "Estándares de NYS",
   }
 };
 
