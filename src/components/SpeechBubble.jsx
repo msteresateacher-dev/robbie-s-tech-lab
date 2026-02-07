@@ -43,7 +43,7 @@ export default function SpeechBubble({
       lastMessageRef.current = message;
       
       // Cancel any ongoing speech
-      if (window.speechSynthesis.speaking) {
+      if (window.speechSynthesis && window.speechSynthesis.speaking) {
         window.speechSynthesis.cancel();
       }
       
@@ -60,7 +60,9 @@ export default function SpeechBubble({
           // Speak after typing completes
           if (autoSpeak && voicesLoaded && !hasSpoken) {
             hasSpoken = true;
-            setTimeout(() => speakMessage(message), 300);
+            setTimeout(() => {
+              speakMessage(message);
+            }, 300);
           }
         }
       }, 30);
