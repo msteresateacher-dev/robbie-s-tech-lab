@@ -9,13 +9,25 @@ const VOICE_OPTIONS = [
 ];
 
 export default function VoiceSelector({ currentVoice, onVoiceChange }) {
+  const previewVoice = (voice) => {
+    if ('speechSynthesis' in window) {
+      window.speechSynthesis.cancel();
+      const utterance = new SpeechSynthesisUtterance("Hi! This is how I sound!");
+      utterance.rate = voice.rate;
+      utterance.pitch = voice.pitch;
+      utterance.lang = 'en-US';
+      window.speechSynthesis.speak(utterance);
+    }
+    onVoiceChange(voice);
+  };
+
   return (
     <div className="flex gap-3 justify-center items-center">
       <Volume2 className="w-5 h-5 text-gray-500" />
       {VOICE_OPTIONS.map(voice => (
         <motion.button
           key={voice.id}
-          onClick={() => onVoiceChange(voice)}
+          onClick={() => previewVoice(voice)}
           whileHover={{ scale: 1.05 }}
           whileTap={{ scale: 0.95 }}
           className={`px-4 py-2 rounded-xl font-bold transition-all ${
