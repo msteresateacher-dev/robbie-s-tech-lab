@@ -114,6 +114,51 @@ export const translations = {
     inputOutputMissionDesc: "Learn how computers listen and talk to us!",
     robbiesRace: "Robbie's Race",
     robbiesRaceDesc: "Code Robbie's path using arrows to reach the goal!",
+    
+    // Learning Map
+    learningMap: "Learning Map",
+    learningPath: "LEARNING PATH",
+    weekShort: "W",
+    week: "WEEK",
+    whatYoullLearn: "What You'll Learn:",
+    close: "Close",
+    completeWeek: "Complete Week",
+    
+    // Week 1
+    week1Title: "Algorithms",
+    week1Subtitle: "The Forest",
+    week1Activity: "Help Robbie find the shortest path through the forest! Create step-by-step instructions.",
+    week1Learning: "Algorithms are precise step-by-step instructions. Just like following a recipe!",
+    
+    // Week 2
+    week2Title: "Debugging",
+    week2Subtitle: "The Cave",
+    week2Activity: "Find and fix the bugs in Robbie's cave code! What went wrong?",
+    week2Learning: "Debugging means finding and fixing mistakes in our instructions.",
+    
+    // Week 3
+    week3Title: "Logic",
+    week3Subtitle: "The Castle",
+    week3Activity: "Use IF-THEN logic to help Robbie make decisions at the castle gates!",
+    week3Learning: "Logic helps computers make smart choices based on conditions.",
+    
+    // Week 4
+    week4Title: "Patterns",
+    week4Subtitle: "The Sky",
+    week4Activity: "Spot the patterns in the clouds! What comes next in the sequence?",
+    week4Learning: "Patterns repeat in predictable ways. Computers love finding patterns!",
+    
+    // Week 5
+    week5Title: "Decomposition",
+    week5Subtitle: "Underwater World",
+    week5Activity: "Break down a big problem into smaller parts to help Robbie swim through!",
+    week5Learning: "Decomposition means breaking big problems into smaller, easier pieces.",
+    
+    // Week 6
+    week6Title: "Abstraction",
+    week6Subtitle: "Cloud Kingdom",
+    week6Activity: "Find what's important and ignore the details! Help Robbie see the big picture.",
+    week6Learning: "Abstraction means focusing on what matters most and hiding complexity.",
   },
   
   es: {
@@ -231,6 +276,51 @@ export const translations = {
     inputOutputMissionDesc: "¡Aprende cómo las computadoras nos escuchan y nos hablan!",
     robbiesRace: "La Carrera de Robbie",
     robbiesRaceDesc: "¡Programa el camino de Robbie usando flechas para llegar a la meta!",
+    
+    // Learning Map
+    learningMap: "Mapa de Aprendizaje",
+    learningPath: "RUTA DE APRENDIZAJE",
+    weekShort: "S",
+    week: "SEMANA",
+    whatYoullLearn: "Lo que Aprenderás:",
+    close: "Cerrar",
+    completeWeek: "Completar Semana",
+    
+    // Week 1
+    week1Title: "Algoritmos",
+    week1Subtitle: "El Bosque",
+    week1Activity: "¡Ayuda a Robbie a encontrar el camino más corto por el bosque! Crea instrucciones paso a paso.",
+    week1Learning: "Los algoritmos son instrucciones precisas paso a paso. ¡Como seguir una receta!",
+    
+    // Week 2
+    week2Title: "Depuración",
+    week2Subtitle: "La Cueva",
+    week2Activity: "¡Encuentra y arregla los errores en el código de la cueva de Robbie! ¿Qué salió mal?",
+    week2Learning: "Depurar significa encontrar y corregir errores en nuestras instrucciones.",
+    
+    // Week 3
+    week3Title: "Lógica",
+    week3Subtitle: "El Castillo",
+    week3Activity: "¡Usa la lógica SI-ENTONCES para ayudar a Robbie a tomar decisiones en las puertas del castillo!",
+    week3Learning: "La lógica ayuda a las computadoras a tomar decisiones inteligentes basadas en condiciones.",
+    
+    // Week 4
+    week4Title: "Patrones",
+    week4Subtitle: "El Cielo",
+    week4Activity: "¡Encuentra los patrones en las nubes! ¿Qué sigue en la secuencia?",
+    week4Learning: "Los patrones se repiten de formas predecibles. ¡A las computadoras les encanta encontrar patrones!",
+    
+    // Week 5
+    week5Title: "Descomposición",
+    week5Subtitle: "Mundo Submarino",
+    week5Activity: "¡Divide un problema grande en partes más pequeñas para ayudar a Robbie a nadar!",
+    week5Learning: "Descomposición significa dividir problemas grandes en piezas más pequeñas y fáciles.",
+    
+    // Week 6
+    week6Title: "Abstracción",
+    week6Subtitle: "Reino de las Nubes",
+    week6Activity: "¡Encuentra lo importante e ignora los detalles! Ayuda a Robbie a ver el panorama general.",
+    week6Learning: "Abstracción significa enfocarse en lo más importante y ocultar la complejidad.",
   }
 };
 
