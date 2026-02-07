@@ -3,50 +3,37 @@
 const GEMINI_TTS_ENDPOINT = 'https://generativelanguage.googleapis.com/v1beta/models/gemini-2.5-flash-preview-tts:generateContent';
 
 // Convert PCM16 audio data to WAV format
-function encodeWAV(pcmData, sampleRate = 24000) {
-  const numChannels = 1;
-  const bitsPerSample = 16;
-  
-  // Ensure pcmData is Int16Array
-  const samples = pcmData instanceof Int16Array ? pcmData : new Int16Array(pcmData);
-  const numSamples = samples.length;
-  const dataSize = numSamples * 2; // 2 bytes per sample (16-bit)
-  
-  const buffer = new ArrayBuffer(44 + dataSize);
-  const view = new DataView(buffer);
-  
-  // RIFF chunk descriptor
-  writeString(view, 0, 'RIFF');
-  view.setUint32(4, 36 + dataSize, true);
-  writeString(view, 8, 'WAVE');
-  
-  // fmt sub-chunk
-  writeString(view, 12, 'fmt ');
-  view.setUint32(16, 16, true); // PCM
-  view.setUint16(20, 1, true); // Linear PCM
-  view.setUint16(22, numChannels, true);
-  view.setUint32(24, sampleRate, true);
-  view.setUint32(28, sampleRate * numChannels * 2, true); // byte rate
-  view.setUint16(32, numChannels * 2, true); // block align
-  view.setUint16(34, bitsPerSample, true);
-  
-  // data sub-chunk
-  writeString(view, 36, 'data');
-  view.setUint32(40, dataSize, true);
-  
-  // Write PCM samples as little-endian
-  const offset = 44;
-  for (let i = 0; i < numSamples; i++) {
-    view.setInt16(offset + i * 2, samples[i], true);
+function pcmToWav(pcmBase64, sampleRate = 24000) {
+  const byteCharacters = atob(pcmBase64);
+  const byteNumbers = new Array(byteCharacters.length);
+  for (let i = 0; i < byteCharacters.length; i++) {
+    byteNumbers[i] = byteCharacters.charCodeAt(i);
   }
+  const byteArray = new Uint8Array(byteNumbers);
+  const buffer = byteArray.buffer;
   
-  return buffer;
-}
+  const wavHeader = new ArrayBuffer(44);
+  const view = new DataView(wavHeader);
 
-function writeString(view, offset, string) {
-  for (let i = 0; i < string.length; i++) {
-    view.setUint8(offset + i, string.charCodeAt(i));
-  }
+  // RIFF identifier
+  view.setUint32(0, 0x52494646, false); // "RIFF"
+  view.setUint32(4, 36 + buffer.byteLength, true);
+  view.setUint32(8, 0x57415645, false); // "WAVE"
+  // FMT chunk
+  view.setUint32(12, 0x666d7420, false); // "fmt "
+  view.setUint32(16, 16, true); // Subchunk1Size
+  view.setUint16(20, 1, true); // AudioFormat (1 = PCM)
+  view.setUint16(22, 1, true); // NumChannels (Mono)
+  view.setUint32(24, sampleRate, true); // SampleRate
+  view.setUint32(28, sampleRate * 2, true); // ByteRate
+  view.setUint16(32, 2, true); // BlockAlign
+  view.setUint16(34, 16, true); // BitsPerSample
+  // Data chunk
+  view.setUint32(36, 0x64617461, false); // "data"
+  view.setUint32(40, buffer.byteLength, true);
+
+  const blob = new Blob([wavHeader, buffer], { type: 'audio/wav' });
+  return URL.createObjectURL(blob);
 }
 
 // Exponential backoff retry logic
@@ -108,8 +95,6 @@ export async function speakWithGemini(text, voiceName = 'Puck', apiKey) {
 
   const data = await response.json();
   
-  console.log('API Response:', data);
-  
   // Extract audio data from response
   if (!data.candidates?.[0]?.content?.parts?.[0]?.inlineData?.data) {
     throw new Error('No audio data in response');
@@ -118,41 +103,12 @@ export async function speakWithGemini(text, voiceName = 'Puck', apiKey) {
   const audioBase64 = data.candidates[0].content.parts[0].inlineData.data;
   const mimeType = data.candidates[0].content.parts[0].inlineData.mimeType || 'audio/pcm';
   
-  console.log('MimeType:', mimeType);
-  console.log('Base64 length:', audioBase64.length);
-  
-  // Decode base64 to bytes
-  const binaryString = atob(audioBase64);
-  const byteArray = new Uint8Array(binaryString.length);
-  for (let i = 0; i < binaryString.length; i++) {
-    byteArray[i] = binaryString.charCodeAt(i);
-  }
-  
-  console.log('Decoded bytes:', byteArray.length);
-  
-  // Create Int16Array from bytes (little-endian PCM16)
-  const buffer = byteArray.buffer;
-  const int16Array = new Int16Array(buffer);
-  
-  console.log('PCM samples:', int16Array.length);
-  
   // Extract sample rate from mimeType (e.g., "audio/pcm;rate=24000")
-  let sampleRate = 24000;
-  if (mimeType.includes('rate=')) {
-    const match = mimeType.match(/rate=(\d+)/);
-    if (match) {
-      sampleRate = parseInt(match[1]);
-    }
-  }
+  const sampleRateMatch = mimeType.match(/rate=(\d+)/);
+  const sampleRate = sampleRateMatch ? parseInt(sampleRateMatch[1]) : 24000;
   
-  console.log('Sample rate:', sampleRate);
+  // Convert PCM to WAV
+  const audioUrl = pcmToWav(audioBase64, sampleRate);
   
-  // Encode as WAV
-  const wavBuffer = encodeWAV(int16Array, sampleRate);
-  const blob = new Blob([wavBuffer], { type: 'audio/wav' });
-  const url = URL.createObjectURL(blob);
-  
-  console.log('WAV URL created:', url);
-  
-  return url;
+  return audioUrl;
 }
