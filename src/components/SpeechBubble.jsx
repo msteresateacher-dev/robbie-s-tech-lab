@@ -57,32 +57,59 @@ export default function SpeechBubble({
         throw new Error('API key not configured');
       }
 
+      console.log('Generating speech for:', text);
+
       // Generate audio with Gemini TTS
       const audioUrl = await speakWithGemini(text, 'Puck', apiKey);
       
+      console.log('Audio URL created:', audioUrl);
+      
       // Create and play audio
-      const audio = new Audio(audioUrl);
+      const audio = new Audio();
       audioRef.current = audio;
       
-      audio.onplay = () => {
+      audio.onloadeddata = () => {
+        console.log('Audio loaded successfully');
+      };
+      
+      audio.oncanplaythrough = () => {
+        console.log('Audio ready to play');
         setIsLoading(false);
+      };
+      
+      audio.onplay = () => {
+        console.log('Audio started playing');
         setIsSpeaking(true);
         onSpeakStart?.();
       };
       
       audio.onended = () => {
+        console.log('Audio ended');
         setIsSpeaking(false);
         onSpeakEnd?.();
         URL.revokeObjectURL(audioUrl);
       };
       
-      audio.onerror = () => {
+      audio.onerror = (e) => {
+        console.error('Audio playback error:', e, audio.error);
         setIsLoading(false);
         setIsSpeaking(false);
         setError('Audio playback failed');
+        URL.revokeObjectURL(audioUrl);
       };
       
-      await audio.play();
+      // Set source and load
+      audio.src = audioUrl;
+      audio.load();
+      
+      // Attempt to play
+      try {
+        await audio.play();
+        console.log('Play initiated successfully');
+      } catch (playError) {
+        console.error('Play error:', playError);
+        throw playError;
+      }
     } catch (err) {
       console.error('TTS Error:', err);
       setIsLoading(false);
