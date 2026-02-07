@@ -3,9 +3,9 @@ import { motion } from 'framer-motion';
 import { Volume2, Loader2 } from 'lucide-react';
 
 const VOICE_OPTIONS = [
-  { id: 'Kore', name: 'Friendly', icon: '😊', prompt: 'Say cheerfully and warmly:' },
-  { id: 'Fenrir', name: 'Deep Voice', icon: '🎙️', prompt: 'Say in a deep, calm, professional voice:' },
-  { id: 'Puck', name: 'Excited', icon: '⚡', prompt: 'Say in a very high-energy and excited voice:' }
+  { id: 'Kore', name: 'Friendly', icon: '😊', prompt: 'Say cheerfully and warmly:', rate: 0.85, pitch: 1.2 },
+  { id: 'Fenrir', name: 'Deep Voice', icon: '🎙️', prompt: 'Say in a deep, calm, professional voice:', rate: 0.75, pitch: 0.8 },
+  { id: 'Puck', name: 'Excited', icon: '⚡', prompt: 'Say in a very high-energy and excited voice:', rate: 1.1, pitch: 1.5 }
 ];
 
 export default function VoiceSelector({ currentVoice, onVoiceChange }) {
