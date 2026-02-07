@@ -10,14 +10,46 @@ const VOICE_OPTIONS = [
 
 export default function VoiceSelector({ currentVoice, onVoiceChange }) {
   const previewVoice = (voice) => {
-    if ('speechSynthesis' in window) {
-      window.speechSynthesis.cancel();
+    if (!('speechSynthesis' in window)) {
+      console.error('Speech synthesis not supported in this browser');
+      onVoiceChange(voice);
+      return;
+    }
+
+    // Cancel any ongoing speech
+    window.speechSynthesis.cancel();
+    
+    // Small delay to ensure cancel completes
+    setTimeout(() => {
       const utterance = new SpeechSynthesisUtterance("Hi! This is how I sound!");
       utterance.rate = voice.rate;
       utterance.pitch = voice.pitch;
       utterance.lang = 'en-US';
-      window.speechSynthesis.speak(utterance);
-    }
+      utterance.volume = 1.0;
+      
+      // Wait for voices to load if needed
+      const speak = () => {
+        const voices = window.speechSynthesis.getVoices();
+        if (voices.length > 0) {
+          const englishVoice = voices.find(v => v.lang.startsWith('en'));
+          if (englishVoice) utterance.voice = englishVoice;
+        }
+        
+        utterance.onerror = (e) => console.error('Speech error:', e);
+        utterance.onstart = () => console.log('Speech started');
+        
+        window.speechSynthesis.speak(utterance);
+      };
+
+      const voices = window.speechSynthesis.getVoices();
+      if (voices.length > 0) {
+        speak();
+      } else {
+        window.speechSynthesis.onvoiceschanged = speak;
+        setTimeout(speak, 100);
+      }
+    }, 100);
+    
     onVoiceChange(voice);
   };
 
