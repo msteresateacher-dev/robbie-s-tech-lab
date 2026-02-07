@@ -37,55 +37,32 @@ export default function SpeechBubble({
   }, [message, visible, autoSpeak]);
 
   const speakMessage = (text) => {
-    if (!('speechSynthesis' in window)) {
-      console.warn('Speech synthesis not supported');
-      return;
-    }
-
     window.speechSynthesis.cancel();
     
-    // Ensure voices are loaded before speaking
-    const speak = () => {
-      const utterance = new SpeechSynthesisUtterance(text);
-      utterance.rate = voiceSettings?.rate || 0.85;
-      utterance.pitch = voiceSettings?.pitch || 1.2;
-      utterance.lang = 'en-US';
-      
-      // Try to find a friendly voice
-      const voices = window.speechSynthesis.getVoices();
-      const friendlyVoice = voices.find(v => 
-        v.name.includes('Samantha') || 
-        v.name.includes('Google US English') ||
-        v.name.includes('Microsoft Zira') ||
-        v.lang.startsWith('en')
-      );
-      if (friendlyVoice) utterance.voice = friendlyVoice;
+    const utterance = new SpeechSynthesisUtterance(text);
+    utterance.rate = voiceSettings.rate;
+    utterance.pitch = voiceSettings.pitch;
+    
+    // Try to find a friendly voice
+    const voices = window.speechSynthesis.getVoices();
+    const friendlyVoice = voices.find(v => 
+      v.name.includes('Samantha') || 
+      v.name.includes('Google US English') ||
+      v.name.includes('Microsoft Zira')
+    );
+    if (friendlyVoice) utterance.voice = friendlyVoice;
 
-      utterance.onstart = () => {
-        setIsSpeaking(true);
-        onSpeakStart?.();
-      };
-      
-      utterance.onend = () => {
-        setIsSpeaking(false);
-        onSpeakEnd?.();
-      };
-
-      window.speechSynthesis.speak(utterance);
+    utterance.onstart = () => {
+      setIsSpeaking(true);
+      onSpeakStart?.();
+    };
+    
+    utterance.onend = () => {
+      setIsSpeaking(false);
+      onSpeakEnd?.();
     };
 
-    // Check if voices are loaded, if not wait for them
-    const voices = window.speechSynthesis.getVoices();
-    if (voices.length > 0) {
-      speak();
-    } else {
-      // Wait for voices to load
-      window.speechSynthesis.onvoiceschanged = () => {
-        speak();
-      };
-      // Fallback timeout
-      setTimeout(speak, 100);
-    }
+    window.speechSynthesis.speak(utterance);
   };
 
   const handleReplay = () => {
