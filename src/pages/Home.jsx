@@ -8,8 +8,8 @@ import RobbieFace from '@/components/RobbieFace';
 import SpeechBubble from '@/components/SpeechBubble';
 import VoiceSelector, { VOICE_OPTIONS } from '@/components/VoiceSelector';
 import LanguageToggle from '@/components/LanguageToggle';
-import { useLanguage } from '@/contexts/LanguageContext';
-import { t } from '@/translations';
+import { useLanguage } from '@/components/LanguageContext';
+import { t } from '@/components/translations';
 
 export default function Home() {
   const { language } = useLanguage();
