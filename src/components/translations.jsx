@@ -19,6 +19,8 @@ export const translations = {
     teacherDashboard: "Teacher Dashboard",
     funFact: "Fun Fact!",
     funFactText: "Did you know? Keyboards aren't in ABC order! The QWERTY layout was made for old typewriters to keep the keys from getting stuck. Pretty cool, right?",
+    voiceOnline: "My voice circuits are online!",
+    voiceOffline: "My voice circuits are offline!",
     
     // Student Portal
     chooseProfile: "Choose Your Profile",
@@ -181,6 +183,8 @@ export const translations = {
     teacherDashboard: "Panel del Maestro",
     funFact: "¡Dato Curioso!",
     funFactText: "¿Sabías que los teclados no están en orden ABC? ¡El diseño QWERTY fue creado para máquinas de escribir antiguas para evitar que las teclas se atascaran! ¡Qué interesante!",
+    voiceOnline: "¡Mis circuitos de voz están en línea!",
+    voiceOffline: "¡Mis circuitos de voz están fuera de línea!",
     
     // Student Portal
     chooseProfile: "Elige Tu Perfil",

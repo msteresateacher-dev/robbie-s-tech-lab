@@ -2,6 +2,8 @@ import React, { useEffect, useState, useRef } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import { Volume2, Loader2 } from 'lucide-react';
 import { speakWithGemini } from './GeminiTTS';
+import { useLanguage } from './LanguageContext';
+import { getTranslation } from './translations';
 
 export default function SpeechBubble({ 
   message, 
@@ -11,6 +13,7 @@ export default function SpeechBubble({
   autoSpeak = false,
   voiceSettings = { rate: 0.85, pitch: 1.2 }
 }) {
+  const { language } = useLanguage();
   const [displayedText, setDisplayedText] = useState('');
   const [isSpeaking, setIsSpeaking] = useState(false);
   const [isLoading, setIsLoading] = useState(false);
@@ -84,7 +87,7 @@ export default function SpeechBubble({
       console.error('TTS Error:', err);
       setIsLoading(false);
       setIsSpeaking(false);
-      setError('My voice circuits are offline!');
+      setError(getTranslation(language, 'voiceOffline'));
     }
   };
 
@@ -111,7 +114,7 @@ export default function SpeechBubble({
               {displayedText}
             </p>
             
-            {/* Error message */}
+            {/* Status messages */}
             {error && (
               <motion.div
                 initial={{ opacity: 0, y: -10 }}
@@ -119,6 +122,15 @@ export default function SpeechBubble({
                 className="mt-2 text-sm text-orange-500 flex items-center gap-2"
               >
                 ⚠️ {error}
+              </motion.div>
+            )}
+            {isSpeaking && !error && (
+              <motion.div
+                initial={{ opacity: 0, y: -10 }}
+                animate={{ opacity: 1, y: 0 }}
+                className="mt-2 text-sm text-green-500 flex items-center gap-2"
+              >
+                ✓ {getTranslation(language, 'voiceOnline')}
               </motion.div>
             )}
             
