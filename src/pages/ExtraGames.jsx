@@ -154,7 +154,6 @@ export default function ExtraGames() {
   const [brooklynLocation, setBrooklynLocation] = useState(0);
   const [weatherData, setWeatherData] = useState({ temp: 65, condition: 'sunny' });
   const [photoGallery, setPhotoGallery] = useState([]);
-  const [textToVoice, setTextToVoice] = useState({ text: '', rate: 1, pitch: 1.2 });
 
   // --- KEYBOARD INPUT HANDLING ---
   React.useEffect(() => {
@@ -497,23 +496,6 @@ export default function ExtraGames() {
     setScore(s => s + 10);
   };
 
-  const speakCustomText = () => {
-    if (!textToVoice.text.trim()) {
-      speak("Type something first!");
-      return;
-    }
-    if ('speechSynthesis' in window) {
-      window.speechSynthesis.cancel();
-      const utterance = new SpeechSynthesisUtterance(textToVoice.text);
-      utterance.rate = textToVoice.rate;
-      utterance.pitch = textToVoice.pitch;
-      utterance.onstart = () => setIsSpeaking(true);
-      utterance.onend = () => setIsSpeaking(false);
-      window.speechSynthesis.speak(utterance);
-      setScore(s => s + 5);
-    }
-  };
-
   // --- RENDER MENU ---
   const MenuBtn = ({ icon, label, color, onClick }) => (
     <motion.button 
@@ -593,7 +575,6 @@ export default function ExtraGames() {
               <MenuBtn icon={<Plus />} label="Math Fun" color="bg-rose-600" onClick={() => { setView('math'); generateMathProblem(); }} />
               <MenuBtn icon={<Users />} label="Tag Game" color="bg-lime-600" onClick={() => setView('tag')} />
               <MenuBtn icon={<Volume2 />} label="Broken Record" color="bg-violet-600" onClick={() => setView('sayings')} />
-              <MenuBtn icon={<Type />} label="Voice Maker" color="bg-pink-600" onClick={() => setView('voice')} />
             </motion.div>
           )}
 
@@ -1137,80 +1118,6 @@ export default function ExtraGames() {
                 <button onClick={() => handleSort('tech')} className="bg-blue-500 text-white p-8 rounded-3xl font-black text-xl hover:bg-blue-600 transition-colors">💻 TECH</button>
               </div>
               <button onClick={() => setView('menu')} className="bg-gray-100 p-6 rounded-2xl font-bold w-full">Back to Menu</button>
-            </motion.div>
-          )}
-
-          {/* TEXT TO VOICE */}
-          {view === 'voice' && (
-            <motion.div
-              key="voice"
-              initial={{ opacity: 0, y: 20 }}
-              animate={{ opacity: 1, y: 0 }}
-              className="bg-white p-10 rounded-[3rem] shadow-2xl text-center"
-            >
-              <h2 className="text-4xl font-black mb-8 text-pink-600">Voice Maker!</h2>
-              <p className="text-gray-600 mb-6">Type what you want Robbie to say!</p>
-              
-              <div className="bg-pink-50 p-8 rounded-3xl mb-6">
-                <textarea
-                  value={textToVoice.text}
-                  onChange={(e) => setTextToVoice({ ...textToVoice, text: e.target.value })}
-                  placeholder="Hello friends! Welcome to Brooklyn!"
-                  className="w-full p-6 text-2xl rounded-2xl border-4 border-pink-200 focus:border-pink-400 outline-none resize-none mb-6"
-                  rows={4}
-                />
-                
-                {/* Quick phrases */}
-                <div className="grid grid-cols-2 gap-3 mb-6">
-                  <button onClick={() => setTextToVoice({ ...textToVoice, text: 'Hello! My name is Robbie!' })} className="bg-pink-200 p-4 rounded-xl font-bold hover:bg-pink-300">👋 Hello!</button>
-                  <button onClick={() => setTextToVoice({ ...textToVoice, text: 'I love Brooklyn!' })} className="bg-pink-200 p-4 rounded-xl font-bold hover:bg-pink-300">💖 Love Brooklyn</button>
-                  <button onClick={() => setTextToVoice({ ...textToVoice, text: 'Let me help you!' })} className="bg-pink-200 p-4 rounded-xl font-bold hover:bg-pink-300">🤝 Help You</button>
-                  <button onClick={() => setTextToVoice({ ...textToVoice, text: 'You are amazing!' })} className="bg-pink-200 p-4 rounded-xl font-bold hover:bg-pink-300">⭐ Amazing!</button>
-                </div>
-
-                {/* Voice controls */}
-                <div className="space-y-4">
-                  <div>
-                    <label className="block text-left font-bold text-gray-700 mb-2">
-                      Speed: {textToVoice.rate.toFixed(1)}x
-                    </label>
-                    <input
-                      type="range"
-                      min="0.5"
-                      max="2"
-                      step="0.1"
-                      value={textToVoice.rate}
-                      onChange={(e) => setTextToVoice({ ...textToVoice, rate: parseFloat(e.target.value) })}
-                      className="w-full h-3 bg-pink-200 rounded-lg appearance-none cursor-pointer"
-                    />
-                  </div>
-                  <div>
-                    <label className="block text-left font-bold text-gray-700 mb-2">
-                      Pitch: {textToVoice.pitch.toFixed(1)}
-                    </label>
-                    <input
-                      type="range"
-                      min="0.5"
-                      max="2"
-                      step="0.1"
-                      value={textToVoice.pitch}
-                      onChange={(e) => setTextToVoice({ ...textToVoice, pitch: parseFloat(e.target.value) })}
-                      className="w-full h-3 bg-pink-200 rounded-lg appearance-none cursor-pointer"
-                    />
-                  </div>
-                </div>
-              </div>
-
-              <button
-                onClick={speakCustomText}
-                disabled={isSpeaking}
-                className={`bg-pink-600 text-white p-8 rounded-3xl font-black text-2xl w-full mb-6 flex items-center justify-center gap-3 ${isSpeaking ? 'opacity-50 animate-pulse' : 'hover:bg-pink-700'}`}
-              >
-                <Volume2 size={32} />
-                {isSpeaking ? 'SPEAKING...' : 'SPEAK IT!'}
-              </button>
-
-              <button onClick={() => setView('menu')} className="bg-gray-100 p-6 rounded-2xl font-bold w-full">Back</button>
             </motion.div>
           )}
 
