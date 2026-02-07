@@ -1,29 +1,21 @@
-import React, { useEffect, useState, useRef } from 'react';
+import React, { useEffect, useState } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
-import { Volume2, Loader2 } from 'lucide-react';
-import { speakWithGemini } from './GeminiTTS';
-import { useLanguage } from './LanguageContext';
-import { getTranslation } from './translations';
+import { Volume2 } from 'lucide-react';
 
 export default function SpeechBubble({ 
   message, 
   visible = true, 
   onSpeakStart,
   onSpeakEnd,
-  autoSpeak = false,
+  autoSpeak = true,
   voiceSettings = { rate: 0.85, pitch: 1.2 }
 }) {
-  const { language } = useLanguage();
   const [displayedText, setDisplayedText] = useState('');
   const [isSpeaking, setIsSpeaking] = useState(false);
-  const [isLoading, setIsLoading] = useState(false);
-  const [error, setError] = useState(null);
-  const audioRef = useRef(null);
 
   useEffect(() => {
     if (visible && message) {
       setDisplayedText('');
-      setError(null);
       let index = 0;
       
       const typeInterval = setInterval(() => {
@@ -35,68 +27,46 @@ export default function SpeechBubble({
         }
       }, 30);
 
+      // Start speaking
+      if (autoSpeak && 'speechSynthesis' in window) {
+        speakMessage(message);
+      }
+
       return () => clearInterval(typeInterval);
     }
-  }, [message, visible]);
+  }, [message, visible, autoSpeak]);
 
-  const speakMessage = async (text) => {
-    try {
-      // Stop any current audio
-      if (audioRef.current) {
-        audioRef.current.pause();
-        audioRef.current = null;
-      }
+  const speakMessage = (text) => {
+    window.speechSynthesis.cancel();
+    
+    const utterance = new SpeechSynthesisUtterance(text);
+    utterance.rate = voiceSettings.rate;
+    utterance.pitch = voiceSettings.pitch;
+    
+    // Try to find a friendly voice
+    const voices = window.speechSynthesis.getVoices();
+    const friendlyVoice = voices.find(v => 
+      v.name.includes('Samantha') || 
+      v.name.includes('Google US English') ||
+      v.name.includes('Microsoft Zira')
+    );
+    if (friendlyVoice) utterance.voice = friendlyVoice;
 
-      setIsLoading(true);
-      setError(null);
-      
-      // Get API key from secrets
-      const apiKey = import.meta.env.VITE_GEMINI_API_KEY;
-      
-      if (!apiKey) {
-        throw new Error('API key not configured');
-      }
-
-      // Generate audio with Gemini TTS
-      const audioUrl = await speakWithGemini(text, 'Puck', apiKey);
-      
-      // Create and play audio
-      const audio = new Audio(audioUrl);
-      audioRef.current = audio;
-      
-      audio.onloadeddata = () => {
-        setIsLoading(false);
-      };
-      
-      audio.onplay = () => {
-        setIsSpeaking(true);
-        onSpeakStart?.();
-      };
-      
-      audio.onended = () => {
-        setIsSpeaking(false);
-        onSpeakEnd?.();
-        URL.revokeObjectURL(audioUrl);
-      };
-      
-      audio.onerror = () => {
-        setIsLoading(false);
-        setIsSpeaking(false);
-        setError(getTranslation(language, 'voiceOffline'));
-        URL.revokeObjectURL(audioUrl);
-      };
-      
-      await audio.play();
-    } catch (err) {
-      console.error('TTS Error:', err);
-      setIsLoading(false);
+    utterance.onstart = () => {
+      setIsSpeaking(true);
+      onSpeakStart?.();
+    };
+    
+    utterance.onend = () => {
       setIsSpeaking(false);
-      setError(getTranslation(language, 'voiceOffline'));
-    }
+      onSpeakEnd?.();
+    };
+
+    window.speechSynthesis.speak(utterance);
   };
 
   const handleReplay = () => {
-    if (message && !isLoading) {
+    if (message) {
       speakMessage(message);
     }
   };
@@ -116,72 +86,24 @@ export default function SpeechBubble({
           <div className="relative">
             <p className="text-xl md:text-2xl text-gray-700 font-medium leading-relaxed">
               {displayedText}
+              {displayedText.length < message.length && (
+                <span className="animate-pulse">|</span>
+              )}
             </p>
             
-            {/* Status messages */}
-            {error && (
-              <motion.div
-                initial={{ opacity: 0, y: -10 }}
-                animate={{ opacity: 1, y: 0 }}
-                className="mt-2 text-sm text-orange-500 flex items-center gap-2"
-              >
-                ⚠️ {error}
-              </motion.div>
-            )}
-            {isSpeaking && !error && (
-              <motion.div
-                initial={{ opacity: 0, y: -10 }}
-                animate={{ opacity: 1, y: 0 }}
-                className="mt-2 text-sm text-green-500 flex items-center gap-2"
-              >
-                ✓ {getTranslation(language, 'voiceOnline')}
-              </motion.div>
-            )}
-            
-            {/* Speak button */}
+            {/* Replay button */}
             <button
               onClick={handleReplay}
-              disabled={isLoading}
               className={`
                 absolute -right-2 -bottom-2 w-10 h-10 rounded-full 
                 flex items-center justify-center transition-all
-                ${isLoading 
-                  ? 'bg-gray-300 cursor-not-allowed' 
-                  : isSpeaking 
-                    ? 'bg-sky-400 text-white' 
-                    : 'bg-gray-100 text-gray-500 hover:bg-sky-100 hover:text-sky-600'}
+                ${isSpeaking 
+                  ? 'bg-sky-400 text-white animate-pulse' 
+                  : 'bg-gray-100 text-gray-500 hover:bg-sky-100 hover:text-sky-600'}
               `}
             >
-              {isLoading ? (
-                <Loader2 className="w-5 h-5 animate-spin" />
-              ) : (
-                <Volume2 className={`w-5 h-5 ${isSpeaking ? 'animate-pulse' : ''}`} />
-              )}
+              <Volume2 className="w-5 h-5" />
             </button>
-            
-            {/* Audio visualizer */}
-            {isSpeaking && (
-              <motion.div
-                initial={{ opacity: 0 }}
-                animate={{ opacity: 1 }}
-                className="absolute -left-12 top-1/2 -translate-y-1/2 flex gap-1"
-              >
-                {[0, 1, 2].map((i) => (
-                  <motion.div
-                    key={i}
-                    className="w-1 bg-sky-400 rounded-full"
-                    animate={{
-                      height: ['8px', '16px', '8px'],
-                    }}
-                    transition={{
-                      duration: 0.6,
-                      repeat: Infinity,
-                      delay: i * 0.15,
-                    }}
-                  />
-                ))}
-              </motion.div>
-            )}
           </div>
         </motion.div>
       )}

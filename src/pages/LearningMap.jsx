@@ -4,81 +4,77 @@ import { Link } from 'react-router-dom';
 import { createPageUrl } from '@/utils';
 import { ArrowLeft, Lock, Star, Trophy, Sparkles, X } from 'lucide-react';
 import { Button } from '@/components/ui/button';
-import { useLanguage } from '@/components/LanguageContext';
-import { getTranslation } from '@/components/translations';
 
-const getWeeks = (language) => [
+const WEEKS = [
   {
     id: 1,
-    titleKey: 'week1Title',
-    subtitleKey: 'week1Subtitle',
+    title: 'Algorithms',
+    subtitle: 'The Forest',
     theme: 'from-green-400 to-emerald-600',
     icon: '🌳',
     position: { x: 10, y: 60 },
-    activityKey: 'week1Activity',
-    learningKey: 'week1Learning',
+    activity: 'Help Robbie find the shortest path through the forest! Create step-by-step instructions.',
+    learning: 'Algorithms are precise step-by-step instructions. Just like following a recipe!',
     color: 'green'
   },
   {
     id: 2,
-    titleKey: 'week2Title',
-    subtitleKey: 'week2Subtitle',
+    title: 'Debugging',
+    subtitle: 'The Cave',
     theme: 'from-slate-500 to-stone-700',
     icon: '🦇',
     position: { x: 25, y: 40 },
-    activityKey: 'week2Activity',
-    learningKey: 'week2Learning',
+    activity: 'Find and fix the bugs in Robbie\'s cave code! What went wrong?',
+    learning: 'Debugging means finding and fixing mistakes in our instructions.',
     color: 'slate'
   },
   {
     id: 3,
-    titleKey: 'week3Title',
-    subtitleKey: 'week3Subtitle',
+    title: 'Logic',
+    subtitle: 'The Castle',
     theme: 'from-red-400 to-rose-600',
     icon: '🏰',
     position: { x: 40, y: 55 },
-    activityKey: 'week3Activity',
-    learningKey: 'week3Learning',
+    activity: 'Use IF-THEN logic to help Robbie make decisions at the castle gates!',
+    learning: 'Logic helps computers make smart choices based on conditions.',
     color: 'red'
   },
   {
     id: 4,
-    titleKey: 'week4Title',
-    subtitleKey: 'week4Subtitle',
+    title: 'Patterns',
+    subtitle: 'The Sky',
     theme: 'from-sky-400 to-blue-600',
     icon: '☁️',
     position: { x: 55, y: 30 },
-    activityKey: 'week4Activity',
-    learningKey: 'week4Learning',
+    activity: 'Spot the patterns in the clouds! What comes next in the sequence?',
+    learning: 'Patterns repeat in predictable ways. Computers love finding patterns!',
     color: 'sky'
   },
   {
     id: 5,
-    titleKey: 'week5Title',
-    subtitleKey: 'week5Subtitle',
+    title: 'Decomposition',
+    subtitle: 'Underwater World',
     theme: 'from-cyan-400 to-teal-600',
     icon: '🐠',
     position: { x: 70, y: 65 },
-    activityKey: 'week5Activity',
-    learningKey: 'week5Learning',
+    activity: 'Break down a big problem into smaller parts to help Robbie swim through!',
+    learning: 'Decomposition means breaking big problems into smaller, easier pieces.',
     color: 'cyan'
   },
   {
     id: 6,
-    titleKey: 'week6Title',
-    subtitleKey: 'week6Subtitle',
+    title: 'Abstraction',
+    subtitle: 'Cloud Kingdom',
     theme: 'from-purple-400 to-violet-600',
     icon: '👑',
     position: { x: 85, y: 45 },
-    activityKey: 'week6Activity',
-    learningKey: 'week6Learning',
+    activity: 'Find what\'s important and ignore the details! Help Robbie see the big picture.',
+    learning: 'Abstraction means focusing on what matters most and hiding complexity.',
     color: 'purple'
   }
 ];
 
 export default function LearningMap() {
-  const { language } = useLanguage();
-  const WEEKS = getWeeks(language);
   const [currentWeek, setCurrentWeek] = useState(1);
   const [completedWeeks, setCompletedWeeks] = useState([]);
   const [selectedLevel, setSelectedLevel] = useState(null);
@@ -129,11 +125,11 @@ export default function LearningMap() {
           <Link to={createPageUrl('Home')}>
             <Button variant="ghost" className="text-white hover:bg-white/20 font-bold" style={{ fontFamily: "'Press Start 2P', cursive", fontSize: '10px' }}>
               <ArrowLeft className="w-4 h-4 mr-2" />
-              {getTranslation(language, 'back')}
+              BACK
             </Button>
           </Link>
           <h1 className="text-white font-bold text-center" style={{ fontFamily: "'Press Start 2P', cursive", fontSize: '12px', textShadow: '2px 2px 0px rgba(0,0,0,0.3)' }}>
-            🎮 {getTranslation(language, 'learningPath')} 🎮
+            🎮 LEARNING PATH 🎮
           </h1>
           <div className="flex items-center gap-2 bg-yellow-400 px-4 py-2 rounded-full border-2 border-yellow-600 shadow-md">
             <Trophy className="w-5 h-5 text-yellow-800" />
@@ -220,7 +216,7 @@ export default function LearningMap() {
                         <>
                           <div className="text-4xl mb-1">{week.icon}</div>
                           <div className="text-white font-black text-xs" style={{ fontFamily: "'Press Start 2P', cursive", textShadow: '1px 1px 0px rgba(0,0,0,0.5)' }}>
-                            {getTranslation(language, 'weekShort')}{week.id}
+                            W{week.id}
                           </div>
                         </>
                       ) : (
@@ -256,7 +252,7 @@ export default function LearningMap() {
                   <div className="mt-3 text-center">
                     <div className="bg-white/90 backdrop-blur px-3 py-1 rounded-full border-2 border-gray-800 shadow-md">
                       <p className="text-xs font-black text-gray-800" style={{ fontFamily: "'Press Start 2P', cursive" }}>
-                        {getTranslation(language, week.titleKey)}
+                        {week.title}
                       </p>
                     </div>
                   </div>
@@ -316,13 +312,13 @@ export default function LearningMap() {
                 <div className="text-center mb-6">
                   <div className="text-7xl mb-4">{selectedLevel.icon}</div>
                   <h2 className="text-3xl font-black mb-2" style={{ fontFamily: "'Press Start 2P', cursive" }}>
-                    {getTranslation(language, 'week')} {selectedLevel.id}
+                    WEEK {selectedLevel.id}
                   </h2>
                   <h3 className="text-2xl font-bold text-gray-700 mb-1">
-                    {getTranslation(language, selectedLevel.titleKey)}
+                    {selectedLevel.title}
                   </h3>
                   <p className="text-lg text-gray-500 italic">
-                    {getTranslation(language, selectedLevel.subtitleKey)}
+                    {selectedLevel.subtitle}
                   </p>
                 </div>
 
@@ -330,20 +326,20 @@ export default function LearningMap() {
                   <div className="bg-blue-50 p-6 rounded-2xl border-2 border-blue-200">
                     <h4 className="font-bold text-blue-900 mb-3 flex items-center gap-2">
                       <span className="text-2xl">🎯</span>
-                      {getTranslation(language, 'activity')}
+                      Activity:
                     </h4>
                     <p className="text-gray-700 leading-relaxed">
-                      {getTranslation(language, selectedLevel.activityKey)}
+                      {selectedLevel.activity}
                     </p>
                   </div>
 
                   <div className="bg-green-50 p-6 rounded-2xl border-2 border-green-200">
                     <h4 className="font-bold text-green-900 mb-3 flex items-center gap-2">
                       <span className="text-2xl">💡</span>
-                      {getTranslation(language, 'whatYoullLearn')}
+                      What You'll Learn:
                     </h4>
                     <p className="text-gray-700 leading-relaxed">
-                      {getTranslation(language, selectedLevel.learningKey)}
+                      {selectedLevel.learning}
                     </p>
                   </div>
                 </div>
@@ -354,7 +350,7 @@ export default function LearningMap() {
                     variant="outline"
                     className="flex-1 h-14 text-lg font-bold border-2"
                   >
-                    {getTranslation(language, 'close')}
+                    Close
                   </Button>
                   <Button
                     onClick={() => completeLevel(selectedLevel.id)}
@@ -364,11 +360,11 @@ export default function LearningMap() {
                     {completedWeeks.includes(selectedLevel.id) ? (
                       <>
                         <Star className="w-5 h-5 mr-2" />
-                        {getTranslation(language, 'completed')}
+                        Completed!
                       </>
                     ) : (
                       <>
-                        {getTranslation(language, 'completeWeek')}
+                        Complete Week
                         <Trophy className="w-5 h-5 ml-2" />
                       </>
                     )}
