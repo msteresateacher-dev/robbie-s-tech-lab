@@ -47,8 +47,8 @@ export default function SpeechBubble({
     // Ensure voices are loaded before speaking
     const speak = () => {
       const utterance = new SpeechSynthesisUtterance(text);
-      utterance.rate = voiceSettings.rate;
-      utterance.pitch = voiceSettings.pitch;
+      utterance.rate = voiceSettings?.rate || 0.85;
+      utterance.pitch = voiceSettings?.pitch || 1.2;
       utterance.lang = 'en-US';
       
       // Try to find a friendly voice
