@@ -7,20 +7,13 @@ import { Button } from '@/components/ui/button';
 import RobbieFace from '@/components/RobbieFace';
 import SpeechBubble from '@/components/SpeechBubble';
 import VoiceSelector, { VOICE_OPTIONS } from '@/components/VoiceSelector';
-import LanguageToggle from '@/components/LanguageToggle';
-import { useLanguage } from '@/components/LanguageContext';
-import { t } from '@/components/translations';
 
 export default function Home() {
-  const { language } = useLanguage();
   const [robbieEmotion, setRobbieEmotion] = useState('happy');
   const [isSpeaking, setIsSpeaking] = useState(false);
   const [hasInteracted, setHasInteracted] = useState(false);
   const [currentVoice, setCurrentVoice] = useState('friendly');
-  const [voiceSettings, setVoiceSettings] = useState({
-    ...VOICE_OPTIONS[0],
-    lang: 'en-US'
-  });
+  const [voiceSettings, setVoiceSettings] = useState(VOICE_OPTIONS[0]);
 
   const handleRobbieClick = () => {
     setHasInteracted(true);
@@ -30,30 +23,21 @@ export default function Home() {
 
   const handleVoiceChange = (voice) => {
     setCurrentVoice(voice.id);
-    setVoiceSettings({
-      ...voice,
-      lang: language === 'es' ? 'es-US' : 'en-US'
-    });
+    setVoiceSettings(voice);
   };
 
   return (
     <div className="min-h-screen bg-gradient-to-b from-amber-50 via-orange-50 to-sky-50">
       {/* Header */}
-      <header className="pt-8 pb-4 px-4">
-        <div className="flex items-center justify-between max-w-6xl mx-auto">
-          <div className="flex-1" />
-          <motion.div
-            initial={{ y: -20, opacity: 0 }}
-            animate={{ y: 0, opacity: 1 }}
-            className="inline-flex items-center gap-2 px-6 py-2 bg-white/80 backdrop-blur rounded-full shadow-sm"
-          >
-            <Sparkles className="w-5 h-5 text-orange-400" />
-            <span className="font-bold text-gray-700">{t('appTitle', language)}</span>
-          </motion.div>
-          <div className="flex-1 flex justify-end">
-            <LanguageToggle />
-          </div>
-        </div>
+      <header className="pt-8 pb-4 px-4 text-center">
+        <motion.div
+          initial={{ y: -20, opacity: 0 }}
+          animate={{ y: 0, opacity: 1 }}
+          className="inline-flex items-center gap-2 px-6 py-2 bg-white/80 backdrop-blur rounded-full shadow-sm"
+        >
+          <Sparkles className="w-5 h-5 text-orange-400" />
+          <span className="font-bold text-gray-700">Robbie's Tech Lab</span>
+        </motion.div>
       </header>
 
       {/* Main content */}
@@ -75,8 +59,8 @@ export default function Home() {
           <div className="mt-8 w-full max-w-md">
             <SpeechBubble
               message={hasInteracted 
-                ? t('robbieExcited', language)
-                : t('robbieGreeting', language)
+                ? "Yay! You found me! Let's learn about computers together!" 
+                : "Hi there, friend! Tap on me to say hello!"
               }
               visible={true}
               onSpeakStart={() => setIsSpeaking(true)}
@@ -92,7 +76,7 @@ export default function Home() {
             transition={{ delay: 0.3 }}
             className="mt-6 bg-white/80 backdrop-blur rounded-2xl p-4 shadow-lg"
           >
-            <p className="text-sm text-gray-600 text-center mb-3 font-medium">{t('chooseVoice', language)}</p>
+            <p className="text-sm text-gray-600 text-center mb-3 font-medium">Choose Robbie's Voice:</p>
             <VoiceSelector currentVoice={currentVoice} onVoiceChange={handleVoiceChange} />
           </motion.div>
         </motion.div>
@@ -110,7 +94,7 @@ export default function Home() {
               className="w-full h-20 text-xl rounded-2xl bg-gradient-to-r from-fuchsia-400 to-pink-500 hover:from-fuchsia-500 hover:to-pink-600 shadow-lg shadow-pink-200"
             >
               <Users className="w-8 h-8 mr-3" />
-              {t('startLearning', language)}
+              Start Learning!
             </Button>
           </Link>
 
@@ -120,7 +104,7 @@ export default function Home() {
               className="w-full h-16 text-lg rounded-2xl bg-gradient-to-r from-purple-400 to-indigo-500 hover:from-purple-500 hover:to-indigo-600 shadow-lg"
             >
               <Sparkles className="w-6 h-6 mr-2" />
-              {t('extraGames', language)}
+              Extra Fun Games!
             </Button>
           </Link>
 
@@ -131,7 +115,7 @@ export default function Home() {
               className="w-full h-16 text-lg rounded-2xl border-2 border-orange-300 text-orange-600 hover:bg-orange-50"
             >
               <GraduationCap className="w-6 h-6 mr-2" />
-              {t('teacherDashboard', language)}
+              Teacher Dashboard
             </Button>
           </Link>
         </motion.div>
@@ -146,10 +130,11 @@ export default function Home() {
           <div className="bg-white/60 backdrop-blur rounded-3xl p-6 shadow-lg border border-white">
             <h3 className="text-lg font-bold text-gray-700 flex items-center gap-2 mb-3">
               <span className="text-2xl">💡</span>
-              {t('funFact', language)}
+              Fun Fact!
             </h3>
             <p className="text-gray-600 leading-relaxed">
-              {t('funFactText', language)}
+              Did you know? Keyboards aren't in ABC order! The QWERTY layout was made 
+              for old typewriters to keep the keys from getting stuck. Pretty cool, right?
             </p>
           </div>
         </motion.div>

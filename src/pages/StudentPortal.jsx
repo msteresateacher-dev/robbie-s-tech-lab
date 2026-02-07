@@ -11,9 +11,6 @@ import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogTrigger } from 
 import StudentCard from '@/components/StudentCard';
 import RobbieFace from '@/components/RobbieFace';
 import SpeechBubble from '@/components/SpeechBubble';
-import LanguageToggle from '@/components/LanguageToggle';
-import { useLanguage } from '@/components/LanguageContext';
-import { t } from '@/components/translations';
 
 const avatarColors = [
   'bg-pink-400', 'bg-purple-400', 'bg-blue-400', 'bg-green-400',
@@ -21,7 +18,6 @@ const avatarColors = [
 ];
 
 export default function StudentPortal() {
-  const { language } = useLanguage();
   const navigate = useNavigate();
   const queryClient = useQueryClient();
   const [selectedStudent, setSelectedStudent] = useState(null);
@@ -71,8 +67,8 @@ export default function StudentPortal() {
               <ArrowLeft className="w-5 h-5" />
             </Button>
           </Link>
-          <h1 className="text-xl font-bold text-gray-800">{t('selectStudent', language)}</h1>
-          <LanguageToggle />
+          <h1 className="text-xl font-bold text-gray-800">Who's Learning Today?</h1>
+          <div className="w-10" />
         </div>
       </header>
 
@@ -87,16 +83,11 @@ export default function StudentPortal() {
           <div className="mt-4 w-full">
             <SpeechBubble
               message={selectedStudent 
-                ? language === 'es'
-                  ? `¡Hola ${selectedStudent.name}! ¿Listo para una aventura?`
-                  : `Hi ${selectedStudent.name}! Ready for an adventure?`
-                : language === 'es'
-                  ? "¡Elige tu nombre para comenzar a aprender!"
-                  : "Pick your name to start learning!"}
+                ? `Hi ${selectedStudent.name}! Ready for an adventure?` 
+                : "Pick your name to start learning!"}
               visible={true}
               onSpeakStart={() => setIsSpeaking(true)}
               onSpeakEnd={() => setIsSpeaking(false)}
-              voiceSettings={{ rate: 0.85, pitch: 1.2, lang: language === 'es' ? 'es-US' : 'en-US' }}
             />
           </div>
         </div>
@@ -128,36 +119,36 @@ export default function StudentPortal() {
                 >
                   <div className="w-16 h-16 rounded-full bg-gray-100 flex items-center justify-center mb-3">
                     <UserPlus className="w-8 h-8 text-gray-400" />
-                    </div>
-                    <span className="text-gray-500 font-medium">{t('addNewStudent', language)}</span>
-                    </motion.button>
-                    </DialogTrigger>
-                    <DialogContent className="rounded-3xl">
-                    <DialogHeader>
-                    <DialogTitle className="text-center text-2xl">{language === 'es' ? '¡Nuevo Amigo!' : 'New Friend!'}</DialogTitle>
-                    </DialogHeader>
-                    <div className="space-y-4 pt-4">
-                    <Input
-                    placeholder={language === 'es' ? '¿Cómo te llamas?' : "What's your name?"}
+                  </div>
+                  <span className="text-gray-500 font-medium">Add Student</span>
+                </motion.button>
+              </DialogTrigger>
+              <DialogContent className="rounded-3xl">
+                <DialogHeader>
+                  <DialogTitle className="text-center text-2xl">New Friend!</DialogTitle>
+                </DialogHeader>
+                <div className="space-y-4 pt-4">
+                  <Input
+                    placeholder="What's your name?"
                     value={newStudentName}
                     onChange={(e) => setNewStudentName(e.target.value)}
                     className="text-xl h-14 rounded-xl text-center"
                     autoFocus
-                    />
-                    <Button
+                  />
+                  <Button
                     onClick={handleCreateStudent}
                     disabled={!newStudentName.trim() || createStudentMutation.isPending}
                     className="w-full h-14 text-xl rounded-xl bg-sky-400 hover:bg-sky-500"
-                    >
+                  >
                     {createStudentMutation.isPending ? (
                       <Loader2 className="w-6 h-6 animate-spin" />
                     ) : (
                       <>
                         <Plus className="w-6 h-6 mr-2" />
-                        {language === 'es' ? '¡Únete a la Diversión!' : 'Join the Fun!'}
+                        Join the Fun!
                       </>
                     )}
-                    </Button>
+                  </Button>
                 </div>
               </DialogContent>
             </Dialog>
@@ -179,7 +170,7 @@ export default function StudentPortal() {
                 className="w-full h-16 text-xl rounded-2xl bg-gradient-to-r from-green-400 to-emerald-500 hover:from-green-500 hover:to-emerald-600 shadow-lg shadow-green-200"
               >
                 <span className="mr-2">🚀</span>
-                {language === 'es' ? `¡Vamos, ${selectedStudent.name}!` : `Let's Go, ${selectedStudent.name}!`}
+                Let's Go, {selectedStudent.name}!
               </Button>
             </motion.div>
           )}

@@ -80,34 +80,15 @@ export default function SpeechBubble({
     utterance.rate = voiceSettings.rate;
     utterance.pitch = voiceSettings.pitch;
     
-    // Set language based on voiceSettings
-    utterance.lang = voiceSettings.lang || 'en-US';
-    
-    // Try to find a friendly voice in the appropriate language
+    // Try to find a friendly voice
     const voices = window.speechSynthesis.getVoices();
     if (voices.length > 0) {
-      let friendlyVoice;
-      
-      if (voiceSettings.lang === 'es-US' || voiceSettings.lang === 'es-ES') {
-        // Spanish voices
-        friendlyVoice = voices.find(v => 
-          v.lang.includes('es') && (
-            v.name.includes('Google español') ||
-            v.name.includes('Microsoft Helena') ||
-            v.name.includes('Paulina') ||
-            v.name.includes('Spanish')
-          )
-        ) || voices.find(v => v.lang.includes('es'));
-      } else {
-        // English voices
-        friendlyVoice = voices.find(v => 
-          v.name.includes('Samantha') || 
-          v.name.includes('Google US English') ||
-          v.name.includes('Microsoft Zira') ||
-          v.lang.includes('en')
-        );
-      }
-      
+      const friendlyVoice = voices.find(v => 
+        v.name.includes('Samantha') || 
+        v.name.includes('Google US English') ||
+        v.name.includes('Microsoft Zira') ||
+        v.lang.includes('en')
+      );
       if (friendlyVoice) utterance.voice = friendlyVoice;
     }
 

@@ -13,12 +13,8 @@ import { Button } from '@/components/ui/button';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Badge } from '@/components/ui/badge';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
-import LanguageToggle from '@/components/LanguageToggle';
-import { useLanguage } from '@/components/LanguageContext';
-import { t } from '@/components/translations';
 
 export default function TeacherDashboard() {
-  const { language } = useLanguage();
   const [selectedStudent, setSelectedStudent] = useState(null);
 
   const { data: students = [], isLoading: studentsLoading } = useQuery({
@@ -65,11 +61,11 @@ export default function TeacherDashboard() {
           </Link>
           <Link to={createPageUrl('TeacherResources')}>
             <Button variant="outline" className="rounded-full">
-              📚 {t('resourceCenter', language)}
+              📚 Resource Center
             </Button>
           </Link>
-          <h1 className="text-xl font-bold text-gray-800">{t('teacherDashboard', language)}</h1>
-          <LanguageToggle />
+          <h1 className="text-xl font-bold text-gray-800">Teacher Dashboard</h1>
+          <div className="w-10" />
         </div>
       </header>
 
@@ -84,7 +80,7 @@ export default function TeacherDashboard() {
                 </div>
                 <div>
                   <p className="text-2xl font-bold text-gray-800">{totalStudents}</p>
-                  <p className="text-sm text-gray-500">{t('students', language)}</p>
+                  <p className="text-sm text-gray-500">Students</p>
                 </div>
               </div>
             </CardContent>
@@ -98,7 +94,7 @@ export default function TeacherDashboard() {
                 </div>
                 <div>
                   <p className="text-2xl font-bold text-gray-800">{totalMissionsCompleted}</p>
-                  <p className="text-sm text-gray-500">{t('missionsDone', language)}</p>
+                  <p className="text-sm text-gray-500">Missions Done</p>
                 </div>
               </div>
             </CardContent>
@@ -138,11 +134,11 @@ export default function TeacherDashboard() {
           <TabsList className="bg-white border shadow-sm">
             <TabsTrigger value="students" className="data-[state=active]:bg-sky-100">
               <Users className="w-4 h-4 mr-2" />
-              {t('students', language)}
+              Students
             </TabsTrigger>
             <TabsTrigger value="activity" className="data-[state=active]:bg-sky-100">
               <BarChart3 className="w-4 h-4 mr-2" />
-              {t('activity', language)}
+              Activity
             </TabsTrigger>
           </TabsList>
 
