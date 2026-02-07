@@ -7,6 +7,9 @@ import { useQuery } from '@tanstack/react-query';
 import { ArrowLeft, Lock, CheckCircle2, Loader2 } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import RobbieFace from '@/components/RobbieFace';
+import LanguageToggle from '@/components/LanguageToggle';
+import { useLanguage } from '@/components/LanguageContext';
+import { t } from '@/components/translations';
 
 const MISSIONS = [
   {
@@ -52,6 +55,7 @@ const MISSIONS = [
 ];
 
 export default function MissionSelect() {
+  const { language } = useLanguage();
   const navigate = useNavigate();
   const urlParams = new URLSearchParams(window.location.search);
   const studentId = urlParams.get('studentId');
@@ -106,10 +110,10 @@ export default function MissionSelect() {
             </Button>
           </Link>
           <div className="text-center">
-            <h1 className="text-xl font-bold text-gray-800">Choose a Mission</h1>
-            <p className="text-sm text-gray-500">{student?.name}'s Adventures</p>
+            <h1 className="text-xl font-bold text-gray-800">{language === 'es' ? 'Elige una Misión' : 'Choose a Mission'}</h1>
+            <p className="text-sm text-gray-500">{language === 'es' ? `Aventuras de ${student?.name}` : `${student?.name}'s Adventures`}</p>
           </div>
-          <div className="w-10" />
+          <LanguageToggle />
         </div>
       </header>
 
@@ -122,7 +126,7 @@ export default function MissionSelect() {
         >
           <RobbieFace emotion="excited" size="small" />
           <p className="mt-4 text-xl text-gray-700 font-medium text-center">
-            Pick an adventure, {student?.name}!
+            {language === 'es' ? `¡Elige una aventura, ${student?.name}!` : `Pick an adventure, ${student?.name}!`}
           </p>
         </motion.div>
 

@@ -523,9 +523,9 @@ export default function ExtraGames() {
                 <ArrowLeft size={24} />
               </div>
               <div className="text-left">
-                <h1 className="text-xl font-black text-gray-800">Robbie's Lab</h1>
+                <h1 className="text-xl font-black text-gray-800">{t('robotsLab', language)}</h1>
                 <div className="flex items-center gap-2 text-pink-500 font-bold text-xs tracking-widest">
-                  <Sparkles size={12} /> BROOKLYN CAMPUS
+                  <Sparkles size={12} /> {t('brooklynCampus', language)}
                 </div>
               </div>
             </button>
@@ -548,31 +548,31 @@ export default function ExtraGames() {
               className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4"
             >
               {/* Basic Concepts */}
-              <MenuBtn icon={<MousePointer2 />} label="Mouse Skills" color="bg-sky-500" onClick={() => { setView('mouse'); spawnMouseTarget(); }} />
-              <MenuBtn icon={<Keyboard />} label="Keyboard Fun" color="bg-slate-500" onClick={() => setView('keyboard')} />
-              <MenuBtn icon={<Monitor />} label="Screen World" color="bg-emerald-500" onClick={() => setView('screen')} />
-              <MenuBtn icon={<Power />} label="Power On/Off" color="bg-stone-500" onClick={() => setView('power')} />
+              <MenuBtn icon={<MousePointer2 />} label={t('mouseSkills', language)} color="bg-sky-500" onClick={() => { setView('mouse'); spawnMouseTarget(); }} />
+              <MenuBtn icon={<Keyboard />} label={t('keyboardFun', language)} color="bg-slate-500" onClick={() => setView('keyboard')} />
+              <MenuBtn icon={<Monitor />} label={t('screenWorld', language)} color="bg-emerald-500" onClick={() => setView('screen')} />
+              <MenuBtn icon={<Power />} label={t('powerOnOff', language)} color="bg-stone-500" onClick={() => setView('power')} />
               
               {/* Safety */}
-              <MenuBtn icon={<Lock />} label="Password" color="bg-amber-500" onClick={() => setView('password')} />
-              <MenuBtn icon={<Timer />} label="Screen Time" color="bg-teal-500" onClick={() => setView('timer')} />
-              <MenuBtn icon={<Heart />} label="Be Kind" color="bg-pink-500" onClick={() => setView('kindness')} />
+              <MenuBtn icon={<Lock />} label={t('passwordProtector', language)} color="bg-amber-500" onClick={() => setView('password')} />
+              <MenuBtn icon={<Timer />} label={t('screenTimeHelper', language)} color="bg-teal-500" onClick={() => setView('timer')} />
+              <MenuBtn icon={<Heart />} label={t('beKind', language)} color="bg-pink-500" onClick={() => setView('kindness')} />
               
               {/* Advanced */}
-              <MenuBtn icon={<Binary />} label="Binary Lights" color="bg-indigo-500" onClick={() => setView('binary')} />
-              <MenuBtn icon={<Database />} label="Data Detective" color="bg-purple-500" onClick={() => setView('data')} />
-              <MenuBtn icon={<Network />} label="Network" color="bg-blue-500" onClick={() => setView('network')} />
-              <MenuBtn icon={<Headphones />} label="Music Code" color="bg-violet-500" onClick={() => setView('music')} />
+              <MenuBtn icon={<Binary />} label={t('binaryLights', language)} color="bg-indigo-500" onClick={() => setView('binary')} />
+              <MenuBtn icon={<Database />} label={t('dataDetective', language)} color="bg-purple-500" onClick={() => setView('data')} />
+              <MenuBtn icon={<Network />} label={t('networkNavigator', language)} color="bg-blue-500" onClick={() => setView('network')} />
+              <MenuBtn icon={<Headphones />} label={t('musicCode', language)} color="bg-violet-500" onClick={() => setView('music')} />
               
               {/* Physical */}
-              <MenuBtn icon={<Cable />} label="Cables" color="bg-orange-500" onClick={() => setView('cables')} />
-              <MenuBtn icon={<Puzzle />} label="Parts Puzzle" color="bg-red-500" onClick={() => setView('parts')} />
-              <MenuBtn icon={<Tablet />} label="Touch vs Type" color="bg-fuchsia-500" onClick={() => setView('touchtype')} />
+              <MenuBtn icon={<Cable />} label={t('cables', language)} color="bg-orange-500" onClick={() => setView('cables')} />
+              <MenuBtn icon={<Puzzle />} label={t('partsPuzzle', language)} color="bg-red-500" onClick={() => setView('parts')} />
+              <MenuBtn icon={<Tablet />} label={t('touchVsType', language)} color="bg-fuchsia-500" onClick={() => setView('touchtype')} />
               
               {/* Brooklyn */}
-              <MenuBtn icon={<MapPin />} label="Helper Bot" color="bg-green-500" onClick={() => setView('brooklyn')} />
-              <MenuBtn icon={<Cloud />} label="Weather" color="bg-cyan-500" onClick={() => setView('weather')} />
-              <MenuBtn icon={<Image />} label="Photo Memory" color="bg-rose-500" onClick={() => setView('photos')} />
+              <MenuBtn icon={<MapPin />} label={t('helperBot', language)} color="bg-green-500" onClick={() => setView('brooklyn')} />
+              <MenuBtn icon={<Cloud />} label={t('weatherReporter', language)} color="bg-cyan-500" onClick={() => setView('weather')} />
+              <MenuBtn icon={<Image />} label={t('photoMemory', language)} color="bg-rose-500" onClick={() => setView('photos')} />
               
               {/* Original Games */}
               <MenuBtn icon={<Spade />} label="Go Fish" color="bg-teal-600" onClick={() => { setView('gofish'); startGoFish(); }} />
@@ -592,7 +592,7 @@ export default function ExtraGames() {
                 ))}
               </div>
               <div className="text-center mb-6"><p className="text-3xl font-black text-sky-600">Clicks: {mouseClicks}</p></div>
-              <button onClick={() => setView('menu')} className="bg-gray-100 p-6 rounded-2xl font-bold w-full">Back</button>
+              <button onClick={() => setView('menu')} className="bg-gray-100 p-6 rounded-2xl font-bold w-full">{t('back', language)}</button>
             </motion.div>
           )}
 
@@ -609,7 +609,7 @@ export default function ExtraGames() {
                 <button onClick={() => handleKeyPress('ENTER')} className="bg-slate-600 text-white p-8 rounded-2xl font-black hover:bg-slate-700">ENTER</button>
                 <button onClick={() => handleKeyPress('DELETE')} className="bg-red-500 text-white p-8 rounded-2xl font-black hover:bg-red-600">DELETE</button>
               </div>
-              <button onClick={() => setView('menu')} className="bg-gray-100 p-6 rounded-2xl font-bold w-full">Back</button>
+              <button onClick={() => setView('menu')} className="bg-gray-100 p-6 rounded-2xl font-bold w-full">{t('back', language)}</button>
             </motion.div>
           )}
 
@@ -622,7 +622,7 @@ export default function ExtraGames() {
                 <div className="bg-amber-50 p-8 rounded-2xl border-4 border-amber-300"><h3 className="text-2xl font-bold mb-4">In Real Life 🌍</h3><div className="text-6xl">⚽ 🌳 🎨</div></div>
               </div>
               <button onClick={() => { speak("Some things are on screens, some are real!"); setScore(s => s + 10); }} className="bg-emerald-600 text-white p-8 rounded-3xl font-black text-xl w-full mb-4">LEARN MORE</button>
-              <button onClick={() => setView('menu')} className="bg-gray-100 p-6 rounded-2xl font-bold w-full">Back</button>
+              <button onClick={() => setView('menu')} className="bg-gray-100 p-6 rounded-2xl font-bold w-full">{t('back', language)}</button>
             </motion.div>
           )}
 
@@ -632,7 +632,7 @@ export default function ExtraGames() {
               <h2 className="text-4xl font-black mb-8 text-stone-600">Power Safety!</h2>
               <div className={`text-9xl mb-8 transition-all ${powerOn ? 'opacity-100' : 'opacity-30'}`}>💻</div>
               <button onClick={togglePower} className={`p-12 rounded-3xl font-black text-2xl w-full mb-6 ${powerOn ? 'bg-red-500' : 'bg-green-500'} text-white`}>{powerOn ? '⏻ POWER OFF' : '⏻ POWER ON'}</button>
-              <button onClick={() => setView('menu')} className="bg-gray-100 p-6 rounded-2xl font-bold w-full">Back</button>
+              <button onClick={() => setView('menu')} className="bg-gray-100 p-6 rounded-2xl font-bold w-full">{t('back', language)}</button>
             </motion.div>
           )}
 
@@ -652,7 +652,7 @@ export default function ExtraGames() {
               <h2 className="text-4xl font-black mb-8 text-teal-600">Screen Time Helper!</h2>
               <div className="text-8xl font-black mb-8">{Math.floor(screenTime/60)}:{(screenTime%60).toString().padStart(2,'0')}</div>
               <button onClick={startScreenTimer} disabled={timerRunning} className="bg-teal-600 text-white p-8 rounded-3xl font-black text-xl w-full mb-6 disabled:opacity-50">{timerRunning ? 'Timer Running...' : 'START 5 MIN TIMER'}</button>
-              <button onClick={() => setView('menu')} className="bg-gray-100 p-6 rounded-2xl font-bold w-full">Back</button>
+              <button onClick={() => setView('menu')} className="bg-gray-100 p-6 rounded-2xl font-bold w-full">{t('back', language)}</button>
             </motion.div>
           )}
 
@@ -662,7 +662,7 @@ export default function ExtraGames() {
               <h2 className="text-4xl font-black mb-8 text-pink-600">Be a Kind Friend!</h2>
               <div className="bg-pink-50 p-12 rounded-3xl mb-8"><div className="text-6xl mb-4">{KINDNESS_SCENARIOS[scenarioIndex].emoji}</div><p className="text-2xl font-bold">{KINDNESS_SCENARIOS[scenarioIndex].text}</p></div>
               <div className="grid grid-cols-2 gap-4 mb-6"><button onClick={() => checkKindness(true)} className="bg-green-500 text-white p-8 rounded-3xl font-black text-xl">😊 KIND</button><button onClick={() => checkKindness(false)} className="bg-red-500 text-white p-8 rounded-3xl font-black text-xl">😢 NOT KIND</button></div>
-              <button onClick={() => setView('menu')} className="bg-gray-100 p-6 rounded-2xl font-bold w-full">Back</button>
+              <button onClick={() => setView('menu')} className="bg-gray-100 p-6 rounded-2xl font-bold w-full">{t('back', language)}</button>
             </motion.div>
           )}
 
@@ -674,7 +674,7 @@ export default function ExtraGames() {
               <p className="text-sm text-indigo-500 font-semibold mb-8">⌨️ Try keyboard numbers 1, 2, 3, 4!</p>
               <div className="flex justify-center gap-6 mb-8">{binaryLights.map((light,i) => (<button key={i} onClick={() => toggleBinary(i)} className={`w-24 h-24 rounded-full ${light ? 'bg-yellow-400 shadow-[0_0_30px_gold]' : 'bg-gray-300'}`}><div className="text-3xl font-black">{light}</div></button>))}</div>
               <div className="text-2xl font-bold mb-8">Binary: {binaryLights.join('')}</div>
-              <button onClick={() => setView('menu')} className="bg-gray-100 p-6 rounded-2xl font-bold w-full">Back</button>
+              <button onClick={() => setView('menu')} className="bg-gray-100 p-6 rounded-2xl font-bold w-full">{t('back', language)}</button>
             </motion.div>
           )}
 
@@ -684,7 +684,7 @@ export default function ExtraGames() {
               <h2 className="text-4xl font-black mb-8 text-purple-600">Data Detective!</h2>
               <div className="grid grid-cols-3 gap-4 mb-8">{DATA_ITEMS.map(item => (<div key={item.id} className="bg-purple-100 p-6 rounded-2xl text-5xl cursor-pointer hover:scale-105 transition-transform" onClick={() => sortDataItem(item, item.category)}>{item.icon}</div>))}</div>
               <div className="grid grid-cols-3 gap-4 mb-6"><div className="bg-blue-100 p-6 rounded-2xl font-bold">📷 Images</div><div className="bg-green-100 p-6 rounded-2xl font-bold">🔢 Numbers</div><div className="bg-pink-100 p-6 rounded-2xl font-bold">🎨 Colors</div></div>
-              <button onClick={() => setView('menu')} className="bg-gray-100 p-6 rounded-2xl font-bold w-full">Back</button>
+              <button onClick={() => setView('menu')} className="bg-gray-100 p-6 rounded-2xl font-bold w-full">{t('back', language)}</button>
             </motion.div>
           )}
 
@@ -694,7 +694,7 @@ export default function ExtraGames() {
               <h2 className="text-4xl font-black mb-8 text-blue-600">Network Navigator!</h2>
               <div className="bg-blue-50 p-12 rounded-3xl mb-8"><div className="flex justify-around items-center text-6xl"><div>💻</div><div>↔️</div><div>🌐</div><div>↔️</div><div>💻</div></div></div>
               <button onClick={sendNetworkMessage} className="bg-blue-600 text-white p-8 rounded-3xl font-black text-xl w-full mb-6">SEND MESSAGE!</button>
-              <button onClick={() => setView('menu')} className="bg-gray-100 p-6 rounded-2xl font-bold w-full">Back</button>
+              <button onClick={() => setView('menu')} className="bg-gray-100 p-6 rounded-2xl font-bold w-full">{t('back', language)}</button>
             </motion.div>
           )}
 
@@ -713,7 +713,7 @@ export default function ExtraGames() {
             <motion.div key="cables" initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} className="bg-white p-10 rounded-[3rem] shadow-2xl text-center">
               <h2 className="text-4xl font-black mb-8 text-orange-600">Cable Connector!</h2>
               <div className="grid grid-cols-2 gap-8 mb-8">{CABLE_TYPES.map(cable => (<div key={cable.id} className="bg-orange-50 p-8 rounded-2xl cursor-pointer hover:bg-orange-100" onClick={() => matchCable(cable, cable.match)}><div className="text-6xl mb-4">{cable.cable} → {cable.device}</div><p className="font-bold">{cable.name}</p></div>))}</div>
-              <button onClick={() => setView('menu')} className="bg-gray-100 p-6 rounded-2xl font-bold w-full">Back</button>
+              <button onClick={() => setView('menu')} className="bg-gray-100 p-6 rounded-2xl font-bold w-full">{t('back', language)}</button>
             </motion.div>
           )}
 
@@ -723,7 +723,7 @@ export default function ExtraGames() {
               <h2 className="text-4xl font-black mb-8 text-red-600">Parts Puzzle!</h2>
               <div className="grid grid-cols-4 gap-4 mb-8" style={{gridTemplateRows: 'repeat(4, 100px)'}}>{COMPUTER_PARTS.map(part => (<button key={part.id} onClick={() => placePart(part)} className={`text-6xl ${partsPlaced.includes(part.id) ? 'opacity-30' : ''}`} style={{gridColumn: part.position.x, gridRow: part.position.y}}>{part.icon}</button>))}</div>
               <p className="text-2xl font-bold mb-6">Parts Placed: {partsPlaced.length}/4</p>
-              <button onClick={() => setView('menu')} className="bg-gray-100 p-6 rounded-2xl font-bold w-full">Back</button>
+              <button onClick={() => setView('menu')} className="bg-gray-100 p-6 rounded-2xl font-bold w-full">{t('back', language)}</button>
             </motion.div>
           )}
 
@@ -732,7 +732,7 @@ export default function ExtraGames() {
             <motion.div key="touchtype" initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} className="bg-white p-10 rounded-[3rem] shadow-2xl text-center">
               <h2 className="text-4xl font-black mb-8 text-fuchsia-600">Touch vs Type!</h2>
               <div className="grid grid-cols-2 gap-8 mb-8"><button onClick={() => compareInput('touch')} className="bg-fuchsia-100 p-12 rounded-3xl hover:bg-fuchsia-200"><div className="text-6xl mb-4">📱</div><p className="font-bold text-xl">TOUCH: {touchVsType.touch}</p></button><button onClick={() => compareInput('type')} className="bg-blue-100 p-12 rounded-3xl hover:bg-blue-200"><div className="text-6xl mb-4">⌨️</div><p className="font-bold text-xl">TYPE: {touchVsType.type}</p></button></div>
-              <button onClick={() => setView('menu')} className="bg-gray-100 p-6 rounded-2xl font-bold w-full">Back</button>
+              <button onClick={() => setView('menu')} className="bg-gray-100 p-6 rounded-2xl font-bold w-full">{t('back', language)}</button>
             </motion.div>
           )}
 
@@ -742,7 +742,7 @@ export default function ExtraGames() {
               <h2 className="text-4xl font-black mb-8 text-green-600">Brooklyn Helper Bot!</h2>
               <div className="bg-green-50 p-12 rounded-3xl mb-8"><div className="text-8xl mb-4">{BROOKLYN_LOCATIONS[brooklynLocation].icon}</div><h3 className="text-3xl font-black mb-2">{BROOKLYN_LOCATIONS[brooklynLocation].name}</h3><p className="text-xl">{BROOKLYN_LOCATIONS[brooklynLocation].task}</p></div>
               <button onClick={helpBrooklyn} className="bg-green-600 text-white p-8 rounded-3xl font-black text-xl w-full mb-6">HELP BROOKLYN! {BROOKLYN_LOCATIONS[brooklynLocation].emoji}</button>
-              <button onClick={() => setView('menu')} className="bg-gray-100 p-6 rounded-2xl font-bold w-full">Back</button>
+              <button onClick={() => setView('menu')} className="bg-gray-100 p-6 rounded-2xl font-bold w-full">{t('back', language)}</button>
             </motion.div>
           )}
 
@@ -752,7 +752,7 @@ export default function ExtraGames() {
               <h2 className="text-4xl font-black mb-8 text-cyan-600">Weather Reporter!</h2>
               <div className="bg-cyan-50 p-12 rounded-3xl mb-8"><div className="text-8xl mb-4">{weatherData.condition === 'sunny' ? '☀️' : weatherData.condition === 'cloudy' ? '☁️' : '🌧️'}</div><p className="text-5xl font-black">{weatherData.temp}°F</p><p className="text-2xl capitalize mt-4">{weatherData.condition}</p></div>
               <button onClick={checkWeather} className="bg-cyan-600 text-white p-8 rounded-3xl font-black text-xl w-full mb-6">CHECK WEATHER 🌡️</button>
-              <button onClick={() => setView('menu')} className="bg-gray-100 p-6 rounded-2xl font-bold w-full">Back</button>
+              <button onClick={() => setView('menu')} className="bg-gray-100 p-6 rounded-2xl font-bold w-full">{t('back', language)}</button>
             </motion.div>
           )}
 
@@ -862,7 +862,7 @@ export default function ExtraGames() {
                   <button onClick={startTagGame} className="bg-lime-600 text-white p-8 rounded-3xl font-black text-2xl mb-6 w-full">
                     START TAG!
                   </button>
-                  <button onClick={() => setView('menu')} className="bg-gray-100 p-6 rounded-2xl font-bold w-full">Back</button>
+                  <button onClick={() => setView('menu')} className="bg-gray-100 p-6 rounded-2xl font-bold w-full">{t('back', language)}</button>
                 </div>
               ) : (
                 <>

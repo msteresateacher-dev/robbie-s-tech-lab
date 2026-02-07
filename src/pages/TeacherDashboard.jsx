@@ -84,7 +84,7 @@ export default function TeacherDashboard() {
                 </div>
                 <div>
                   <p className="text-2xl font-bold text-gray-800">{totalStudents}</p>
-                  <p className="text-sm text-gray-500">Students</p>
+                  <p className="text-sm text-gray-500">{t('students', language)}</p>
                 </div>
               </div>
             </CardContent>
@@ -98,7 +98,7 @@ export default function TeacherDashboard() {
                 </div>
                 <div>
                   <p className="text-2xl font-bold text-gray-800">{totalMissionsCompleted}</p>
-                  <p className="text-sm text-gray-500">Missions Done</p>
+                  <p className="text-sm text-gray-500">{t('missionsDone', language)}</p>
                 </div>
               </div>
             </CardContent>
@@ -138,11 +138,11 @@ export default function TeacherDashboard() {
           <TabsList className="bg-white border shadow-sm">
             <TabsTrigger value="students" className="data-[state=active]:bg-sky-100">
               <Users className="w-4 h-4 mr-2" />
-              Students
+              {t('students', language)}
             </TabsTrigger>
             <TabsTrigger value="activity" className="data-[state=active]:bg-sky-100">
               <BarChart3 className="w-4 h-4 mr-2" />
-              Activity
+              {t('activity', language)}
             </TabsTrigger>
           </TabsList>
 
