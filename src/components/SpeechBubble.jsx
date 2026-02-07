@@ -37,32 +37,44 @@ export default function SpeechBubble({
   }, [message, visible, autoSpeak]);
 
   const speakMessage = (text) => {
+    if (!('speechSynthesis' in window)) return;
+    
     window.speechSynthesis.cancel();
     
-    const utterance = new SpeechSynthesisUtterance(text);
-    utterance.rate = voiceSettings.rate;
-    utterance.pitch = voiceSettings.pitch;
-    
-    // Try to find a friendly voice
+    const speak = () => {
+      const utterance = new SpeechSynthesisUtterance(text);
+      utterance.rate = voiceSettings.rate;
+      utterance.pitch = voiceSettings.pitch;
+      
+      // Try to find a friendly voice
+      const voices = window.speechSynthesis.getVoices();
+      const friendlyVoice = voices.find(v => 
+        v.name.includes('Samantha') || 
+        v.name.includes('Google US English') ||
+        v.name.includes('Microsoft Zira')
+      );
+      if (friendlyVoice) utterance.voice = friendlyVoice;
+
+      utterance.onstart = () => {
+        setIsSpeaking(true);
+        onSpeakStart?.();
+      };
+      
+      utterance.onend = () => {
+        setIsSpeaking(false);
+        onSpeakEnd?.();
+      };
+
+      window.speechSynthesis.speak(utterance);
+    };
+
+    // Ensure voices are loaded before speaking
     const voices = window.speechSynthesis.getVoices();
-    const friendlyVoice = voices.find(v => 
-      v.name.includes('Samantha') || 
-      v.name.includes('Google US English') ||
-      v.name.includes('Microsoft Zira')
-    );
-    if (friendlyVoice) utterance.voice = friendlyVoice;
-
-    utterance.onstart = () => {
-      setIsSpeaking(true);
-      onSpeakStart?.();
-    };
-    
-    utterance.onend = () => {
-      setIsSpeaking(false);
-      onSpeakEnd?.();
-    };
-
-    window.speechSynthesis.speak(utterance);
+    if (voices.length > 0) {
+      speak();
+    } else {
+      window.speechSynthesis.addEventListener('voiceschanged', speak, { once: true });
+    }
   };
 
   const handleReplay = () => {
