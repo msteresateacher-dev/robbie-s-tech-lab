@@ -1,4 +1,4 @@
-import React, { useEffect, useState, useRef } from 'react';
+import React, { useEffect, useState } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import { Volume2 } from 'lucide-react';
 
@@ -12,44 +12,11 @@ export default function SpeechBubble({
 }) {
   const [displayedText, setDisplayedText] = useState('');
   const [isSpeaking, setIsSpeaking] = useState(false);
-  const [voicesLoaded, setVoicesLoaded] = useState(false);
-  const lastMessageRef = useRef('');
-  const utteranceRef = useRef(null);
-
-  // Load voices
-  useEffect(() => {
-    const loadVoices = () => {
-      const voices = window.speechSynthesis.getVoices();
-      if (voices.length > 0) {
-        setVoicesLoaded(true);
-      }
-    };
-
-    if ('speechSynthesis' in window) {
-      loadVoices();
-      window.speechSynthesis.onvoiceschanged = loadVoices;
-    }
-
-    return () => {
-      if ('speechSynthesis' in window) {
-        window.speechSynthesis.onvoiceschanged = null;
-        window.speechSynthesis.cancel();
-      }
-    };
-  }, []);
 
   useEffect(() => {
-    if (visible && message && message !== lastMessageRef.current) {
-      lastMessageRef.current = message;
-      
-      // Cancel any ongoing speech
-      if (window.speechSynthesis && window.speechSynthesis.speaking) {
-        window.speechSynthesis.cancel();
-      }
-      
+    if (visible && message) {
       setDisplayedText('');
       let index = 0;
-      let hasSpoken = false;
       
       const typeInterval = setInterval(() => {
         if (index < message.length) {
@@ -57,24 +24,20 @@ export default function SpeechBubble({
           index++;
         } else {
           clearInterval(typeInterval);
-          // Speak after typing completes
-          if (autoSpeak && voicesLoaded && !hasSpoken) {
-            hasSpoken = true;
-            setTimeout(() => {
-              speakMessage(message);
-            }, 300);
-          }
         }
       }, 30);
 
-      return () => {
-        clearInterval(typeInterval);
-      };
+      // Start speaking
+      if (autoSpeak && 'speechSynthesis' in window) {
+        speakMessage(message);
+      }
+
+      return () => clearInterval(typeInterval);
     }
-  }, [message, visible, autoSpeak, voicesLoaded]);
+  }, [message, visible, autoSpeak]);
 
   const speakMessage = (text) => {
-    if (!('speechSynthesis' in window) || !voicesLoaded) return;
+    window.speechSynthesis.cancel();
     
     const utterance = new SpeechSynthesisUtterance(text);
     utterance.rate = voiceSettings.rate;
@@ -82,15 +45,12 @@ export default function SpeechBubble({
     
     // Try to find a friendly voice
     const voices = window.speechSynthesis.getVoices();
-    if (voices.length > 0) {
-      const friendlyVoice = voices.find(v => 
-        v.name.includes('Samantha') || 
-        v.name.includes('Google US English') ||
-        v.name.includes('Microsoft Zira') ||
-        v.lang.includes('en')
-      );
-      if (friendlyVoice) utterance.voice = friendlyVoice;
-    }
+    const friendlyVoice = voices.find(v => 
+      v.name.includes('Samantha') || 
+      v.name.includes('Google US English') ||
+      v.name.includes('Microsoft Zira')
+    );
+    if (friendlyVoice) utterance.voice = friendlyVoice;
 
     utterance.onstart = () => {
       setIsSpeaking(true);
@@ -100,24 +60,13 @@ export default function SpeechBubble({
     utterance.onend = () => {
       setIsSpeaking(false);
       onSpeakEnd?.();
-      utteranceRef.current = null;
     };
 
-    utterance.onerror = (e) => {
-      if (e.error !== 'canceled' && e.error !== 'interrupted') {
-        console.log('Speech error:', e.error);
-      }
-      setIsSpeaking(false);
-      onSpeakEnd?.();
-      utteranceRef.current = null;
-    };
-
-    utteranceRef.current = utterance;
     window.speechSynthesis.speak(utterance);
   };
 
   const handleReplay = () => {
-    if (message && voicesLoaded) {
+    if (message) {
       speakMessage(message);
     }
   };
