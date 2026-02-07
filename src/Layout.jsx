@@ -1,5 +1,5 @@
 import React from 'react';
-import { LanguageProvider } from './components/LanguageContext';
+import { LanguageProvider } from '@/components/LanguageContext';
 
 export default function Layout({ children }) {
   return (
