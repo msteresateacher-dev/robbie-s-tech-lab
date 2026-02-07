@@ -39,6 +39,7 @@ export default function SpeechBubble({
     if (visible && message) {
       setDisplayedText('');
       let index = 0;
+      let hasSpoken = false;
       
       const typeInterval = setInterval(() => {
         if (index < message.length) {
@@ -47,20 +48,26 @@ export default function SpeechBubble({
         } else {
           clearInterval(typeInterval);
           // Speak after typing completes
-          if (autoSpeak && voicesLoaded) {
+          if (autoSpeak && voicesLoaded && !hasSpoken) {
+            hasSpoken = true;
             setTimeout(() => speakMessage(message), 200);
           }
         }
       }, 30);
 
-      return () => clearInterval(typeInterval);
+      return () => {
+        clearInterval(typeInterval);
+      };
     }
-  }, [message, visible, voicesLoaded]);
+  }, [message, visible, autoSpeak, voicesLoaded]);
 
   const speakMessage = (text) => {
     if (!('speechSynthesis' in window)) return;
     
-    window.speechSynthesis.cancel();
+    // Only cancel if we're going to speak something new
+    if (window.speechSynthesis.speaking) {
+      window.speechSynthesis.cancel();
+    }
     
     const utterance = new SpeechSynthesisUtterance(text);
     utterance.rate = voiceSettings.rate;
@@ -94,7 +101,10 @@ export default function SpeechBubble({
       onSpeakEnd?.();
     };
 
-    window.speechSynthesis.speak(utterance);
+    // Small delay to ensure cancel completes
+    setTimeout(() => {
+      window.speechSynthesis.speak(utterance);
+    }, 50);
   };
 
   const handleReplay = () => {
