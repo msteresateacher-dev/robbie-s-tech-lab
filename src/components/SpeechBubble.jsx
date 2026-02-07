@@ -37,48 +37,32 @@ export default function SpeechBubble({
   }, [message, visible, autoSpeak]);
 
   const speakMessage = (text) => {
-    if (!('speechSynthesis' in window)) return;
-    
     window.speechSynthesis.cancel();
     
-    const speak = () => {
-      const utterance = new SpeechSynthesisUtterance(text);
-      utterance.rate = voiceSettings.rate;
-      utterance.pitch = voiceSettings.pitch;
-      utterance.volume = 1.0;
-      
-      // Try to find a friendly voice
-      const voices = window.speechSynthesis.getVoices();
-      const friendlyVoice = voices.find(v => 
-        v.name.includes('Samantha') || 
-        v.name.includes('Google US English') ||
-        v.name.includes('Microsoft Zira') ||
-        v.lang.startsWith('en')
-      );
-      if (friendlyVoice) utterance.voice = friendlyVoice;
+    const utterance = new SpeechSynthesisUtterance(text);
+    utterance.rate = voiceSettings.rate;
+    utterance.pitch = voiceSettings.pitch;
+    
+    // Try to find a friendly voice
+    const voices = window.speechSynthesis.getVoices();
+    const friendlyVoice = voices.find(v => 
+      v.name.includes('Samantha') || 
+      v.name.includes('Google US English') ||
+      v.name.includes('Microsoft Zira')
+    );
+    if (friendlyVoice) utterance.voice = friendlyVoice;
 
-      utterance.onstart = () => {
-        setIsSpeaking(true);
-        onSpeakStart?.();
-      };
-      
-      utterance.onend = () => {
-        setIsSpeaking(false);
-        onSpeakEnd?.();
-      };
-
-      window.speechSynthesis.speak(utterance);
+    utterance.onstart = () => {
+      setIsSpeaking(true);
+      onSpeakStart?.();
+    };
+    
+    utterance.onend = () => {
+      setIsSpeaking(false);
+      onSpeakEnd?.();
     };
 
-    // Wait for voices to load
-    const voices = window.speechSynthesis.getVoices();
-    if (voices.length > 0) {
-      speak();
-    } else {
-      window.speechSynthesis.onvoiceschanged = () => {
-        speak();
-      };
-    }
+    window.speechSynthesis.speak(utterance);
   };
 
   const handleReplay = () => {
