@@ -12,6 +12,28 @@ export default function SpeechBubble({
 }) {
   const [displayedText, setDisplayedText] = useState('');
   const [isSpeaking, setIsSpeaking] = useState(false);
+  const [voicesLoaded, setVoicesLoaded] = useState(false);
+
+  // Load voices
+  useEffect(() => {
+    const loadVoices = () => {
+      const voices = window.speechSynthesis.getVoices();
+      if (voices.length > 0) {
+        setVoicesLoaded(true);
+      }
+    };
+
+    if ('speechSynthesis' in window) {
+      loadVoices();
+      window.speechSynthesis.onvoiceschanged = loadVoices;
+    }
+
+    return () => {
+      if ('speechSynthesis' in window) {
+        window.speechSynthesis.onvoiceschanged = null;
+      }
+    };
+  }, []);
 
   useEffect(() => {
     if (visible && message) {
@@ -24,19 +46,20 @@ export default function SpeechBubble({
           index++;
         } else {
           clearInterval(typeInterval);
+          // Speak after typing completes
+          if (autoSpeak && voicesLoaded) {
+            setTimeout(() => speakMessage(message), 200);
+          }
         }
       }, 30);
 
-      // Start speaking
-      if (autoSpeak && 'speechSynthesis' in window) {
-        speakMessage(message);
-      }
-
       return () => clearInterval(typeInterval);
     }
-  }, [message, visible, autoSpeak]);
+  }, [message, visible, voicesLoaded]);
 
   const speakMessage = (text) => {
+    if (!('speechSynthesis' in window)) return;
+    
     window.speechSynthesis.cancel();
     
     const utterance = new SpeechSynthesisUtterance(text);
@@ -45,12 +68,15 @@ export default function SpeechBubble({
     
     // Try to find a friendly voice
     const voices = window.speechSynthesis.getVoices();
-    const friendlyVoice = voices.find(v => 
-      v.name.includes('Samantha') || 
-      v.name.includes('Google US English') ||
-      v.name.includes('Microsoft Zira')
-    );
-    if (friendlyVoice) utterance.voice = friendlyVoice;
+    if (voices.length > 0) {
+      const friendlyVoice = voices.find(v => 
+        v.name.includes('Samantha') || 
+        v.name.includes('Google US English') ||
+        v.name.includes('Microsoft Zira') ||
+        v.lang.includes('en')
+      );
+      if (friendlyVoice) utterance.voice = friendlyVoice;
+    }
 
     utterance.onstart = () => {
       setIsSpeaking(true);
@@ -62,11 +88,17 @@ export default function SpeechBubble({
       onSpeakEnd?.();
     };
 
+    utterance.onerror = (e) => {
+      console.log('Speech error:', e);
+      setIsSpeaking(false);
+      onSpeakEnd?.();
+    };
+
     window.speechSynthesis.speak(utterance);
   };
 
   const handleReplay = () => {
-    if (message) {
+    if (message && voicesLoaded) {
       speakMessage(message);
     }
   };
