@@ -86,9 +86,6 @@ export default function SpeechBubble({
           <div className="relative">
             <p className="text-xl md:text-2xl text-gray-700 font-medium leading-relaxed">
               {displayedText}
-              {displayedText.length < message.length && (
-                <span className="animate-pulse">|</span>
-              )}
             </p>
             
             {/* Replay button */}
