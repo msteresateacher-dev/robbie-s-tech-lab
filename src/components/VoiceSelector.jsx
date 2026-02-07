@@ -8,8 +8,7 @@ const VOICE_OPTIONS = [
   { id: 'Puck', name: 'Excited', icon: '⚡', prompt: 'Say in a very high-energy and excited voice:' }
 ];
 
-const App = () => {
-  const [currentVoice, setCurrentVoice] = useState(VOICE_OPTIONS[0]);
+export default function VoiceSelector({ currentVoice, onVoiceChange }) {
   const [isLoading, setIsLoading] = useState(false);
   const audioRef = useRef(null);
   
@@ -48,7 +47,7 @@ const App = () => {
   };
 
   const handleVoiceChange = async (voice) => {
-    setCurrentVoice(voice);
+    onVoiceChange(voice);
     setIsLoading(true);
 
     const fetchTTS = async (retries = 5, delay = 1000) => {
@@ -119,7 +118,7 @@ const App = () => {
               whileHover={{ scale: 1.02 }}
               whileTap={{ scale: 0.98 }}
               className={`flex items-center justify-between px-6 py-4 rounded-2xl font-bold transition-all border-2 ${
-                currentVoice.id === voice.id
+                currentVoice === voice.id
                   ? 'bg-fuchsia-600 text-white border-fuchsia-600 shadow-lg'
                   : 'bg-white text-gray-700 border-gray-100 hover:border-fuchsia-200'
               } disabled:opacity-50`}
@@ -129,10 +128,10 @@ const App = () => {
                 <span className="text-lg">{voice.name}</span>
               </div>
               
-              {isLoading && currentVoice.id === voice.id ? (
+              {isLoading && currentVoice === voice.id ? (
                 <Loader2 className="w-5 h-5 animate-spin" />
               ) : (
-                <div className={`w-3 h-3 rounded-full ${currentVoice.id === voice.id ? 'bg-white' : 'bg-gray-200'}`} />
+                <div className={`w-3 h-3 rounded-full ${currentVoice === voice.id ? 'bg-white' : 'bg-gray-200'}`} />
               )}
             </motion.button>
           ))}
@@ -148,4 +147,4 @@ const App = () => {
   );
 };
 
-export default App;
+export { VOICE_OPTIONS };
