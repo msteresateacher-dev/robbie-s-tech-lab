@@ -18,80 +18,86 @@ import SkillTracker from '@/components/SkillTracker';
 const WEEKLY_THEMES = [
   {
     week: 1,
-    title: "Meet the Computer!",
-    description: "Let's discover what computers are and how they work",
+    title: "Introduction to Computers",
+    description: "What is a Computer?",
     icon: Monitor,
     color: "from-sky-400 to-blue-500",
+    mapPosition: { x: 10, y: 80 },
     tasks: [
-      { id: "identify-parts", title: "Find Computer Parts", emoji: "🖥️", type: "game", game: "Hardware Anatomy" },
-      { id: "touch-keyboard", title: "Keyboard Explorer", emoji: "⌨️", type: "game", game: "Keyboard Fun" },
-      { id: "power-on", title: "Power Button Practice", emoji: "⚡", type: "game", game: "Power On/Off" },
-      { id: "screen-real", title: "Screen vs Real World", emoji: "📱", type: "game", game: "Screen World" }
+      { id: "identify-parts", title: "Find Computer Parts", emoji: "🖥️", type: "game", game: "Hardware Anatomy", skill: "decomposition" },
+      { id: "touch-keyboard", title: "Keyboard Explorer", emoji: "⌨️", type: "game", game: "Keyboard Fun", skill: "logic" },
+      { id: "power-on", title: "Power Button Practice", emoji: "⚡", type: "game", game: "Power On/Off", skill: "logic" },
+      { id: "screen-real", title: "Screen vs Real World", emoji: "📱", type: "game", game: "Screen World", skill: "abstraction" }
     ]
   },
   {
     week: 2,
-    title: "I Can Control It!",
-    description: "Learn how we tell computers what to do",
+    title: "Input & Output Basics",
+    description: "How We Talk to Computers",
     icon: MousePointer2,
     color: "from-purple-400 to-pink-500",
+    mapPosition: { x: 30, y: 60 },
     tasks: [
-      { id: "mouse-clicks", title: "Master the Mouse", emoji: "🖱️", type: "game", game: "Mouse Skills" },
-      { id: "type-letters", title: "Letter Hunt", emoji: "🔤", type: "game", game: "Letter Hunt" },
-      { id: "input-output", title: "Input & Output", emoji: "⌨️", type: "game", game: "Input & Output" },
-      { id: "touch-type", title: "Touch vs Type", emoji: "📱", type: "game", game: "Touch vs Type" }
+      { id: "mouse-clicks", title: "Master the Mouse", emoji: "🖱️", type: "game", game: "Mouse Skills", skill: "logic" },
+      { id: "type-letters", title: "Letter Hunt", emoji: "🔤", type: "game", game: "Letter Hunt", skill: "patterns" },
+      { id: "input-output", title: "Input & Output", emoji: "⌨️", type: "game", game: "Input & Output", skill: "logic" },
+      { id: "touch-type", title: "Touch vs Type", emoji: "📱", type: "game", game: "Touch vs Type", skill: "abstraction" }
     ]
   },
   {
     week: 3,
-    title: "Stay Safe & Kind",
-    description: "Be a good friend online and keep secrets safe",
+    title: "Staying Safe Online",
+    description: "Being Kind & Safe",
     icon: Shield,
     color: "from-green-400 to-emerald-500",
+    mapPosition: { x: 50, y: 50 },
     tasks: [
-      { id: "passwords", title: "Password Protector", emoji: "🔒", type: "game", game: "Password Protector" },
-      { id: "be-kind", title: "Kindness Detective", emoji: "💖", type: "game", game: "Be Kind" },
-      { id: "screen-time", title: "Screen Time Helper", emoji: "⏰", type: "game", game: "Screen Time Helper" },
-      { id: "private-info", title: "What's Private?", emoji: "🤫", type: "activity", points: 10 }
+      { id: "passwords", title: "Password Protector", emoji: "🔒", type: "game", game: "Password Protector", skill: "patterns" },
+      { id: "be-kind", title: "Kindness Detective", emoji: "💖", type: "game", game: "Be Kind", skill: "logic" },
+      { id: "screen-time", title: "Screen Time Helper", emoji: "⏰", type: "game", game: "Screen Time Helper", skill: "logic" },
+      { id: "private-info", title: "What's Private?", emoji: "🤫", type: "activity", points: 10, skill: "abstraction" }
     ]
   },
   {
     week: 4,
-    title: "Think Like a Computer",
-    description: "Discover patterns, sorting, and how computers organize",
+    title: "How Computers Think",
+    description: "Binary, Data & Sorting",
     icon: Binary,
     color: "from-amber-400 to-orange-500",
+    mapPosition: { x: 70, y: 40 },
     tasks: [
-      { id: "binary", title: "Binary Lights", emoji: "💡", type: "game", game: "Binary Lights" },
-      { id: "sorting", title: "Data Detective", emoji: "🔍", type: "game", game: "Data Detective" },
-      { id: "patterns", title: "Pattern Master", emoji: "🎨", type: "game", game: "Pixel Painter" },
-      { id: "sequences", title: "Wake Up Robbie", emoji: "🤖", type: "game", game: "Wake Up Robbie" }
+      { id: "binary", title: "Binary Lights", emoji: "💡", type: "game", game: "Binary Lights", skill: "patterns" },
+      { id: "sorting", title: "Data Detective", emoji: "🔍", type: "game", game: "Data Detective", skill: "patterns" },
+      { id: "patterns", title: "Pattern Master", emoji: "🎨", type: "game", game: "Pixel Painter", skill: "patterns" },
+      { id: "sequences", title: "Wake Up Robbie", emoji: "🤖", type: "game", game: "Wake Up Robbie", skill: "algorithms" }
     ]
   },
   {
     week: 5,
-    title: "Connect & Communicate",
-    description: "See how computers talk to each other",
+    title: "Connections & Communication",
+    description: "How Computers Connect",
     icon: Network,
     color: "from-indigo-400 to-purple-500",
+    mapPosition: { x: 85, y: 60 },
     tasks: [
-      { id: "cables", title: "Cable Connector", emoji: "🔌", type: "game", game: "Cables" },
-      { id: "network", title: "Network Navigator", emoji: "🌐", type: "game", game: "Network Navigator" },
-      { id: "messages", title: "Send Messages", emoji: "✉️", type: "game", game: "Signal Share" },
-      { id: "music-code", title: "Music Code", emoji: "🎵", type: "game", game: "Music Code" }
+      { id: "cables", title: "Cable Connector", emoji: "🔌", type: "game", game: "Cables", skill: "decomposition" },
+      { id: "network", title: "Network Navigator", emoji: "🌐", type: "game", game: "Network Navigator", skill: "abstraction" },
+      { id: "messages", title: "Send Messages", emoji: "✉️", type: "game", game: "Signal Share", skill: "algorithms" },
+      { id: "music-code", title: "Music Code", emoji: "🎵", type: "game", game: "Music Code", skill: "algorithms" }
     ]
   },
   {
     week: 6,
-    title: "Brooklyn Tech Hero",
-    description: "Use technology to help our community!",
+    title: "Brooklyn Tech Heroes",
+    description: "Computers Help Our Community",
     icon: MapPin,
     color: "from-pink-400 to-rose-500",
+    mapPosition: { x: 90, y: 80 },
     tasks: [
-      { id: "helper-bot", title: "Community Helper", emoji: "🏘️", type: "game", game: "Helper Bot" },
-      { id: "weather", title: "Weather Reporter", emoji: "🌤️", type: "game", game: "Weather Reporter" },
-      { id: "photos", title: "Photo Memory", emoji: "📷", type: "game", game: "Photo Memory" },
-      { id: "celebration", title: "Tech Fair!", emoji: "🎉", type: "activity", points: 50 }
+      { id: "helper-bot", title: "Community Helper", emoji: "🏘️", type: "game", game: "Helper Bot", skill: "algorithms" },
+      { id: "weather", title: "Weather Reporter", emoji: "🌤️", type: "game", game: "Weather Reporter", skill: "abstraction" },
+      { id: "photos", title: "Photo Memory", emoji: "📷", type: "game", game: "Photo Memory", skill: "decomposition" },
+      { id: "celebration", title: "Tech Fair!", emoji: "🎉", type: "activity", points: 50, skill: "algorithms" }
     ]
   }
 ];
@@ -99,7 +105,9 @@ const WEEKLY_THEMES = [
 export default function LearningPath() {
   const [searchParams] = useSearchParams();
   const studentId = searchParams.get('student');
-  const [selectedWeek, setSelectedWeek] = useState(1);
+  const [selectedWeek, setSelectedWeek] = useState(null);
+  const [showBadgeModal, setShowBadgeModal] = useState(false);
+  const [earnedBadge, setEarnedBadge] = useState(null);
 
   const { data: student } = useQuery({
     queryKey: ['student', studentId],
@@ -115,7 +123,6 @@ export default function LearningPath() {
     enabled: !!studentId
   });
 
-  const currentWeek = WEEKLY_THEMES[selectedWeek - 1];
   const completedTasks = sessions.filter(s => s.completed).map(s => s.mission_name);
 
   const getTaskProgress = (task) => {
@@ -125,10 +132,6 @@ export default function LearningPath() {
     return false;
   };
 
-  const weekProgress = currentWeek.tasks.filter(t => getTaskProgress(t)).length;
-  const weekTotal = currentWeek.tasks.length;
-  const isWeekComplete = weekProgress === weekTotal;
-
   // Calculate completed weeks and gamification stats
   const completedWeeks = WEEKLY_THEMES.filter(week => 
     week.tasks.every(t => getTaskProgress(t))
@@ -136,6 +139,38 @@ export default function LearningPath() {
   
   const totalCompleted = completedTasks.length;
   const totalHintsUsed = student?.total_hints_used || 0;
+
+  const getWeekProgress = (week) => {
+    const completed = week.tasks.filter(t => getTaskProgress(t)).length;
+    return {
+      completed,
+      total: week.tasks.length,
+      isComplete: completed === week.tasks.length,
+      percentage: (completed / week.tasks.length) * 100
+    };
+  };
+
+  // Keyboard navigation
+  React.useEffect(() => {
+    const handleKeyPress = (e) => {
+      if (e.key === 'Escape' && selectedWeek !== null) {
+        setSelectedWeek(null);
+      }
+      if (selectedWeek === null) {
+        const numKey = parseInt(e.key);
+        if (numKey >= 1 && numKey <= 6) {
+          const weekToSelect = WEEKLY_THEMES[numKey - 1];
+          const progress = getWeekProgress(weekToSelect);
+          // Only allow selection if previous week is complete or it's week 1
+          if (numKey === 1 || completedWeeks.includes(numKey - 1)) {
+            setSelectedWeek(numKey);
+          }
+        }
+      }
+    };
+    window.addEventListener('keydown', handleKeyPress);
+    return () => window.removeEventListener('keydown', handleKeyPress);
+  }, [selectedWeek, completedWeeks]);
 
   if (!student) {
     return (
@@ -166,228 +201,356 @@ export default function LearningPath() {
         </div>
       </header>
 
-      <main className="px-4 pt-6 max-w-4xl mx-auto">
-        {/* Robbie Encouragement */}
-        <motion.div
-          initial={{ scale: 0.9, opacity: 0 }}
-          animate={{ scale: 1, opacity: 1 }}
-          className="flex flex-col items-center mb-8"
-        >
-          <RobbieFace emotion="excited" size="medium" />
-          <div className="mt-4 bg-white rounded-2xl p-4 shadow-lg max-w-md text-center border-4 border-sky-200">
-            <p className="text-lg font-semibold text-gray-700">
-              {isWeekComplete 
-                ? `Amazing! You finished Week ${selectedWeek}! 🎉` 
-                : `Let's learn together, ${student.name}! 🌟`
-              }
-            </p>
-          </div>
-        </motion.div>
+      <main className="px-4 pt-6 max-w-6xl mx-auto">
+        {selectedWeek === null ? (
+          <>
+            {/* Mario World Style Map */}
+            <div className="mb-8 text-center">
+              <RobbieFace emotion="excited" size="medium" className="mx-auto mb-4" />
+              <h2 className="text-3xl font-black text-gray-800 mb-2">
+                {student.name}'s Learning Journey
+              </h2>
+              <p className="text-gray-600 mb-4">
+                Click a week or press keys 1-6 to begin! 🎮
+              </p>
+            </div>
 
-        {/* Week Selector */}
-        <div className="mb-8">
-          <h2 className="text-center text-sm font-bold text-gray-500 uppercase tracking-wide mb-4">
-            Choose Your Week
-          </h2>
-          <div className="grid grid-cols-6 gap-2 max-w-2xl mx-auto">
-            {WEEKLY_THEMES.map((week) => {
-              const Icon = week.icon;
-              const completed = week.tasks.every(t => getTaskProgress(t));
-              return (
-                <button
-                  key={week.week}
-                  onClick={() => setSelectedWeek(week.week)}
-                  className={`
-                    relative p-4 rounded-2xl transition-all
-                    ${selectedWeek === week.week 
-                      ? 'bg-gradient-to-br ' + week.color + ' text-white shadow-lg scale-105' 
-                      : 'bg-white text-gray-600 hover:bg-gray-50 shadow'
-                    }
-                  `}
-                >
-                  <Icon className={`w-6 h-6 mx-auto mb-1 ${selectedWeek === week.week ? 'text-white' : 'text-gray-400'}`} />
-                  <div className="text-xs font-bold">{week.week}</div>
-                  {completed && (
-                    <div className="absolute -top-1 -right-1 w-5 h-5 bg-green-500 rounded-full flex items-center justify-center">
-                      <CheckCircle className="w-3 h-3 text-white" />
+            {/* World Map */}
+            <div className="relative bg-gradient-to-b from-sky-200 via-green-100 to-amber-50 rounded-3xl p-8 mb-8 min-h-[600px] overflow-hidden shadow-2xl border-8 border-white">
+              {/* Decorative clouds */}
+              <div className="absolute top-8 left-12 text-6xl opacity-30">☁️</div>
+              <div className="absolute top-16 right-20 text-5xl opacity-30">☁️</div>
+              <div className="absolute bottom-32 left-24 text-4xl opacity-30">🌳</div>
+              <div className="absolute bottom-24 right-16 text-4xl opacity-30">🏔️</div>
+
+              {/* Path connecting nodes */}
+              <svg className="absolute inset-0 w-full h-full pointer-events-none" style={{ zIndex: 1 }}>
+                <defs>
+                  <linearGradient id="pathGradient" x1="0%" y1="0%" x2="100%" y2="0%">
+                    <stop offset="0%" stopColor="#a855f7" />
+                    <stop offset="100%" stopColor="#ec4899" />
+                  </linearGradient>
+                </defs>
+                {WEEKLY_THEMES.slice(0, -1).map((week, i) => {
+                  const nextWeek = WEEKLY_THEMES[i + 1];
+                  return (
+                    <motion.line
+                      key={`path-${i}`}
+                      x1={`${week.mapPosition.x}%`}
+                      y1={`${week.mapPosition.y}%`}
+                      x2={`${nextWeek.mapPosition.x}%`}
+                      y2={`${nextWeek.mapPosition.y}%`}
+                      stroke="url(#pathGradient)"
+                      strokeWidth="8"
+                      strokeDasharray="20,10"
+                      initial={{ pathLength: 0 }}
+                      animate={{ pathLength: completedWeeks.includes(week.week) ? 1 : 0 }}
+                      transition={{ duration: 1 }}
+                    />
+                  );
+                })}
+              </svg>
+
+              {/* Week Nodes */}
+              {WEEKLY_THEMES.map((week, index) => {
+                const Icon = week.icon;
+                const progress = getWeekProgress(week);
+                const isLocked = index > 0 && !completedWeeks.includes(index);
+                const isAvailable = index === 0 || completedWeeks.includes(index);
+
+                return (
+                  <motion.button
+                    key={week.week}
+                    onClick={() => isAvailable && setSelectedWeek(week.week)}
+                    disabled={isLocked}
+                    initial={{ scale: 0, opacity: 0 }}
+                    animate={{ scale: 1, opacity: 1 }}
+                    transition={{ delay: index * 0.2, type: 'spring' }}
+                    whileHover={isAvailable ? { scale: 1.1 } : {}}
+                    whileTap={isAvailable ? { scale: 0.95 } : {}}
+                    className={`
+                      absolute transform -translate-x-1/2 -translate-y-1/2
+                      w-32 h-32 rounded-full transition-all
+                      ${progress.isComplete
+                        ? 'bg-gradient-to-br from-yellow-400 to-orange-500 shadow-2xl border-8 border-white' 
+                        : isLocked
+                        ? 'bg-gray-300 border-4 border-gray-400 opacity-50 cursor-not-allowed'
+                        : 'bg-gradient-to-br ' + week.color + ' shadow-xl border-8 border-white hover:shadow-2xl'
+                      }
+                    `}
+                    style={{ 
+                      left: `${week.mapPosition.x}%`, 
+                      top: `${week.mapPosition.y}%`,
+                      zIndex: 10
+                    }}
+                  >
+                    <div className="flex flex-col items-center justify-center h-full">
+                      {isLocked ? (
+                        <Lock className="w-10 h-10 text-gray-600" />
+                      ) : (
+                        <>
+                          <Icon className={`w-10 h-10 mb-1 ${progress.isComplete ? 'text-white' : 'text-white'}`} />
+                          <span className="text-xs font-black text-white">{week.week}</span>
+                        </>
+                      )}
                     </div>
-                  )}
-                </button>
-              );
-            })}
-          </div>
-        </div>
 
-        {/* Current Week Details */}
-        <Card className={`mb-8 overflow-hidden border-0 shadow-2xl bg-gradient-to-br ${currentWeek.color}`}>
-          <CardContent className="p-6 text-white">
-            <div className="flex items-start justify-between mb-4">
-              <div>
-                <div className="flex items-center gap-2 mb-2">
-                  <div className="bg-white/20 backdrop-blur px-3 py-1 rounded-full">
-                    <span className="text-sm font-bold">Week {currentWeek.week}</span>
-                  </div>
-                </div>
-                <h2 className="text-3xl font-black mb-2">{currentWeek.title}</h2>
-                <p className="text-white/90 text-lg">{currentWeek.description}</p>
-              </div>
-              <currentWeek.icon className="w-16 h-16 opacity-50" />
-            </div>
+                    {/* Completion Star */}
+                    {progress.isComplete && (
+                      <motion.div
+                        initial={{ scale: 0, rotate: -180 }}
+                        animate={{ scale: 1, rotate: 0 }}
+                        className="absolute -top-3 -right-3 bg-green-500 rounded-full p-2 shadow-lg border-4 border-white"
+                      >
+                        <CheckCircle className="w-6 h-6 text-white" />
+                      </motion.div>
+                    )}
 
-            {/* Progress Bar */}
-            <div className="mt-6">
-              <div className="flex items-center justify-between mb-2">
-                <span className="text-sm font-semibold">Your Progress</span>
-                <span className="text-sm font-bold">{weekProgress} / {weekTotal} Tasks</span>
-              </div>
-              <div className="h-3 bg-white/20 rounded-full overflow-hidden">
+                    {/* Progress indicator */}
+                    {!progress.isComplete && progress.completed > 0 && (
+                      <div className="absolute -bottom-2 left-1/2 transform -translate-x-1/2 bg-white rounded-full px-2 py-1 shadow-md">
+                        <span className="text-xs font-bold text-purple-600">
+                          {progress.completed}/{progress.total}
+                        </span>
+                      </div>
+                    )}
+                  </motion.button>
+                );
+              })}
+
+              {/* Start Flag */}
+              <motion.div
+                initial={{ y: -20, opacity: 0 }}
+                animate={{ y: 0, opacity: 1 }}
+                transition={{ delay: 0.5 }}
+                className="absolute text-6xl"
+                style={{ left: '5%', top: '85%' }}
+              >
+                🚩
+              </motion.div>
+
+              {/* Finish Trophy */}
+              {completedWeeks.length === 6 && (
                 <motion.div
-                  initial={{ width: 0 }}
-                  animate={{ width: `${(weekProgress / weekTotal) * 100}%` }}
-                  className="h-full bg-white rounded-full"
-                />
+                  initial={{ scale: 0, rotate: -180 }}
+                  animate={{ scale: 1, rotate: 0 }}
+                  transition={{ type: 'spring', delay: 1 }}
+                  className="absolute text-8xl"
+                  style={{ left: '92%', top: '75%' }}
+                >
+                  🏆
+                </motion.div>
+              )}
+            </div>
+
+            {/* Keyboard Hint */}
+            <div className="text-center mb-8">
+              <div className="inline-flex items-center gap-2 bg-white px-6 py-3 rounded-full shadow-lg border-2 border-purple-200">
+                <span className="text-sm font-semibold text-gray-700">💡 Pro Tip:</span>
+                <span className="text-sm text-gray-600">Press keys 1-6 on your keyboard!</span>
               </div>
             </div>
-          </CardContent>
-        </Card>
 
-        {/* Tasks Grid */}
-        <div className="space-y-4">
-          <h3 className="text-xl font-bold text-gray-800 flex items-center gap-2">
-            <Lightbulb className="w-6 h-6 text-amber-500" />
-            This Week's Tasks
-          </h3>
-          
-          <div className="grid md:grid-cols-2 gap-4">
-            {currentWeek.tasks.map((task, index) => {
-              const isCompleted = getTaskProgress(task);
-              const isLocked = index > 0 && !getTaskProgress(currentWeek.tasks[index - 1]);
+            {/* Badges Section */}
+            <div className="mb-8">
+              <BadgeSystem 
+                completedWeeks={completedWeeks} 
+                totalCompleted={totalCompleted}
+                hintsUsed={totalHintsUsed}
+              />
+            </div>
+
+            {/* Skills Tracking */}
+            <div className="mb-8">
+              <SkillTracker completedGames={completedTasks} />
+            </div>
+          </>
+        ) : (
+          <>
+            {/* Week Detail View */}
+            <div className="mb-6">
+              <Button
+                onClick={() => setSelectedWeek(null)}
+                variant="outline"
+                className="rounded-full"
+              >
+                <ArrowLeft className="w-4 h-4 mr-2" />
+                Back to Map
+              </Button>
+            </div>
+
+            {(() => {
+              const currentWeek = WEEKLY_THEMES[selectedWeek - 1];
+              const weekProgress = currentWeek.tasks.filter(t => getTaskProgress(t)).length;
+              const weekTotal = currentWeek.tasks.length;
+              const isWeekComplete = weekProgress === weekTotal;
 
               return (
-                <motion.div
-                  key={task.id}
-                  initial={{ opacity: 0, y: 20 }}
-                  animate={{ opacity: 1, y: 0 }}
-                  transition={{ delay: index * 0.1 }}
-                >
-                  <Card className={`
-                    relative overflow-hidden border-4 transition-all
-                    ${isCompleted 
-                      ? 'border-green-400 bg-green-50' 
-                      : isLocked 
-                      ? 'border-gray-200 bg-gray-50 opacity-60'
-                      : 'border-purple-200 bg-white hover:shadow-xl hover:scale-105'
-                    }
-                  `}>
-                    <CardContent className="p-6">
-                      <div className="flex items-start gap-4">
-                        <div className={`
-                          text-5xl flex-shrink-0
-                          ${isLocked ? 'opacity-30' : ''}
-                        `}>
-                          {task.emoji}
+                <>
+                  {/* Current Week Details */}
+                  <Card className={`mb-8 overflow-hidden border-0 shadow-2xl bg-gradient-to-br ${currentWeek.color}`}>
+                    <CardContent className="p-6 text-white">
+                      <div className="flex items-start justify-between mb-4">
+                        <div>
+                          <div className="flex items-center gap-2 mb-2">
+                            <div className="bg-white/20 backdrop-blur px-3 py-1 rounded-full">
+                              <span className="text-sm font-bold">Week {currentWeek.week}</span>
+                            </div>
+                          </div>
+                          <h2 className="text-3xl font-black mb-2">{currentWeek.title}</h2>
+                          <p className="text-white/90 text-lg">{currentWeek.description}</p>
                         </div>
-                        <div className="flex-1">
-                          <h4 className="text-lg font-bold text-gray-800 mb-1">
-                            {task.title}
-                          </h4>
-                          {task.type === 'game' && (
-                            <div className="flex items-center gap-2 mb-3">
-                              <Sparkles className="w-4 h-4 text-purple-500" />
-                              <span className="text-sm text-gray-600">Interactive Game</span>
-                            </div>
-                          )}
-                          {task.type === 'activity' && (
-                            <div className="flex items-center gap-2 mb-3">
-                              <Heart className="w-4 h-4 text-pink-500" />
-                              <span className="text-sm text-gray-600">Hands-On Activity</span>
-                            </div>
-                          )}
-                          
-                          {isCompleted ? (
-                            <div className="flex items-center gap-2 text-green-600 font-bold">
-                              <CheckCircle className="w-5 h-5" />
-                              <span>Completed!</span>
-                            </div>
-                          ) : isLocked ? (
-                            <div className="flex items-center gap-2 text-gray-400 font-semibold">
-                              <Lock className="w-5 h-5" />
-                              <span>Complete previous task first</span>
-                            </div>
-                          ) : task.type === 'game' ? (
-                            <Link to={createPageUrl('Mission') + `?student=${studentId}&mission=${task.game.toLowerCase().replace(/\s+/g, '_')}`}>
-                              <Button className="mt-2 bg-gradient-to-r from-purple-500 to-pink-500">
-                                Start Task
-                              </Button>
-                            </Link>
-                          ) : (
-                            <Button 
-                              variant="outline" 
-                              className="mt-2"
-                              onClick={() => alert(`Ask your teacher about this activity! 🎨`)}
-                            >
-                              Ask Teacher
-                            </Button>
-                          )}
-                        </div>
+                        <currentWeek.icon className="w-16 h-16 opacity-50" />
                       </div>
 
-                      {/* Completion Badge */}
-                      {isCompleted && (
-                        <div className="absolute top-3 right-3">
-                          <div className="bg-green-500 text-white rounded-full p-2">
-                            <Star className="w-5 h-5" />
-                          </div>
+                      {/* Progress Bar */}
+                      <div className="mt-6">
+                        <div className="flex items-center justify-between mb-2">
+                          <span className="text-sm font-semibold">Your Progress</span>
+                          <span className="text-sm font-bold">{weekProgress} / {weekTotal} Tasks</span>
                         </div>
-                      )}
+                        <div className="h-3 bg-white/20 rounded-full overflow-hidden">
+                          <motion.div
+                            initial={{ width: 0 }}
+                            animate={{ width: `${(weekProgress / weekTotal) * 100}%` }}
+                            className="h-full bg-white rounded-full"
+                          />
+                        </div>
+                      </div>
                     </CardContent>
                   </Card>
-                </motion.div>
+
+                  {/* Tasks Grid */}
+                  <div className="space-y-4">
+                    <h3 className="text-xl font-bold text-gray-800 flex items-center gap-2">
+                      <Lightbulb className="w-6 h-6 text-amber-500" />
+                      This Week's Tasks
+                    </h3>
+                    
+                    <div className="grid md:grid-cols-2 gap-4">
+                      {currentWeek.tasks.map((task, index) => {
+                        const isCompleted = getTaskProgress(task);
+                        const isLocked = index > 0 && !getTaskProgress(currentWeek.tasks[index - 1]);
+
+                        return (
+                          <motion.div
+                            key={task.id}
+                            initial={{ opacity: 0, y: 20 }}
+                            animate={{ opacity: 1, y: 0 }}
+                            transition={{ delay: index * 0.1 }}
+                          >
+                            <Card className={`
+                              relative overflow-hidden border-4 transition-all
+                              ${isCompleted 
+                                ? 'border-green-400 bg-green-50' 
+                                : isLocked 
+                                ? 'border-gray-200 bg-gray-50 opacity-60'
+                                : 'border-purple-200 bg-white hover:shadow-xl hover:scale-105'
+                              }
+                            `}>
+                              <CardContent className="p-6">
+                                <div className="flex items-start gap-4">
+                                  <div className={`
+                                    text-5xl flex-shrink-0
+                                    ${isLocked ? 'opacity-30' : ''}
+                                  `}>
+                                    {task.emoji}
+                                  </div>
+                                  <div className="flex-1">
+                                    <h4 className="text-lg font-bold text-gray-800 mb-1">
+                                      {task.title}
+                                    </h4>
+                                    {task.type === 'game' && (
+                                      <div className="flex items-center gap-2 mb-3">
+                                        <Sparkles className="w-4 h-4 text-purple-500" />
+                                        <span className="text-sm text-gray-600">Interactive Game</span>
+                                      </div>
+                                    )}
+                                    {task.type === 'activity' && (
+                                      <div className="flex items-center gap-2 mb-3">
+                                        <Heart className="w-4 h-4 text-pink-500" />
+                                        <span className="text-sm text-gray-600">Hands-On Activity</span>
+                                      </div>
+                                    )}
+                                    
+                                    {isCompleted ? (
+                                      <div className="flex items-center gap-2 text-green-600 font-bold">
+                                        <CheckCircle className="w-5 h-5" />
+                                        <span>Completed!</span>
+                                      </div>
+                                    ) : isLocked ? (
+                                      <div className="flex items-center gap-2 text-gray-400 font-semibold">
+                                        <Lock className="w-5 h-5" />
+                                        <span>Complete previous task first</span>
+                                      </div>
+                                    ) : task.type === 'game' ? (
+                                      <Link to={createPageUrl('Mission') + `?student=${studentId}&mission=${task.game.toLowerCase().replace(/\s+/g, '_')}`}>
+                                        <Button className="mt-2 bg-gradient-to-r from-purple-500 to-pink-500">
+                                          Start Task
+                                        </Button>
+                                      </Link>
+                                    ) : (
+                                      <Button 
+                                        variant="outline" 
+                                        className="mt-2"
+                                        onClick={() => alert(`Ask your teacher about this activity! 🎨`)}
+                                      >
+                                        Ask Teacher
+                                      </Button>
+                                    )}
+                                  </div>
+                                </div>
+
+                                {/* Completion Badge */}
+                                {isCompleted && (
+                                  <div className="absolute top-3 right-3">
+                                    <div className="bg-green-500 text-white rounded-full p-2">
+                                      <Star className="w-5 h-5" />
+                                    </div>
+                                  </div>
+                                )}
+                              </CardContent>
+                            </Card>
+                          </motion.div>
+                        );
+                      })}
+                    </div>
+                  </div>
+
+                  {/* Week Completion Celebration */}
+                  {isWeekComplete && (
+                    <motion.div
+                      initial={{ scale: 0, opacity: 0 }}
+                      animate={{ scale: 1, opacity: 1 }}
+                      className="mt-12 bg-gradient-to-br from-yellow-400 via-orange-400 to-pink-500 rounded-3xl p-8 text-center text-white shadow-2xl"
+                    >
+                      <div className="text-7xl mb-4">🎉</div>
+                      <h2 className="text-4xl font-black mb-3">Week {selectedWeek} Complete!</h2>
+                      <p className="text-xl mb-6">Badge Earned! You're amazing!</p>
+                      <div className="flex gap-4 justify-center">
+                        <Button
+                          onClick={() => setSelectedWeek(null)}
+                          size="lg"
+                          className="bg-white text-purple-600 hover:bg-gray-100 font-black text-xl"
+                        >
+                          ← Back to Map
+                        </Button>
+                        {selectedWeek < 6 && completedWeeks.includes(selectedWeek) && (
+                          <Button
+                            onClick={() => setSelectedWeek(selectedWeek + 1)}
+                            size="lg"
+                            className="bg-green-500 text-white hover:bg-green-600 font-black text-xl"
+                          >
+                            Next Week →
+                          </Button>
+                        )}
+                      </div>
+                    </motion.div>
+                  )}
+                </>
               );
-            })}
-          </div>
-        </div>
-
-        {/* Badges Section */}
-        <div className="mb-8">
-          <BadgeSystem 
-            completedWeeks={completedWeeks} 
-            totalCompleted={totalCompleted}
-            hintsUsed={totalHintsUsed}
-          />
-        </div>
-
-        {/* Skills Tracking */}
-        <div className="mb-8">
-          <SkillTracker completedGames={completedTasks} />
-        </div>
-
-        {/* Week Completion Celebration */}
-        {isWeekComplete && (
-          <motion.div
-            initial={{ scale: 0, opacity: 0 }}
-            animate={{ scale: 1, opacity: 1 }}
-            className="mt-12 bg-gradient-to-br from-yellow-400 via-orange-400 to-pink-500 rounded-3xl p-8 text-center text-white shadow-2xl"
-          >
-            <div className="text-7xl mb-4">🎉</div>
-            <h2 className="text-4xl font-black mb-3">Week {selectedWeek} Complete!</h2>
-            <p className="text-xl mb-6">You're a computer learning superstar!</p>
-            {selectedWeek < 6 && (
-              <Button
-                onClick={() => setSelectedWeek(selectedWeek + 1)}
-                size="lg"
-                className="bg-white text-purple-600 hover:bg-gray-100 font-black text-xl"
-              >
-                Start Week {selectedWeek + 1} →
-              </Button>
-            )}
-            {selectedWeek === 6 && (
-              <div className="bg-white/20 backdrop-blur rounded-2xl p-4 mt-4">
-                <p className="text-2xl font-bold">🏆 You completed the entire course! 🏆</p>
-                <p className="mt-2">You're now a certified Tech Hero!</p>
-              </div>
-            )}
-          </motion.div>
+            })()}
+          </>
         )}
       </main>
     </div>
