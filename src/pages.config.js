@@ -47,26 +47,28 @@
  *
  * The mainPage value must match a key in the PAGES object exactly.
  */
-import ExtraGames from './pages/ExtraGames';
-import Home from './pages/Home';
 import Mission from './pages/Mission';
+import TeacherResources from './pages/TeacherResources';
 import MissionSelect from './pages/MissionSelect';
 import StudentPortal from './pages/StudentPortal';
 import TeacherDashboard from './pages/TeacherDashboard';
-import TeacherResources from './pages/TeacherResources';
+import ExtraGames from './pages/ExtraGames';
+import Home from './pages/Home';
 import LearningMap from './pages/LearningMap';
+import LearningPath from './pages/LearningPath';
 import __Layout from './Layout.jsx';
 
 
 export const PAGES = {
-    "ExtraGames": ExtraGames,
-    "Home": Home,
     "Mission": Mission,
+    "TeacherResources": TeacherResources,
     "MissionSelect": MissionSelect,
     "StudentPortal": StudentPortal,
     "TeacherDashboard": TeacherDashboard,
-    "TeacherResources": TeacherResources,
+    "ExtraGames": ExtraGames,
+    "Home": Home,
     "LearningMap": LearningMap,
+    "LearningPath": LearningPath,
 }
 
 export const pagesConfig = {
