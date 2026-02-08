@@ -301,12 +301,12 @@ export default function TeacherResources() {
               {Object.entries(NYS_STANDARDS_PRESCHOOL).map(([area, standards]) => (
                 <div key={area} className="bg-white p-5 rounded-2xl shadow-sm">
                   <h4 className="font-bold text-lg mb-3 text-blue-900">{area}</h4>
-                  <p className="text-sm text-gray-600 mb-2">{standards.length} PreK Standards</p>
+                  <p className="text-sm text-gray-600 mb-2">{standards.length} {language === 'en' ? 'PreK Standards' : 'Estándares PreK'}</p>
                   <button 
                     onClick={() => setSelectedStandard(area)}
                     className="text-blue-600 text-sm font-semibold hover:underline"
                   >
-                    View Details →
+                    {t.viewDetails}
                   </button>
                 </div>
               ))}
@@ -559,7 +559,7 @@ export default function TeacherResources() {
                       <div className="flex-1">
                         <p className="text-gray-800 font-semibold mb-3">{std.standard}</p>
                         <div className="flex flex-wrap gap-2">
-                          <span className="text-xs text-gray-600 font-semibold">Related Games:</span>
+                          <span className="text-xs text-gray-600 font-semibold">{t.relatedGames}</span>
                           {std.games.map((game, i) => (
                             <span key={i} className="bg-white px-3 py-1 rounded-full text-sm text-blue-700 font-medium border border-blue-200">
                               {game}
@@ -590,10 +590,10 @@ export default function TeacherResources() {
               <CardHeader>
                 <CardTitle className="flex items-center gap-3">
                   <CheckCircle className="w-7 h-7 text-green-600" />
-                  How Robbie's Lab Meets NYS Standards
+                  {t.howRobbieMeets}
                 </CardTitle>
                 <p className="text-gray-600 mt-2">
-                  Every game and mission is designed to meet specific PreK-adapted NYS Computer Science & Digital Fluency Standards
+                  {t.howRobbieDesc}
                 </p>
               </CardHeader>
               <CardContent className="space-y-6">
@@ -629,27 +629,27 @@ export default function TeacherResources() {
                 <div className="bg-green-50 border-2 border-green-300 p-6 rounded-2xl mt-8">
                   <h3 className="font-bold text-xl text-green-900 mb-3 flex items-center gap-2">
                     <Sparkles className="w-6 h-6" />
-                    Developmentally Appropriate for Ages 3-5
+                    {t.devAppropriate}
                   </h3>
                   <p className="text-gray-700 mb-3">
-                    These PreK standards are adapted from NYS K-1 standards to be appropriate for preschoolers:
+                    {t.devDesc}
                   </p>
                   <ul className="space-y-2 text-gray-700">
                     <li className="flex items-start gap-2">
                       <CheckCircle className="w-5 h-5 text-green-600 mt-0.5 flex-shrink-0" />
-                      <span><strong>Concrete over Abstract:</strong> Focus on touching, seeing, and doing rather than theoretical concepts</span>
+                      <span>{t.concreteOverAbstract}</span>
                     </li>
                     <li className="flex items-start gap-2">
                       <CheckCircle className="w-5 h-5 text-green-600 mt-0.5 flex-shrink-0" />
-                      <span><strong>Simplified Language:</strong> "Put things in groups" instead of "data organization and visualization"</span>
+                      <span>{t.simplifiedLanguage}</span>
                     </li>
                     <li className="flex items-start gap-2">
                       <CheckCircle className="w-5 h-5 text-green-600 mt-0.5 flex-shrink-0" />
-                      <span><strong>Teacher Guided:</strong> All activities assume adult support and scaffolding</span>
+                      <span>{t.teacherGuided}</span>
                     </li>
                     <li className="flex items-start gap-2">
                       <CheckCircle className="w-5 h-5 text-green-600 mt-0.5 flex-shrink-0" />
-                      <span><strong>Play-Based:</strong> Learning through games, songs, movement, and hands-on exploration</span>
+                      <span>{t.playBased}</span>
                     </li>
                   </ul>
                 </div>
@@ -693,7 +693,7 @@ export default function TeacherResources() {
                   <div className="bg-blue-50 p-5 rounded-2xl border-2 border-blue-200">
                     <h4 className="font-bold text-lg mb-3 flex items-center gap-2 text-blue-900">
                       <CheckCircle className="w-5 h-5 text-blue-600" />
-                      NYS Standards Addressed:
+                      {t.nysStandardsAddressed}
                     </h4>
                     <div className="flex flex-wrap gap-2">
                       {week.nysStandards.map((code, i) => (
@@ -774,10 +774,10 @@ export default function TeacherResources() {
               <CardHeader>
                 <CardTitle className="flex items-center gap-3">
                   <Puzzle className="w-7 h-7 text-orange-600" />
-                  Low-Tech Tools to Teach High-Tech Concepts
+                  {t.lowTechTitle}
                 </CardTitle>
                 <p className="text-gray-600 mt-2">
-                  Physical materials help preschoolers understand abstract digital concepts. Use these tools before, during, and after digital lessons!
+                  {t.lowTechDesc}
                 </p>
               </CardHeader>
               <CardContent>
@@ -798,12 +798,12 @@ export default function TeacherResources() {
                 </div>
 
                 <div className="mt-8 bg-blue-50 border-2 border-blue-200 p-6 rounded-2xl">
-                  <h3 className="font-bold text-lg mb-3 text-blue-900">Why Low-Tech Matters:</h3>
+                  <h3 className="font-bold text-lg mb-3 text-blue-900">{t.whyLowTech}</h3>
                   <p className="text-gray-700 mb-3">
-                    Preschoolers learn best through <strong>hands-on, multi-sensory experiences</strong>. Before they click a digital mouse, let them hold a real one. Before they learn about binary, let them flip light switches. The physical world makes the digital world make sense!
+                    {t.whyLowTechDesc}
                   </p>
                   <p className="text-gray-700 font-semibold">
-                    📌 Rule of Thumb: For every 15 minutes of screen time, plan 30+ minutes of related hands-on activities.
+                    {t.ruleOfThumb}
                   </p>
                 </div>
               </CardContent>
@@ -1110,25 +1110,25 @@ export default function TeacherResources() {
 
             <Card className="bg-gradient-to-r from-green-50 to-emerald-50 border-green-200">
               <CardHeader>
-                <CardTitle className="text-2xl">Sample Daily Schedule</CardTitle>
+                <CardTitle className="text-2xl">{t.sampleSchedule}</CardTitle>
               </CardHeader>
               <CardContent>
                 <div className="space-y-3">
                   <div className="bg-white p-4 rounded-xl border-2 border-green-200">
-                    <strong className="text-green-700">Morning (10:00-10:30) - Tech Time</strong>
+                    <strong className="text-green-700">{t.morningTech}</strong>
                     <ul className="ml-6 mt-2 space-y-1 text-gray-700">
-                      <li>• Circle: Introduce today's concept with Robbie puppet (5 min)</li>
-                      <li>• Hands-on: Touch real tech materials (5 min)</li>
-                      <li>• Digital: Students rotate through 1-2 missions (15 min)</li>
-                      <li>• Debrief: What did Robbie teach us? (5 min)</li>
+                      <li>{t.morningIntro}</li>
+                      <li>{t.morningHandsOn}</li>
+                      <li>{t.morningDigital}</li>
+                      <li>{t.morningDebrief}</li>
                     </ul>
                   </div>
                   <div className="bg-white p-4 rounded-xl border-2 border-blue-200">
-                    <strong className="text-blue-700">Afternoon (2:00-2:30) - Hands-On Extension</strong>
+                    <strong className="text-blue-700">{t.afternoonExtension}</strong>
                     <ul className="ml-6 mt-2 space-y-1 text-gray-700">
-                      <li>• Low-tech activity related to morning lesson</li>
-                      <li>• Art project, movement game, or building challenge</li>
-                      <li>• Small group work with teacher support</li>
+                      <li>{t.afternoonLowTech}</li>
+                      <li>{t.afternoonArt}</li>
+                      <li>{t.afternoonSmallGroup}</li>
                     </ul>
                   </div>
                 </div>
@@ -1142,20 +1142,20 @@ export default function TeacherResources() {
           <CardContent className="pt-6">
             <h3 className="text-2xl font-bold mb-4 flex items-center gap-3">
               <Sparkles className="w-7 h-7" />
-              Quick Game Progression Guide
+              {t.quickGuide}
             </h3>
             <div className="grid md:grid-cols-3 gap-4 text-sm">
               <div className="bg-white/20 backdrop-blur p-4 rounded-xl">
-                <h4 className="font-bold mb-2">Weeks 1-2: Basics</h4>
-                <p>Screen World → Parts Puzzle → Mouse Skills → Keyboard Fun</p>
+                <h4 className="font-bold mb-2">{t.weeks12}</h4>
+                <p>{t.weeks12Games}</p>
               </div>
               <div className="bg-white/20 backdrop-blur p-4 rounded-xl">
-                <h4 className="font-bold mb-2">Weeks 3-4: Safety & Logic</h4>
-                <p>Password → Be Kind → Screen Time → Binary → Data Detective</p>
+                <h4 className="font-bold mb-2">{t.weeks34}</h4>
+                <p>{t.weeks34Games}</p>
               </div>
               <div className="bg-white/20 backdrop-blur p-4 rounded-xl">
-                <h4 className="font-bold mb-2">Weeks 5-6: Connections</h4>
-                <p>Cables → Network → Brooklyn Helper → Weather → Photo Memory</p>
+                <h4 className="font-bold mb-2">{t.weeks56}</h4>
+                <p>{t.weeks56Games}</p>
               </div>
             </div>
           </CardContent>
