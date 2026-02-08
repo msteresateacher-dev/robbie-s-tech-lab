@@ -12,6 +12,7 @@ import { Button } from '@/components/ui/button';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
 import StandardsPDFGenerator from '@/components/StandardsPDFGenerator';
+import { teacherTranslations } from '@/components/teacherTranslations';
 
 const WEEKLY_CURRICULUM = [
   {
@@ -194,6 +195,9 @@ const NYS_STANDARDS_PRESCHOOL = {
 export default function TeacherResources() {
   const [selectedWeek, setSelectedWeek] = useState(1);
   const [selectedStandard, setSelectedStandard] = useState(null);
+  const [language, setLanguage] = useState('en');
+  
+  const t = teacherTranslations[language];
 
   return (
     <div className="min-h-screen bg-gradient-to-b from-purple-50 via-pink-50 to-orange-50 pb-12">
@@ -206,10 +210,35 @@ export default function TeacherResources() {
             </Button>
           </Link>
           <div className="text-center">
-            <h1 className="text-2xl font-bold text-gray-800">Teacher Resource Center</h1>
-            <p className="text-sm text-gray-500">6-Week Computer Course Guide</p>
+            <h1 className="text-2xl font-bold text-gray-800">
+              {language === 'en' ? 'Teacher Resource Center' : 'Centro de Recursos para Maestros'}
+            </h1>
+            <p className="text-sm text-gray-500">
+              {language === 'en' ? '6-Week Computer Course Guide' : 'Guía del Curso de Computación de 6 Semanas'}
+            </p>
           </div>
-          <div className="w-10" />
+          <div className="flex gap-2">
+            <button
+              onClick={() => setLanguage('en')}
+              className={`px-3 py-1.5 rounded-lg font-semibold text-sm transition-all ${
+                language === 'en'
+                  ? 'bg-purple-600 text-white shadow-lg'
+                  : 'bg-gray-100 text-gray-600 hover:bg-gray-200'
+              }`}
+            >
+              English
+            </button>
+            <button
+              onClick={() => setLanguage('es')}
+              className={`px-3 py-1.5 rounded-lg font-semibold text-sm transition-all ${
+                language === 'es'
+                  ? 'bg-purple-600 text-white shadow-lg'
+                  : 'bg-gray-100 text-gray-600 hover:bg-gray-200'
+              }`}
+            >
+              Español
+            </button>
+          </div>
         </div>
       </header>
 
@@ -219,32 +248,32 @@ export default function TeacherResources() {
           <CardHeader>
             <CardTitle className="flex items-center gap-3 text-2xl">
               <BookOpen className="w-8 h-8 text-fuchsia-600" />
-              How to Use Robbie's Tech Lab
+              {t.howToUse}
             </CardTitle>
           </CardHeader>
           <CardContent className="space-y-4">
             <div className="bg-white/80 p-6 rounded-2xl">
-              <h3 className="font-bold text-lg mb-3 text-gray-800">For Educators:</h3>
+              <h3 className="font-bold text-lg mb-3 text-gray-800">{t.forEducators}</h3>
               <ul className="space-y-2 text-gray-700">
                 <li className="flex items-start gap-2">
                   <CheckCircle className="w-5 h-5 text-green-600 mt-0.5 flex-shrink-0" />
-                  <span><strong>Hybrid Learning:</strong> Combine digital missions with hands-on activities (puppets, real keyboards, movement games)</span>
+                  <span>{t.hybridLearning}</span>
                 </li>
                 <li className="flex items-start gap-2">
                   <CheckCircle className="w-5 h-5 text-green-600 mt-0.5 flex-shrink-0" />
-                  <span><strong>Student Portal:</strong> Each child gets their own profile - track their progress, missions completed, and areas of struggle</span>
+                  <span>{t.studentPortal}</span>
                 </li>
                 <li className="flex items-start gap-2">
                   <CheckCircle className="w-5 h-5 text-green-600 mt-0.5 flex-shrink-0" />
-                  <span><strong>Short Sessions:</strong> Keep digital time to 15-20 minutes, surrounded by 30+ minutes of low-tech activities</span>
+                  <span>{t.shortSessions}</span>
                 </li>
                 <li className="flex items-start gap-2">
                   <CheckCircle className="w-5 h-5 text-green-600 mt-0.5 flex-shrink-0" />
-                  <span><strong>Differentiation:</strong> Some students excel with mouse skills, others with concepts - celebrate all growth!</span>
+                  <span>{t.differentiation}</span>
                 </li>
                 <li className="flex items-start gap-2">
                   <CheckCircle className="w-5 h-5 text-green-600 mt-0.5 flex-shrink-0" />
-                  <span><strong>Parent Communication:</strong> Share progress from Teacher Dashboard, explain what children are learning</span>
+                  <span>{t.parentComm}</span>
                 </li>
               </ul>
             </div>
@@ -258,10 +287,10 @@ export default function TeacherResources() {
               <div>
                 <CardTitle className="flex items-center gap-3 text-2xl">
                   <BookOpen className="w-8 h-8 text-blue-600" />
-                  NYS Computer Science & Digital Fluency Standards (PreK Adapted)
+                  {t.nysStandards}
                 </CardTitle>
                 <p className="text-gray-700 mt-2">
-                  Aligned with New York State Education Department K-12 Computer Science Standards, developmentally adapted for ages 3-5
+                  {t.nysDescription}
                 </p>
               </div>
               <StandardsPDFGenerator />
@@ -290,10 +319,10 @@ export default function TeacherResources() {
           <CardHeader>
             <CardTitle className="flex items-center gap-3 text-2xl">
               <Heart className="w-8 h-8 text-pink-600" />
-              Anti-Bullying & Digital Kindness for Young Learners
+              {t.digitalKindness}
             </CardTitle>
             <p className="text-gray-700 mt-2">
-              Teaching preschoolers about kindness online and the harm of negative comments
+              {t.kindnessDesc}
             </p>
           </CardHeader>
           <CardContent className="space-y-6">
@@ -549,10 +578,10 @@ export default function TeacherResources() {
         {/* Tabs */}
         <Tabs defaultValue="curriculum" className="mb-8">
           <TabsList className="grid grid-cols-4 w-full mb-6">
-            <TabsTrigger value="standards">NYS Standards</TabsTrigger>
-            <TabsTrigger value="curriculum">6-Week Plan</TabsTrigger>
-            <TabsTrigger value="lowtech">Low-Tech Tools</TabsTrigger>
-            <TabsTrigger value="strategies">Teaching Tips</TabsTrigger>
+            <TabsTrigger value="standards">{t.nysStandardsTab}</TabsTrigger>
+            <TabsTrigger value="curriculum">{t.weeklyPlan}</TabsTrigger>
+            <TabsTrigger value="lowtech">{t.lowTechTools}</TabsTrigger>
+            <TabsTrigger value="strategies">{t.teachingTips}</TabsTrigger>
           </TabsList>
 
           {/* NYS Standards Tab */}
@@ -641,7 +670,7 @@ export default function TeacherResources() {
                       : 'bg-white text-gray-600 hover:bg-fuchsia-50'
                   }`}
                 >
-                  Week {week.week}
+                  {t.weekLabel} {week.week}
                 </button>
               ))}
             </div>
@@ -679,7 +708,7 @@ export default function TeacherResources() {
                   <div>
                     <h4 className="font-bold text-lg mb-3 flex items-center gap-2">
                       <Monitor className="w-5 h-5 text-fuchsia-600" />
-                      Digital Games This Week:
+                      {t.digitalGames}
                     </h4>
                     <div className="flex flex-wrap gap-2">
                       {week.games.map((game, i) => (
@@ -694,7 +723,7 @@ export default function TeacherResources() {
                   <div>
                     <h4 className="font-bold text-lg mb-3 flex items-center gap-2">
                       <Puzzle className="w-5 h-5 text-orange-600" />
-                      Low-Tech Materials Needed:
+                      {t.lowTechMaterials}
                     </h4>
                     <ul className="grid md:grid-cols-2 gap-2">
                       {week.lowTech.map((item, i) => (
@@ -710,7 +739,7 @@ export default function TeacherResources() {
                   <div>
                     <h4 className="font-bold text-lg mb-3 flex items-center gap-2">
                       <Calendar className="w-5 h-5 text-green-600" />
-                      Sample Daily Activities:
+                      {t.dailyActivities}
                     </h4>
                     <div className="space-y-2">
                       {week.activities.map((activity, i) => (
