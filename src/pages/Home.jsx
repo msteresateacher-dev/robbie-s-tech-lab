@@ -104,13 +104,13 @@ export default function Home() {
             </Button>
           </Link>
 
-          <Link to={createPageUrl('LearningMap')} className="block">
+          <Link to={createPageUrl('LearningPath')} className="block">
             <Button
               size="lg"
               className="w-full h-16 text-lg rounded-2xl bg-gradient-to-r from-yellow-400 to-orange-500 hover:from-yellow-500 hover:to-orange-600 shadow-lg"
             >
               <span className="text-2xl mr-2">🗺️</span>
-              Learning Map
+              Learning Path (Level 1)
             </Button>
           </Link>
 

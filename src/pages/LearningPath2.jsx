@@ -7,7 +7,7 @@ import { motion } from 'framer-motion';
 import {
   ArrowLeft, CheckCircle, Lock, Star, Sparkles,
   Monitor, MousePointer2, Shield, Binary, Network, MapPin,
-  Trophy, Lightbulb, Heart, Crown, Zap
+  Trophy, Lightbulb, Heart, Zap, Crown
 } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { Card, CardContent } from '@/components/ui/card';
@@ -15,99 +15,97 @@ import RobbieFace from '@/components/RobbieFace';
 import BadgeSystem from '@/components/BadgeSystem';
 import SkillTracker from '@/components/SkillTracker';
 
-const WEEKLY_THEMES = [
+const WEEKLY_THEMES_ADVANCED = [
   {
     week: 1,
-    title: "Introduction to Computers",
-    description: "What is a Computer?",
+    title: "Computer Systems Deep Dive",
+    description: "Advanced Hardware & Software",
     icon: Monitor,
-    color: "from-sky-400 to-blue-500",
+    color: "from-sky-500 to-blue-600",
     mapPosition: { x: 10, y: 80 },
     tasks: [
-      { id: "identify-parts", title: "Find Computer Parts", emoji: "🖥️", type: "game", game: "Hardware Anatomy", skill: "decomposition" },
-      { id: "touch-keyboard", title: "Keyboard Explorer", emoji: "⌨️", type: "game", game: "Keyboard Fun", skill: "logic" },
-      { id: "power-on", title: "Power Button Practice", emoji: "⚡", type: "game", game: "Power On/Off", skill: "logic" },
-      { id: "screen-real", title: "Screen vs Real World", emoji: "📱", type: "game", game: "Screen World", skill: "abstraction" }
+      { id: "cpu-memory", title: "CPU & Memory Explorer", emoji: "🧠", type: "game", game: "CPU Memory", skill: "decomposition" },
+      { id: "os-basics", title: "Operating System Master", emoji: "💻", type: "game", game: "OS Basics", skill: "abstraction" },
+      { id: "file-system", title: "File System Navigator", emoji: "📁", type: "game", game: "File System", skill: "decomposition" },
+      { id: "hardware-quiz", title: "Hardware Challenge", emoji: "⚙️", type: "activity", points: 20, skill: "logic" }
     ]
   },
   {
     week: 2,
-    title: "Input & Output Basics",
-    description: "How We Talk to Computers",
+    title: "Advanced Input & Output",
+    description: "Complex Interactions & Devices",
     icon: MousePointer2,
-    color: "from-purple-400 to-pink-500",
+    color: "from-purple-500 to-pink-600",
     mapPosition: { x: 30, y: 60 },
     tasks: [
-      { id: "mouse-clicks", title: "Master the Mouse", emoji: "🖱️", type: "game", game: "Mouse Skills", skill: "logic" },
-      { id: "type-letters", title: "Letter Hunt", emoji: "🔤", type: "game", game: "Letter Hunt", skill: "patterns" },
-      { id: "input-output", title: "Input & Output", emoji: "⌨️", type: "game", game: "Input & Output", skill: "logic" },
-      { id: "touch-type", title: "Touch vs Type", emoji: "📱", type: "game", game: "Touch vs Type", skill: "abstraction" }
+      { id: "multi-input", title: "Multi-Device Control", emoji: "🎮", type: "game", game: "Multi Input", skill: "logic" },
+      { id: "touch-gestures", title: "Gesture Master", emoji: "✋", type: "game", game: "Gestures", skill: "patterns" },
+      { id: "accessibility", title: "Accessibility Hero", emoji: "♿", type: "game", game: "Accessibility", skill: "abstraction" },
+      { id: "typing-speed", title: "Speed Typing Pro", emoji: "⚡", type: "game", game: "Speed Type", skill: "algorithms" }
     ]
   },
   {
     week: 3,
-    title: "Staying Safe Online",
-    description: "Being Kind & Safe",
+    title: "Cybersecurity Expert",
+    description: "Advanced Safety & Privacy",
     icon: Shield,
-    color: "from-green-400 to-emerald-500",
+    color: "from-green-500 to-emerald-600",
     mapPosition: { x: 50, y: 50 },
     tasks: [
-      { id: "passwords", title: "Password Protector", emoji: "🔒", type: "game", game: "Password Protector", skill: "patterns" },
-      { id: "be-kind", title: "Kindness Detective", emoji: "💖", type: "game", game: "Be Kind", skill: "logic" },
-      { id: "screen-time", title: "Screen Time Helper", emoji: "⏰", type: "game", game: "Screen Time Helper", skill: "logic" },
-      { id: "private-info", title: "What's Private?", emoji: "🤫", type: "activity", points: 10, skill: "abstraction" }
+      { id: "encryption", title: "Encryption Detective", emoji: "🔐", type: "game", game: "Encryption", skill: "algorithms" },
+      { id: "phishing", title: "Phishing Hunter", emoji: "🎣", type: "game", game: "Phishing", skill: "logic" },
+      { id: "privacy", title: "Privacy Guardian", emoji: "🕵️", type: "game", game: "Privacy Guard", skill: "abstraction" },
+      { id: "secure-browse", title: "Safe Browsing Expert", emoji: "🌐", type: "activity", points: 25, skill: "logic" }
     ]
   },
   {
     week: 4,
-    title: "How Computers Think",
-    description: "Binary, Data & Sorting",
+    title: "Computational Thinking Pro",
+    description: "Advanced Algorithms & Logic",
     icon: Binary,
-    color: "from-amber-400 to-orange-500",
+    color: "from-amber-500 to-orange-600",
     mapPosition: { x: 70, y: 40 },
     tasks: [
-      { id: "binary", title: "Binary Lights", emoji: "💡", type: "game", game: "Binary Lights", skill: "patterns" },
-      { id: "sorting", title: "Data Detective", emoji: "🔍", type: "game", game: "Data Detective", skill: "patterns" },
-      { id: "patterns", title: "Pattern Master", emoji: "🎨", type: "game", game: "Pixel Painter", skill: "patterns" },
-      { id: "sequences", title: "Wake Up Robbie", emoji: "🤖", type: "game", game: "Wake Up Robbie", skill: "algorithms" }
+      { id: "loops", title: "Loop Master", emoji: "🔄", type: "game", game: "Loops", skill: "algorithms" },
+      { id: "conditionals", title: "If-Then Champion", emoji: "❓", type: "game", game: "Conditionals", skill: "logic" },
+      { id: "variables", title: "Variable Wizard", emoji: "📊", type: "game", game: "Variables", skill: "abstraction" },
+      { id: "debugging-pro", title: "Debug Challenge", emoji: "🐞", type: "game", game: "Debug Pro", skill: "debugging" }
     ]
   },
   {
     week: 5,
-    title: "Connections & Communication",
-    description: "How Computers Connect",
+    title: "Network Engineering",
+    description: "Internet & Cloud Computing",
     icon: Network,
-    color: "from-indigo-400 to-purple-500",
+    color: "from-indigo-500 to-purple-600",
     mapPosition: { x: 85, y: 60 },
     tasks: [
-      { id: "cables", title: "Cable Connector", emoji: "🔌", type: "game", game: "Cables", skill: "decomposition" },
-      { id: "network", title: "Network Navigator", emoji: "🌐", type: "game", game: "Network Navigator", skill: "abstraction" },
-      { id: "messages", title: "Send Messages", emoji: "✉️", type: "game", game: "Signal Share", skill: "algorithms" },
-      { id: "music-code", title: "Music Code", emoji: "🎵", type: "game", game: "Music Code", skill: "algorithms" }
+      { id: "protocols", title: "Protocol Expert", emoji: "📡", type: "game", game: "Protocols", skill: "abstraction" },
+      { id: "cloud", title: "Cloud Commander", emoji: "☁️", type: "game", game: "Cloud", skill: "decomposition" },
+      { id: "api", title: "API Connector", emoji: "🔗", type: "game", game: "API", skill: "algorithms" },
+      { id: "web-build", title: "Web Builder", emoji: "🌍", type: "activity", points: 30, skill: "decomposition" }
     ]
   },
   {
     week: 6,
-    title: "Brooklyn Tech Heroes",
-    description: "Computers Help Our Community",
+    title: "Tech Innovation Leader",
+    description: "Create & Share Technology",
     icon: MapPin,
-    color: "from-pink-400 to-rose-500",
+    color: "from-pink-500 to-rose-600",
     mapPosition: { x: 90, y: 80 },
     tasks: [
-      { id: "helper-bot", title: "Community Helper", emoji: "🏘️", type: "game", game: "Helper Bot", skill: "algorithms" },
-      { id: "weather", title: "Weather Reporter", emoji: "🌤️", type: "game", game: "Weather Reporter", skill: "abstraction" },
-      { id: "photos", title: "Photo Memory", emoji: "📷", type: "game", game: "Photo Memory", skill: "decomposition" },
-      { id: "celebration", title: "Tech Fair!", emoji: "🎉", type: "activity", points: 50, skill: "algorithms" }
+      { id: "ai-basics", title: "AI Explorer", emoji: "🤖", type: "game", game: "AI Basics", skill: "algorithms" },
+      { id: "robotics", title: "Robotics Pioneer", emoji: "🦾", type: "game", game: "Robotics", skill: "decomposition" },
+      { id: "app-design", title: "App Designer", emoji: "📱", type: "game", game: "App Design", skill: "abstraction" },
+      { id: "tech-showcase", title: "Innovation Showcase", emoji: "🎪", type: "activity", points: 100, skill: "algorithms" }
     ]
   }
 ];
 
-export default function LearningPath() {
+export default function LearningPath2() {
   const [searchParams] = useSearchParams();
   const studentId = searchParams.get('student');
   const [selectedWeek, setSelectedWeek] = useState(null);
-  const [showBadgeModal, setShowBadgeModal] = useState(false);
-  const [earnedBadge, setEarnedBadge] = useState(null);
 
   const { data: student } = useQuery({
     queryKey: ['student', studentId],
@@ -132,8 +130,7 @@ export default function LearningPath() {
     return false;
   };
 
-  // Calculate completed weeks and gamification stats
-  const completedWeeks = WEEKLY_THEMES.filter(week => 
+  const completedWeeks = WEEKLY_THEMES_ADVANCED.filter(week => 
     week.tasks.every(t => getTaskProgress(t))
   ).map(w => w.week);
   
@@ -150,7 +147,6 @@ export default function LearningPath() {
     };
   };
 
-  // Keyboard navigation
   React.useEffect(() => {
     const handleKeyPress = (e) => {
       if (e.key === 'Escape' && selectedWeek !== null) {
@@ -159,10 +155,9 @@ export default function LearningPath() {
       if (selectedWeek === null) {
         const numKey = parseInt(e.key);
         if (numKey >= 1 && numKey <= 6) {
-          const weekToSelect = WEEKLY_THEMES[numKey - 1];
-          const progress = getWeekProgress(weekToSelect);
-          // Only allow selection if previous week is complete or it's week 1
-          if (numKey === 1 || completedWeeks.includes(numKey - 1)) {
+          const weekToSelect = WEEKLY_THEMES_ADVANCED[numKey - 1];
+          const isAvailable = numKey === 1 || completedWeeks.includes(numKey - 1);
+          if (isAvailable) {
             setSelectedWeek(numKey);
           }
         }
@@ -181,22 +176,26 @@ export default function LearningPath() {
   }
 
   return (
-    <div className="min-h-screen bg-gradient-to-b from-purple-50 via-pink-50 to-orange-50 pb-12">
+    <div className="min-h-screen bg-gradient-to-b from-purple-100 via-pink-100 to-orange-100 pb-12">
       {/* Header */}
-      <header className="sticky top-0 z-10 bg-white/90 backdrop-blur-lg border-b border-gray-200 px-4 py-4 shadow-sm">
+      <header className="sticky top-0 z-10 bg-gradient-to-r from-purple-600 to-pink-600 text-white px-4 py-4 shadow-lg">
         <div className="max-w-4xl mx-auto flex items-center justify-between">
           <Link to={createPageUrl('MissionSelect') + `?student=${studentId}`}>
-            <Button variant="ghost" size="icon" className="rounded-full">
+            <Button variant="ghost" size="icon" className="rounded-full text-white hover:bg-white/20">
               <ArrowLeft className="w-5 h-5" />
             </Button>
           </Link>
           <div className="text-center">
-            <h1 className="text-xl font-bold text-gray-800">{student.name}'s Learning Path</h1>
-            <p className="text-sm text-gray-500">6-Week Computer Course</p>
+            <div className="flex items-center justify-center gap-2 mb-1">
+              <Crown className="w-5 h-5 text-yellow-300" />
+              <h1 className="text-xl font-black">LEVEL 2: ADVANCED</h1>
+              <Crown className="w-5 h-5 text-yellow-300" />
+            </div>
+            <p className="text-sm text-white/90">{student.name}'s Pro Journey</p>
           </div>
-          <div className="flex items-center gap-2 bg-amber-100 px-3 py-2 rounded-full">
-            <Trophy className="w-4 h-4 text-amber-600" />
-            <span className="font-bold text-amber-700">{student.missions_completed}</span>
+          <div className="flex items-center gap-2 bg-yellow-400 text-purple-900 px-3 py-2 rounded-full">
+            <Trophy className="w-4 h-4" />
+            <span className="font-bold">{student.missions_completed}</span>
           </div>
         </div>
       </header>
@@ -204,35 +203,53 @@ export default function LearningPath() {
       <main className="px-4 pt-6 max-w-6xl mx-auto">
         {selectedWeek === null ? (
           <>
-            {/* Mario World Style Map */}
+            {/* Level Badge */}
+            <motion.div
+              initial={{ scale: 0.8, opacity: 0 }}
+              animate={{ scale: 1, opacity: 1 }}
+              className="text-center mb-8"
+            >
+              <div className="inline-block bg-gradient-to-r from-yellow-400 via-orange-400 to-red-500 rounded-3xl p-6 shadow-2xl border-8 border-white">
+                <div className="text-6xl mb-2">🎖️</div>
+                <h2 className="text-3xl font-black text-white mb-1">Learning Path 2.0</h2>
+                <p className="text-white/90 font-semibold">Advanced Computer Science</p>
+              </div>
+            </motion.div>
+
             <div className="mb-8 text-center">
               <RobbieFace emotion="excited" size="medium" className="mx-auto mb-4" />
-              <h2 className="text-3xl font-black text-gray-800 mb-2">
-                {student.name}'s Learning Journey
+              <h2 className="text-2xl font-bold text-gray-800 mb-2">
+                Ready for the Next Level, {student.name}?
               </h2>
-              <p className="text-gray-600 mb-4">
-                Click a week or press keys 1-6 to begin! 🎮
+              <p className="text-gray-600 mb-2">
+                Click a week or press keys 1-6! 🚀
               </p>
+              <Link to={createPageUrl('LearningPath') + `?student=${studentId}`}>
+                <Button variant="outline" className="mt-2">
+                  ← Back to Level 1
+                </Button>
+              </Link>
             </div>
 
-            {/* World Map */}
-            <div className="relative bg-gradient-to-b from-sky-200 via-green-100 to-amber-50 rounded-3xl p-8 mb-8 min-h-[600px] overflow-hidden shadow-2xl border-8 border-white">
-              {/* Decorative clouds */}
-              <div className="absolute top-8 left-12 text-6xl opacity-30">☁️</div>
-              <div className="absolute top-16 right-20 text-5xl opacity-30">☁️</div>
-              <div className="absolute bottom-32 left-24 text-4xl opacity-30">🌳</div>
-              <div className="absolute bottom-24 right-16 text-4xl opacity-30">🏔️</div>
+            {/* Advanced World Map */}
+            <div className="relative bg-gradient-to-b from-indigo-200 via-purple-100 to-pink-50 rounded-3xl p-8 mb-8 min-h-[600px] overflow-hidden shadow-2xl border-8 border-white">
+              {/* Decorative elements */}
+              <div className="absolute top-8 left-12 text-5xl opacity-30">⚡</div>
+              <div className="absolute top-16 right-20 text-5xl opacity-30">💎</div>
+              <div className="absolute bottom-32 left-24 text-4xl opacity-30">🔮</div>
+              <div className="absolute bottom-24 right-16 text-4xl opacity-30">🌟</div>
 
               {/* Path connecting nodes */}
               <svg className="absolute inset-0 w-full h-full pointer-events-none" style={{ zIndex: 1 }}>
                 <defs>
-                  <linearGradient id="pathGradient" x1="0%" y1="0%" x2="100%" y2="0%">
-                    <stop offset="0%" stopColor="#a855f7" />
-                    <stop offset="100%" stopColor="#ec4899" />
+                  <linearGradient id="pathGradient2" x1="0%" y1="0%" x2="100%" y2="0%">
+                    <stop offset="0%" stopColor="#8b5cf6" />
+                    <stop offset="50%" stopColor="#ec4899" />
+                    <stop offset="100%" stopColor="#f59e0b" />
                   </linearGradient>
                 </defs>
-                {WEEKLY_THEMES.slice(0, -1).map((week, i) => {
-                  const nextWeek = WEEKLY_THEMES[i + 1];
+                {WEEKLY_THEMES_ADVANCED.slice(0, -1).map((week, i) => {
+                  const nextWeek = WEEKLY_THEMES_ADVANCED[i + 1];
                   return (
                     <motion.line
                       key={`path-${i}`}
@@ -240,9 +257,9 @@ export default function LearningPath() {
                       y1={`${week.mapPosition.y}%`}
                       x2={`${nextWeek.mapPosition.x}%`}
                       y2={`${nextWeek.mapPosition.y}%`}
-                      stroke="url(#pathGradient)"
-                      strokeWidth="8"
-                      strokeDasharray="20,10"
+                      stroke="url(#pathGradient2)"
+                      strokeWidth="10"
+                      strokeDasharray="15,10"
                       initial={{ pathLength: 0 }}
                       animate={{ pathLength: completedWeeks.includes(week.week) ? 1 : 0 }}
                       transition={{ duration: 1 }}
@@ -252,7 +269,7 @@ export default function LearningPath() {
               </svg>
 
               {/* Week Nodes */}
-              {WEEKLY_THEMES.map((week, index) => {
+              {WEEKLY_THEMES_ADVANCED.map((week, index) => {
                 const Icon = week.icon;
                 const progress = getWeekProgress(week);
                 const isLocked = index > 0 && !completedWeeks.includes(index);
@@ -266,16 +283,16 @@ export default function LearningPath() {
                     initial={{ scale: 0, opacity: 0 }}
                     animate={{ scale: 1, opacity: 1 }}
                     transition={{ delay: index * 0.2, type: 'spring' }}
-                    whileHover={isAvailable ? { scale: 1.1 } : {}}
+                    whileHover={isAvailable ? { scale: 1.15 } : {}}
                     whileTap={isAvailable ? { scale: 0.95 } : {}}
                     className={`
                       absolute transform -translate-x-1/2 -translate-y-1/2
-                      w-32 h-32 rounded-full transition-all
+                      w-36 h-36 rounded-full transition-all
                       ${progress.isComplete
-                        ? 'bg-gradient-to-br from-yellow-400 to-orange-500 shadow-2xl border-8 border-white' 
+                        ? 'bg-gradient-to-br from-yellow-400 via-orange-500 to-red-500 shadow-2xl border-8 border-white' 
                         : isLocked
-                        ? 'bg-gray-300 border-4 border-gray-400 opacity-50 cursor-not-allowed'
-                        : 'bg-gradient-to-br ' + week.color + ' shadow-xl border-8 border-white hover:shadow-2xl'
+                        ? 'bg-gray-400 border-4 border-gray-500 opacity-40 cursor-not-allowed'
+                        : 'bg-gradient-to-br ' + week.color + ' shadow-2xl border-8 border-white hover:shadow-3xl'
                       }
                     `}
                     style={{ 
@@ -286,29 +303,27 @@ export default function LearningPath() {
                   >
                     <div className="flex flex-col items-center justify-center h-full">
                       {isLocked ? (
-                        <Lock className="w-10 h-10 text-gray-600" />
+                        <Lock className="w-12 h-12 text-gray-700" />
                       ) : (
                         <>
-                          <Icon className={`w-10 h-10 mb-1 ${progress.isComplete ? 'text-white' : 'text-white'}`} />
-                          <span className="text-xs font-black text-white">{week.week}</span>
+                          <Icon className="w-12 h-12 mb-1 text-white drop-shadow-lg" />
+                          <span className="text-xs font-black text-white">LV2-{week.week}</span>
                         </>
                       )}
                     </div>
 
-                    {/* Completion Star */}
                     {progress.isComplete && (
                       <motion.div
                         initial={{ scale: 0, rotate: -180 }}
                         animate={{ scale: 1, rotate: 0 }}
-                        className="absolute -top-3 -right-3 bg-green-500 rounded-full p-2 shadow-lg border-4 border-white"
+                        className="absolute -top-3 -right-3 bg-green-500 rounded-full p-2.5 shadow-xl border-4 border-white"
                       >
-                        <CheckCircle className="w-6 h-6 text-white" />
+                        <Star className="w-7 h-7 text-yellow-300 fill-yellow-300" />
                       </motion.div>
                     )}
 
-                    {/* Progress indicator */}
                     {!progress.isComplete && progress.completed > 0 && (
-                      <div className="absolute -bottom-2 left-1/2 transform -translate-x-1/2 bg-white rounded-full px-2 py-1 shadow-md">
+                      <div className="absolute -bottom-2 left-1/2 transform -translate-x-1/2 bg-white rounded-full px-3 py-1 shadow-lg border-2 border-purple-300">
                         <span className="text-xs font-bold text-purple-600">
                           {progress.completed}/{progress.total}
                         </span>
@@ -323,62 +338,33 @@ export default function LearningPath() {
                 initial={{ y: -20, opacity: 0 }}
                 animate={{ y: 0, opacity: 1 }}
                 transition={{ delay: 0.5 }}
-                className="absolute text-6xl"
+                className="absolute text-7xl"
                 style={{ left: '5%', top: '85%' }}
               >
-                🚩
+                🏁
               </motion.div>
 
               {/* Finish Trophy */}
               {completedWeeks.length === 6 && (
                 <motion.div
-                  initial={{ scale: 0, rotate: -180 }}
+                  initial={{ scale: 0, rotate: 360 }}
                   animate={{ scale: 1, rotate: 0 }}
                   transition={{ type: 'spring', delay: 1 }}
-                  className="absolute text-8xl"
+                  className="absolute text-9xl"
                   style={{ left: '92%', top: '75%' }}
                 >
-                  🏆
+                  👑
                 </motion.div>
               )}
             </div>
 
             {/* Keyboard Hint */}
             <div className="text-center mb-8">
-              <div className="inline-flex items-center gap-2 bg-white px-6 py-3 rounded-full shadow-lg border-2 border-purple-200">
-                <span className="text-sm font-semibold text-gray-700">💡 Pro Tip:</span>
-                <span className="text-sm text-gray-600">Press keys 1-6 on your keyboard!</span>
+              <div className="inline-flex items-center gap-2 bg-gradient-to-r from-purple-500 to-pink-500 text-white px-6 py-3 rounded-full shadow-lg">
+                <Zap className="w-5 h-5" />
+                <span className="text-sm font-semibold">Advanced Mode: Press 1-6 to Navigate!</span>
               </div>
             </div>
-
-            {/* Level Progression */}
-            {completedWeeks.length >= 3 && (
-              <motion.div
-                initial={{ scale: 0.9, opacity: 0 }}
-                animate={{ scale: 1, opacity: 1 }}
-                className="mb-8"
-              >
-                <Card className="border-0 shadow-2xl bg-gradient-to-r from-purple-600 to-pink-600 text-white overflow-hidden">
-                  <CardContent className="p-8 text-center relative">
-                    <div className="absolute top-0 left-0 right-0 h-1 bg-gradient-to-r from-yellow-400 to-orange-400" />
-                    <Crown className="w-16 h-16 mx-auto mb-4 text-yellow-300" />
-                    <h3 className="text-3xl font-black mb-2">Ready for Level 2?</h3>
-                    <p className="text-white/90 mb-6 text-lg">
-                      You've mastered {completedWeeks.length} weeks! Time for advanced challenges!
-                    </p>
-                    <Link to={createPageUrl('LearningPath2') + `?student=${studentId}`}>
-                      <Button 
-                        size="lg" 
-                        className="bg-yellow-400 text-purple-900 hover:bg-yellow-300 font-black text-xl"
-                      >
-                        <Zap className="w-5 h-5 mr-2" />
-                        Start Learning Path 2.0
-                      </Button>
-                    </Link>
-                  </CardContent>
-                </Card>
-              </motion.div>
-            )}
 
             {/* Badges Section */}
             <div className="mb-8">
@@ -400,45 +386,45 @@ export default function LearningPath() {
             <div className="mb-6">
               <Button
                 onClick={() => setSelectedWeek(null)}
-                variant="outline"
-                className="rounded-full"
+                className="rounded-full bg-gradient-to-r from-purple-500 to-pink-500"
               >
                 <ArrowLeft className="w-4 h-4 mr-2" />
-                Back to Map
+                Back to Level 2 Map
               </Button>
             </div>
 
             {(() => {
-              const currentWeek = WEEKLY_THEMES[selectedWeek - 1];
+              const currentWeek = WEEKLY_THEMES_ADVANCED[selectedWeek - 1];
               const weekProgress = currentWeek.tasks.filter(t => getTaskProgress(t)).length;
               const weekTotal = currentWeek.tasks.length;
               const isWeekComplete = weekProgress === weekTotal;
 
               return (
                 <>
-                  {/* Current Week Details */}
                   <Card className={`mb-8 overflow-hidden border-0 shadow-2xl bg-gradient-to-br ${currentWeek.color}`}>
                     <CardContent className="p-6 text-white">
                       <div className="flex items-start justify-between mb-4">
                         <div>
                           <div className="flex items-center gap-2 mb-2">
-                            <div className="bg-white/20 backdrop-blur px-3 py-1 rounded-full">
-                              <span className="text-sm font-bold">Week {currentWeek.week}</span>
+                            <div className="bg-white/30 backdrop-blur px-3 py-1 rounded-full">
+                              <span className="text-sm font-bold">Level 2 - Week {currentWeek.week}</span>
+                            </div>
+                            <div className="bg-yellow-400 text-purple-900 px-3 py-1 rounded-full">
+                              <span className="text-xs font-bold">ADVANCED</span>
                             </div>
                           </div>
                           <h2 className="text-3xl font-black mb-2">{currentWeek.title}</h2>
                           <p className="text-white/90 text-lg">{currentWeek.description}</p>
                         </div>
-                        <currentWeek.icon className="w-16 h-16 opacity-50" />
+                        <currentWeek.icon className="w-16 h-16 opacity-60" />
                       </div>
 
-                      {/* Progress Bar */}
                       <div className="mt-6">
                         <div className="flex items-center justify-between mb-2">
                           <span className="text-sm font-semibold">Your Progress</span>
                           <span className="text-sm font-bold">{weekProgress} / {weekTotal} Tasks</span>
                         </div>
-                        <div className="h-3 bg-white/20 rounded-full overflow-hidden">
+                        <div className="h-4 bg-white/20 rounded-full overflow-hidden">
                           <motion.div
                             initial={{ width: 0 }}
                             animate={{ width: `${(weekProgress / weekTotal) * 100}%` }}
@@ -449,11 +435,10 @@ export default function LearningPath() {
                     </CardContent>
                   </Card>
 
-                  {/* Tasks Grid */}
                   <div className="space-y-4">
                     <h3 className="text-xl font-bold text-gray-800 flex items-center gap-2">
-                      <Lightbulb className="w-6 h-6 text-amber-500" />
-                      This Week's Tasks
+                      <Sparkles className="w-6 h-6 text-purple-500" />
+                      Advanced Challenges
                     </h3>
                     
                     <div className="grid md:grid-cols-2 gap-4">
@@ -471,18 +456,15 @@ export default function LearningPath() {
                             <Card className={`
                               relative overflow-hidden border-4 transition-all
                               ${isCompleted 
-                                ? 'border-green-400 bg-green-50' 
+                                ? 'border-green-400 bg-gradient-to-br from-green-50 to-emerald-50' 
                                 : isLocked 
-                                ? 'border-gray-200 bg-gray-50 opacity-60'
-                                : 'border-purple-200 bg-white hover:shadow-xl hover:scale-105'
+                                ? 'border-gray-300 bg-gray-100 opacity-60'
+                                : 'border-purple-300 bg-gradient-to-br from-white to-purple-50 hover:shadow-2xl hover:scale-105'
                               }
                             `}>
                               <CardContent className="p-6">
                                 <div className="flex items-start gap-4">
-                                  <div className={`
-                                    text-5xl flex-shrink-0
-                                    ${isLocked ? 'opacity-30' : ''}
-                                  `}>
+                                  <div className={`text-5xl flex-shrink-0 ${isLocked ? 'opacity-30' : ''}`}>
                                     {task.emoji}
                                   </div>
                                   <div className="flex-1">
@@ -491,50 +473,36 @@ export default function LearningPath() {
                                     </h4>
                                     {task.type === 'game' && (
                                       <div className="flex items-center gap-2 mb-3">
-                                        <Sparkles className="w-4 h-4 text-purple-500" />
-                                        <span className="text-sm text-gray-600">Interactive Game</span>
-                                      </div>
-                                    )}
-                                    {task.type === 'activity' && (
-                                      <div className="flex items-center gap-2 mb-3">
-                                        <Heart className="w-4 h-4 text-pink-500" />
-                                        <span className="text-sm text-gray-600">Hands-On Activity</span>
+                                        <Zap className="w-4 h-4 text-purple-500" />
+                                        <span className="text-sm text-gray-600">Advanced Challenge</span>
                                       </div>
                                     )}
                                     
                                     {isCompleted ? (
                                       <div className="flex items-center gap-2 text-green-600 font-bold">
                                         <CheckCircle className="w-5 h-5" />
-                                        <span>Completed!</span>
+                                        <span>Mastered!</span>
                                       </div>
                                     ) : isLocked ? (
                                       <div className="flex items-center gap-2 text-gray-400 font-semibold">
                                         <Lock className="w-5 h-5" />
-                                        <span>Complete previous task first</span>
+                                        <span>Complete previous task</span>
                                       </div>
-                                    ) : task.type === 'game' ? (
-                                      <Link to={createPageUrl('Mission') + `?student=${studentId}&mission=${task.game.toLowerCase().replace(/\s+/g, '_')}`}>
-                                        <Button className="mt-2 bg-gradient-to-r from-purple-500 to-pink-500">
-                                          Start Task
-                                        </Button>
-                                      </Link>
                                     ) : (
                                       <Button 
-                                        variant="outline" 
-                                        className="mt-2"
-                                        onClick={() => alert(`Ask your teacher about this activity! 🎨`)}
+                                        className="mt-2 bg-gradient-to-r from-purple-500 to-pink-500"
+                                        onClick={() => alert(`Coming soon! This is Level 2 content. 🚀`)}
                                       >
-                                        Ask Teacher
+                                        Start Challenge
                                       </Button>
                                     )}
                                   </div>
                                 </div>
 
-                                {/* Completion Badge */}
                                 {isCompleted && (
                                   <div className="absolute top-3 right-3">
-                                    <div className="bg-green-500 text-white rounded-full p-2">
-                                      <Star className="w-5 h-5" />
+                                    <div className="bg-gradient-to-br from-yellow-400 to-orange-500 text-white rounded-full p-2">
+                                      <Trophy className="w-5 h-5" />
                                     </div>
                                   </div>
                                 )}
@@ -546,16 +514,15 @@ export default function LearningPath() {
                     </div>
                   </div>
 
-                  {/* Week Completion Celebration */}
                   {isWeekComplete && (
                     <motion.div
                       initial={{ scale: 0, opacity: 0 }}
                       animate={{ scale: 1, opacity: 1 }}
-                      className="mt-12 bg-gradient-to-br from-yellow-400 via-orange-400 to-pink-500 rounded-3xl p-8 text-center text-white shadow-2xl"
+                      className="mt-12 bg-gradient-to-br from-purple-500 via-pink-500 to-orange-500 rounded-3xl p-8 text-center text-white shadow-2xl"
                     >
-                      <div className="text-7xl mb-4">🎉</div>
-                      <h2 className="text-4xl font-black mb-3">Week {selectedWeek} Complete!</h2>
-                      <p className="text-xl mb-6">Badge Earned! You're amazing!</p>
+                      <div className="text-8xl mb-4">🏆</div>
+                      <h2 className="text-4xl font-black mb-3">Level 2 Week {selectedWeek} Complete!</h2>
+                      <p className="text-xl mb-6">Elite Badge Earned! You're incredible!</p>
                       <div className="flex gap-4 justify-center">
                         <Button
                           onClick={() => setSelectedWeek(null)}
@@ -568,7 +535,7 @@ export default function LearningPath() {
                           <Button
                             onClick={() => setSelectedWeek(selectedWeek + 1)}
                             size="lg"
-                            className="bg-green-500 text-white hover:bg-green-600 font-black text-xl"
+                            className="bg-yellow-400 text-purple-900 hover:bg-yellow-300 font-black text-xl"
                           >
                             Next Week →
                           </Button>
