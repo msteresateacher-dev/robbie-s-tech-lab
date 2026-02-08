@@ -109,16 +109,17 @@ export default function LearningPath2() {
 
   const { data: student, isLoading: studentLoading } = useQuery({
     queryKey: ['student', studentId],
-    queryFn: () => base44.entities.Student.list().then(students => 
-      students.find(s => s.id === studentId)
-    ),
-    enabled: !!studentId
+    queryFn: async () => {
+      const students = await base44.entities.Student.list();
+      return students.find(s => s.id === studentId);
+    },
+    enabled: !!studentId && studentId !== 'null' && studentId !== 'undefined'
   });
 
   const { data: sessions = [], isLoading: sessionsLoading } = useQuery({
     queryKey: ['sessions', studentId],
     queryFn: () => base44.entities.MissionSession.filter({ student_id: studentId }),
-    enabled: !!studentId
+    enabled: !!studentId && studentId !== 'null' && studentId !== 'undefined'
   });
 
   const completedTasks = sessions.filter(s => s.completed).map(s => s.mission_name);
