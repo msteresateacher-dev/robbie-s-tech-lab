@@ -12,6 +12,8 @@ import {
 import { Button } from '@/components/ui/button';
 import { Card, CardContent } from '@/components/ui/card';
 import RobbieFace from '@/components/RobbieFace';
+import BadgeSystem from '@/components/BadgeSystem';
+import SkillTracker from '@/components/SkillTracker';
 
 const WEEKLY_THEMES = [
   {
@@ -126,6 +128,14 @@ export default function LearningPath() {
   const weekProgress = currentWeek.tasks.filter(t => getTaskProgress(t)).length;
   const weekTotal = currentWeek.tasks.length;
   const isWeekComplete = weekProgress === weekTotal;
+
+  // Calculate completed weeks and gamification stats
+  const completedWeeks = WEEKLY_THEMES.filter(week => 
+    week.tasks.every(t => getTaskProgress(t))
+  ).map(w => w.week);
+  
+  const totalCompleted = completedTasks.length;
+  const totalHintsUsed = student?.total_hints_used || 0;
 
   if (!student) {
     return (
@@ -336,6 +346,20 @@ export default function LearningPath() {
               );
             })}
           </div>
+        </div>
+
+        {/* Badges Section */}
+        <div className="mb-8">
+          <BadgeSystem 
+            completedWeeks={completedWeeks} 
+            totalCompleted={totalCompleted}
+            hintsUsed={totalHintsUsed}
+          />
+        </div>
+
+        {/* Skills Tracking */}
+        <div className="mb-8">
+          <SkillTracker completedGames={completedTasks} />
         </div>
 
         {/* Week Completion Celebration */}
