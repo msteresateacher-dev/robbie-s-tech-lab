@@ -4,7 +4,7 @@ import { Link, useNavigate } from 'react-router-dom';
 import { createPageUrl } from '@/utils';
 import { base44 } from '@/api/base44Client';
 import { useQuery } from '@tanstack/react-query';
-import { ArrowLeft, Lock, CheckCircle2, Loader2 } from 'lucide-react';
+import { ArrowLeft, Lock, CheckCircle2, Loader2, Sparkles } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import RobbieFace from '@/components/RobbieFace';
 
@@ -109,7 +109,12 @@ export default function MissionSelect() {
             <h1 className="text-xl font-bold text-gray-800">Choose a Mission</h1>
             <p className="text-sm text-gray-500">{student?.name}'s Adventures</p>
           </div>
-          <div className="w-10" />
+          <Link to={createPageUrl('LearningPath') + `?student=${studentId}`}>
+            <Button variant="outline" className="rounded-full flex items-center gap-2">
+              <Sparkles className="w-4 h-4" />
+              Learning Path
+            </Button>
+          </Link>
         </div>
       </header>
 
