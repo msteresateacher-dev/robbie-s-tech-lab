@@ -107,7 +107,7 @@ export default function LearningPath2() {
   const studentId = searchParams.get('student');
   const [selectedWeek, setSelectedWeek] = useState(null);
 
-  const { data: student } = useQuery({
+  const { data: student, isLoading: studentLoading } = useQuery({
     queryKey: ['student', studentId],
     queryFn: () => base44.entities.Student.list().then(students => 
       students.find(s => s.id === studentId)
@@ -115,13 +115,41 @@ export default function LearningPath2() {
     enabled: !!studentId
   });
 
-  const { data: sessions = [] } = useQuery({
+  const { data: sessions = [], isLoading: sessionsLoading } = useQuery({
     queryKey: ['sessions', studentId],
     queryFn: () => base44.entities.MissionSession.filter({ student_id: studentId }),
     enabled: !!studentId
   });
 
   const completedTasks = sessions.filter(s => s.completed).map(s => s.mission_name);
+
+  if (!studentId) {
+    return (
+      <div className="min-h-screen bg-gradient-to-b from-purple-100 to-pink-100 flex items-center justify-center p-4">
+        <Card className="max-w-md">
+          <CardContent className="p-8 text-center">
+            <p className="text-gray-600 mb-4">Please select a student first</p>
+            <Link to={createPageUrl('StudentPortal')}>
+              <Button className="bg-gradient-to-r from-purple-500 to-pink-500">
+                Go to Student Portal
+              </Button>
+            </Link>
+          </CardContent>
+        </Card>
+      </div>
+    );
+  }
+
+  if (studentLoading || sessionsLoading) {
+    return (
+      <div className="min-h-screen bg-gradient-to-b from-purple-100 to-pink-100 flex items-center justify-center">
+        <div className="text-center">
+          <div className="text-6xl mb-4 animate-bounce">🚀</div>
+          <p className="text-gray-600 font-semibold">Loading Level 2...</p>
+        </div>
+      </div>
+    );
+  }
 
   const getTaskProgress = (task) => {
     if (task.type === 'game') {
@@ -166,14 +194,6 @@ export default function LearningPath2() {
     window.addEventListener('keydown', handleKeyPress);
     return () => window.removeEventListener('keydown', handleKeyPress);
   }, [selectedWeek, completedWeeks]);
-
-  if (!student) {
-    return (
-      <div className="min-h-screen bg-gradient-to-b from-purple-50 to-pink-50 flex items-center justify-center">
-        <p className="text-gray-500">Loading...</p>
-      </div>
-    );
-  }
 
   return (
     <div className="min-h-screen bg-gradient-to-b from-purple-100 via-pink-100 to-orange-100 pb-12">
