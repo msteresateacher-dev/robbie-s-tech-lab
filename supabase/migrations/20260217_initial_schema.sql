@@ -90,23 +90,32 @@ CREATE TRIGGER update_mission_sessions_updated_at
 -- ROW LEVEL SECURITY (RLS) POLICIES
 -- ============================================
 
--- Enable RLS
+-- 4. Set row level security policies
 ALTER TABLE students ENABLE ROW LEVEL SECURITY;
 ALTER TABLE mission_sessions ENABLE ROW LEVEL SECURITY;
 ALTER TABLE user_logs ENABLE ROW LEVEL SECURITY;
 
--- Students policies
-CREATE POLICY "Users can view their own student record"
-  ON students FOR SELECT
-  USING (auth.uid() = user_id);
+-- SECURE POLICIES: Users ONLY see their own data
+CREATE POLICY "Users can manage their own students" ON students 
+  FOR ALL USING (auth.uid() = user_id);
 
-CREATE POLICY "Users can update their own student record"
-  ON students FOR UPDATE
-  USING (auth.uid() = user_id);
+CREATE POLICY "Users can manage their own sessions" ON mission_sessions 
+  FOR ALL USING (
+    EXISTS (
+      SELECT 1 FROM students 
+      WHERE students.id = mission_sessions.student_id 
+      AND students.user_id = auth.uid()
+    )
+  );
 
-CREATE POLICY "Users can insert their own student record"
-  ON students FOR INSERT
-  WITH CHECK (auth.uid() = user_id);
+CREATE POLICY "Users can manage their own logs" ON user_logs 
+  FOR ALL USING (
+    EXISTS (
+      SELECT 1 FROM students 
+      WHERE students.id = user_logs.student_id 
+      AND students.user_id = auth.uid()
+    )
+  );
 
 -- Teachers can view all students (assuming you'll add a role system later)
 CREATE POLICY "Public can view all students"
@@ -194,25 +203,19 @@ BEGIN
 END;
 $$ LANGUAGE plpgsql;
 
--- Function to get leaderboard
+-- Function-- 5. Add Leaderboard Function (SECURITY DEFINER bypasses RLS safely)
 CREATE OR REPLACE FUNCTION get_leaderboard(limit_count INTEGER DEFAULT 10)
-RETURNS TABLE (
-  student_id UUID,
-  student_name TEXT,
-  total_points INTEGER,
-  missions_completed INTEGER,
-  rank INTEGER
-) AS $$
+RETURNS TABLE (student_id UUID, student_name TEXT, total_points INTEGER, missions_completed INTEGER, rank INTEGER) 
+LANGUAGE plpgsql
+SECURITY DEFINER -- This allows the function to see all rows to calculate the leaderboard
+SET search_path = public
+AS $$
 BEGIN
   RETURN QUERY
-  SELECT
-    s.id,
-    s.name,
-    s.total_points,
-    s.missions_completed,
-    ROW_NUMBER() OVER (ORDER BY s.total_points DESC, s.missions_completed DESC)::INTEGER as rank
+  SELECT s.id, s.name, s.total_points, s.missions_completed,
+    ROW_NUMBER() OVER (ORDER BY s.total_points DESC)::INTEGER as rank
   FROM students s
-  ORDER BY s.total_points DESC, s.missions_completed DESC
+  ORDER BY s.total_points DESC
   LIMIT limit_count;
 END;
-$$ LANGUAGE plpgsql;
+$$;

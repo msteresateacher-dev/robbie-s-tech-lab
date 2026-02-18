@@ -20,7 +20,7 @@ const avatarColors = [
 ];
 
 export default function StudentPortal() {
-  const { user } = useAuth();
+  const { user, logout } = useAuth();
   const navigate = useNavigate();
   const queryClient = useQueryClient();
   const [selectedStudent, setSelectedStudent] = useState(null);
@@ -28,9 +28,27 @@ export default function StudentPortal() {
   const [dialogOpen, setDialogOpen] = useState(false);
   const [isSpeaking, setIsSpeaking] = useState(false);
 
-  const { data: students = [], isLoading } = useQuery({
+  const { data: students = [], isLoading, error: queryError } = useQuery({
     queryKey: ['students'],
-    queryFn: () => studentService.list()
+    queryFn: async () => {
+      console.log('Fetching students list...');
+      // Safety timeout for the fetch itself
+      const fetchPromise = studentService.list();
+      const timeoutPromise = new Promise((_, reject) =>
+        setTimeout(() => reject(new Error('Robbie is taking too long to respond. Please check your internet or refresh.')), 8000)
+      );
+
+      try {
+        const data = await Promise.race([fetchPromise, timeoutPromise]);
+        console.log('Successfully fetched students:', data?.length);
+        return data;
+      } catch (err) {
+        console.error('Student fetch error:', err);
+        throw err;
+      }
+    },
+    retry: false,
+    staleTime: 5000
   });
 
   const createStudentMutation = useMutation({
@@ -84,7 +102,9 @@ export default function StudentPortal() {
             </Button>
           </Link>
           <h1 className="text-xl font-bold text-gray-800">Who's Learning Today?</h1>
-          <div className="w-10" />
+          <Button variant="ghost" size="sm" onClick={logout} className="text-gray-500 hover:text-red-500">
+            Sign Out
+          </Button>
         </div>
       </header>
 
@@ -110,8 +130,17 @@ export default function StudentPortal() {
 
         {/* Student Grid */}
         {isLoading ? (
-          <div className="flex justify-center py-12">
-            <Loader2 className="w-8 h-8 animate-spin text-sky-400" />
+          <div className="flex flex-col items-center justify-center py-12 gap-4">
+            <Loader2 className="w-12 h-12 animate-spin text-sky-400" />
+            <p className="text-gray-500 animate-pulse font-medium">Loading your profiles...</p>
+          </div>
+        ) : queryError ? (
+          <div className="bg-red-50 border-2 border-red-100 rounded-3xl p-8 text-center max-w-sm mx-auto">
+            <p className="text-red-600 font-bold mb-2">Oops! Something went wrong.</p>
+            <p className="text-sm text-red-500 mb-4">{queryError.message || 'Failed to load profiles'}</p>
+            <Button onClick={() => queryClient.invalidateQueries({ queryKey: ['students'] })} variant="outline" className="border-red-200 text-red-600 hover:bg-red-50">
+              Try Again
+            </Button>
           </div>
         ) : (
           <div className="grid grid-cols-2 md:grid-cols-3 gap-4">
