@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import { Link, useSearchParams } from 'react-router-dom';
 import { createPageUrl } from '@/utils';
-import { base44 } from '@/api/base44Client';
+import { studentService, missionSessionService } from '@/api/dataService';
 import { useQuery } from '@tanstack/react-query';
 import { motion } from 'framer-motion';
 import {
@@ -111,7 +111,7 @@ export default function LearningPath() {
 
   const { data: student } = useQuery({
     queryKey: ['student', studentId],
-    queryFn: () => base44.entities.Student.list().then(students => 
+    queryFn: () => studentService.list().then(students =>
       students.find(s => s.id === studentId)
     ),
     enabled: !!studentId
@@ -119,7 +119,7 @@ export default function LearningPath() {
 
   const { data: sessions = [] } = useQuery({
     queryKey: ['sessions', studentId],
-    queryFn: () => base44.entities.MissionSession.filter({ student_id: studentId }),
+    queryFn: () => missionSessionService.getByStudent(studentId),
     enabled: !!studentId
   });
 
@@ -133,10 +133,10 @@ export default function LearningPath() {
   };
 
   // Calculate completed weeks and gamification stats
-  const completedWeeks = WEEKLY_THEMES.filter(week => 
+  const completedWeeks = WEEKLY_THEMES.filter(week =>
     week.tasks.every(t => getTaskProgress(t))
   ).map(w => w.week);
-  
+
   const totalCompleted = completedTasks.length;
   const totalHintsUsed = student?.total_hints_used || 0;
 
@@ -272,14 +272,14 @@ export default function LearningPath() {
                       absolute transform -translate-x-1/2 -translate-y-1/2
                       w-32 h-32 rounded-full transition-all
                       ${progress.isComplete
-                        ? 'bg-gradient-to-br from-yellow-400 to-orange-500 shadow-2xl border-8 border-white' 
+                        ? 'bg-gradient-to-br from-yellow-400 to-orange-500 shadow-2xl border-8 border-white'
                         : isLocked
-                        ? 'bg-gray-300 border-4 border-gray-400 opacity-50 cursor-not-allowed'
-                        : 'bg-gradient-to-br ' + week.color + ' shadow-xl border-8 border-white hover:shadow-2xl'
+                          ? 'bg-gray-300 border-4 border-gray-400 opacity-50 cursor-not-allowed'
+                          : 'bg-gradient-to-br ' + week.color + ' shadow-xl border-8 border-white hover:shadow-2xl'
                       }
                     `}
-                    style={{ 
-                      left: `${week.mapPosition.x}%`, 
+                    style={{
+                      left: `${week.mapPosition.x}%`,
                       top: `${week.mapPosition.y}%`,
                       zIndex: 10
                     }}
@@ -367,8 +367,8 @@ export default function LearningPath() {
                       You've mastered {completedWeeks.length} weeks! Time for advanced challenges!
                     </p>
                     <Link to={createPageUrl('LearningPath2') + `?student=${studentId}`}>
-                      <Button 
-                        size="lg" 
+                      <Button
+                        size="lg"
                         className="bg-yellow-400 text-purple-900 hover:bg-yellow-300 font-black text-xl"
                       >
                         <Zap className="w-5 h-5 mr-2" />
@@ -382,8 +382,8 @@ export default function LearningPath() {
 
             {/* Badges Section */}
             <div className="mb-8">
-              <BadgeSystem 
-                completedWeeks={completedWeeks} 
+              <BadgeSystem
+                completedWeeks={completedWeeks}
                 totalCompleted={totalCompleted}
                 hintsUsed={totalHintsUsed}
               />
@@ -455,7 +455,7 @@ export default function LearningPath() {
                       <Lightbulb className="w-6 h-6 text-amber-500" />
                       This Week's Tasks
                     </h3>
-                    
+
                     <div className="grid md:grid-cols-2 gap-4">
                       {currentWeek.tasks.map((task, index) => {
                         const isCompleted = getTaskProgress(task);
@@ -470,11 +470,11 @@ export default function LearningPath() {
                           >
                             <Card className={`
                               relative overflow-hidden border-4 transition-all
-                              ${isCompleted 
-                                ? 'border-green-400 bg-green-50' 
-                                : isLocked 
-                                ? 'border-gray-200 bg-gray-50 opacity-60'
-                                : 'border-purple-200 bg-white hover:shadow-xl hover:scale-105'
+                              ${isCompleted
+                                ? 'border-green-400 bg-green-50'
+                                : isLocked
+                                  ? 'border-gray-200 bg-gray-50 opacity-60'
+                                  : 'border-purple-200 bg-white hover:shadow-xl hover:scale-105'
                               }
                             `}>
                               <CardContent className="p-6">
@@ -501,7 +501,7 @@ export default function LearningPath() {
                                         <span className="text-sm text-gray-600">Hands-On Activity</span>
                                       </div>
                                     )}
-                                    
+
                                     {isCompleted ? (
                                       <div className="flex items-center gap-2 text-green-600 font-bold">
                                         <CheckCircle className="w-5 h-5" />
@@ -519,8 +519,8 @@ export default function LearningPath() {
                                         </Button>
                                       </Link>
                                     ) : (
-                                      <Button 
-                                        variant="outline" 
+                                      <Button
+                                        variant="outline"
                                         className="mt-2"
                                         onClick={() => alert(`Ask your teacher about this activity! 🎨`)}
                                       >

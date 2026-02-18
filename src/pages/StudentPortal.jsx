@@ -2,7 +2,7 @@ import React, { useState } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import { Link, useNavigate } from 'react-router-dom';
 import { createPageUrl } from '@/utils';
-import { base44 } from '@/api/base44Client';
+import { studentService } from '@/api/dataService';
 import { useQuery, useMutation, useQueryClient } from '@tanstack/react-query';
 import { ArrowLeft, Plus, UserPlus, Loader2 } from 'lucide-react';
 import { Button } from '@/components/ui/button';
@@ -11,6 +11,8 @@ import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogTrigger } from 
 import StudentCard from '@/components/StudentCard';
 import RobbieFace from '@/components/RobbieFace';
 import SpeechBubble from '@/components/SpeechBubble';
+import { useAuth } from '@/lib/AuthContext';
+import { toast } from 'sonner';
 
 const avatarColors = [
   'bg-pink-400', 'bg-purple-400', 'bg-blue-400', 'bg-green-400',
@@ -18,6 +20,7 @@ const avatarColors = [
 ];
 
 export default function StudentPortal() {
+  const { user } = useAuth();
   const navigate = useNavigate();
   const queryClient = useQueryClient();
   const [selectedStudent, setSelectedStudent] = useState(null);
@@ -27,27 +30,40 @@ export default function StudentPortal() {
 
   const { data: students = [], isLoading } = useQuery({
     queryKey: ['students'],
-    queryFn: () => base44.entities.Student.list()
+    queryFn: () => studentService.list()
   });
 
   const createStudentMutation = useMutation({
-    mutationFn: (data) => base44.entities.Student.create(data),
+    mutationFn: (data) => studentService.create(data),
     onSuccess: () => {
-      queryClient.invalidateQueries(['students']);
+      queryClient.invalidateQueries({ queryKey: ['students'] });
       setNewStudentName('');
       setDialogOpen(false);
+      toast.success('Profile created successfully!');
+    },
+    onError: (error) => {
+      console.error('Error creating student:', error);
+      if (error.code === '23505') { // Unique constraint violation
+        toast.error('You already have a student profile!');
+      } else {
+        toast.error('Failed to create profile: ' + error.message);
+      }
     }
   });
 
   const handleCreateStudent = () => {
-    if (newStudentName.trim()) {
+    if (newStudentName.trim() && user) {
       const randomColor = avatarColors[Math.floor(Math.random() * avatarColors.length)];
       createStudentMutation.mutate({
+        user_id: user.id,
+        email: user.email,
         name: newStudentName.trim(),
         avatar_color: randomColor,
         missions_completed: 0,
         total_hints_used: 0
       });
+    } else if (!user) {
+      toast.error('You must be logged in to create a profile.');
     }
   };
 
@@ -75,15 +91,15 @@ export default function StudentPortal() {
       <main className="px-4 pt-6 max-w-2xl mx-auto">
         {/* Robbie greeting */}
         <div className="flex flex-col items-center mb-8">
-          <RobbieFace 
-            emotion={selectedStudent ? 'excited' : 'happy'} 
+          <RobbieFace
+            emotion={selectedStudent ? 'excited' : 'happy'}
             speaking={isSpeaking}
             size="small"
           />
           <div className="mt-4 w-full">
             <SpeechBubble
-              message={selectedStudent 
-                ? `Hi ${selectedStudent.name}! Ready for an adventure?` 
+              message={selectedStudent
+                ? `Hi ${selectedStudent.name}! Ready for an adventure?`
                 : "Pick your name to start learning!"}
               visible={true}
               onSpeakStart={() => setIsSpeaking(true)}

@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { 
+import {
   Cpu, MousePointer2, Globe, RefreshCw,
   Trophy, Type, Camera, Sparkles, Zap, BrainCircuit,
   Palette, Bug, Music, Share2, Filter, Lightbulb, Home, Droplets, ArrowLeft,
@@ -10,8 +10,10 @@ import {
 import { Link } from 'react-router-dom';
 import { createPageUrl } from '@/utils';
 import { motion, AnimatePresence } from 'framer-motion';
+import { openAIService } from '@/api/openAIService';
 
-const apiKey = ""; 
+
+const apiKey = "";
 
 // --- CONSTANTS ---
 const DANCE_MOVES = [
@@ -105,10 +107,10 @@ const DATA_ITEMS = [
 ];
 
 export default function ExtraGames() {
-  const [view, setView] = useState('menu'); 
+  const [view, setView] = useState('menu');
   const [score, setScore] = useState(0);
   const [isSpeaking, setIsSpeaking] = useState(false);
-  
+
   // Game States
   const [danceSequence, setDanceSequence] = useState([]);
   const [bugLevel, setBugLevel] = useState(0);
@@ -121,7 +123,7 @@ export default function ExtraGames() {
   const [sceneImages, setSceneImages] = useState({});
   const [isGenerating, setIsGenerating] = useState(false);
   const [ecoStatus, setEcoStatus] = useState('idle');
-  
+
   // New game states
   const [playerHand, setPlayerHand] = useState([]);
   const [computerHand, setComputerHand] = useState([]);
@@ -133,7 +135,7 @@ export default function ExtraGames() {
   const [tagScore, setTagScore] = useState(0);
   const [tagTargets, setTagTargets] = useState([]);
   const [sayingIndex, setSayingIndex] = useState(0);
-  
+
   // New concept games
   const [mouseTargets, setMouseTargets] = useState([]);
   const [mouseClicks, setMouseClicks] = useState(0);
@@ -144,7 +146,7 @@ export default function ExtraGames() {
   const [screenTime, setScreenTime] = useState(300);
   const [timerRunning, setTimerRunning] = useState(false);
   const [scenarioIndex, setScenarioIndex] = useState(0);
-  const [binaryLights, setBinaryLights] = useState([0,0,0,0]);
+  const [binaryLights, setBinaryLights] = useState([0, 0, 0, 0]);
   const [dataSort, setDataSort] = useState({});
   const [networkNodes, setNetworkNodes] = useState([]);
   const [musicSequence, setMusicSequence] = useState([]);
@@ -214,7 +216,7 @@ export default function ExtraGames() {
   const speak = (text) => {
     if (isSpeaking) return;
     setIsSpeaking(true);
-    
+
     if ('speechSynthesis' in window) {
       window.speechSynthesis.cancel();
       const utterance = new SpeechSynthesisUtterance(text);
@@ -471,21 +473,21 @@ export default function ExtraGames() {
   const checkWeather = async () => {
     speak("Checking Harlem weather with my sensors!");
     try {
-      const result = await base44.integrations.Core.InvokeLLM({
-        prompt: "What is the current temperature in Harlem, NY and weather condition (sunny, cloudy, or rainy)? Give me just the temperature number and condition.",
-        add_context_from_internet: true,
-        response_json_schema: {
-          type: "object",
-          properties: {
-            temp: { type: "number" },
-            condition: { type: "string" }
-          }
+      const result = await openAIService.invoke(
+        "What is the current temperature in Harlem, NY and weather condition (sunny, cloudy, or rainy)? Give me just the temperature number and condition in JSON format with 'temp' and 'condition' fields.",
+        {
+          temperature: 0.7,
+          maxTokens: 100
         }
-      });
-      setWeatherData(result);
-      speak(`It's ${result.condition} and ${result.temp} degrees in Harlem!`);
+      );
+
+      // Parse the JSON response
+      const weatherData = JSON.parse(result.content);
+      setWeatherData(weatherData);
+      speak(`It's ${weatherData.condition} and ${weatherData.temp} degrees in Harlem!`);
     } catch (error) {
       speak("Having trouble with my weather sensors!");
+      console.error('Weather check error:', error);
     }
   };
 
@@ -498,7 +500,7 @@ export default function ExtraGames() {
 
   // --- RENDER MENU ---
   const MenuBtn = ({ icon, label, color, onClick }) => (
-    <motion.button 
+    <motion.button
       onClick={onClick}
       whileHover={{ scale: 1.05 }}
       whileTap={{ scale: 0.95 }}
@@ -548,28 +550,28 @@ export default function ExtraGames() {
               <MenuBtn icon={<Keyboard />} label="Keyboard Fun" color="bg-slate-500" onClick={() => setView('keyboard')} />
               <MenuBtn icon={<Monitor />} label="Screen World" color="bg-emerald-500" onClick={() => setView('screen')} />
               <MenuBtn icon={<Power />} label="Power On/Off" color="bg-stone-500" onClick={() => setView('power')} />
-              
+
               {/* Safety */}
               <MenuBtn icon={<Lock />} label="Password" color="bg-amber-500" onClick={() => setView('password')} />
               <MenuBtn icon={<Timer />} label="Screen Time" color="bg-teal-500" onClick={() => setView('timer')} />
               <MenuBtn icon={<Heart />} label="Be Kind" color="bg-pink-500" onClick={() => setView('kindness')} />
-              
+
               {/* Advanced */}
               <MenuBtn icon={<Binary />} label="Binary Lights" color="bg-indigo-500" onClick={() => setView('binary')} />
               <MenuBtn icon={<Database />} label="Data Detective" color="bg-purple-500" onClick={() => setView('data')} />
               <MenuBtn icon={<Network />} label="Network" color="bg-blue-500" onClick={() => setView('network')} />
               <MenuBtn icon={<Headphones />} label="Music Code" color="bg-violet-500" onClick={() => setView('music')} />
-              
+
               {/* Physical */}
               <MenuBtn icon={<Cable />} label="Cables" color="bg-orange-500" onClick={() => setView('cables')} />
               <MenuBtn icon={<Puzzle />} label="Parts Puzzle" color="bg-red-500" onClick={() => setView('parts')} />
               <MenuBtn icon={<Tablet />} label="Touch vs Type" color="bg-fuchsia-500" onClick={() => setView('touchtype')} />
-              
+
               {/* Brooklyn */}
               <MenuBtn icon={<MapPin />} label="Helper Bot" color="bg-green-500" onClick={() => setView('brooklyn')} />
               <MenuBtn icon={<Cloud />} label="Weather" color="bg-cyan-500" onClick={() => setView('weather')} />
               <MenuBtn icon={<Image />} label="Photo Memory" color="bg-rose-500" onClick={() => setView('photos')} />
-              
+
               {/* Original Games */}
               <MenuBtn icon={<Spade />} label="Go Fish" color="bg-teal-600" onClick={() => { setView('gofish'); startGoFish(); }} />
               <MenuBtn icon={<Plus />} label="Math Fun" color="bg-rose-600" onClick={() => { setView('math'); generateMathProblem(); }} />
@@ -637,7 +639,7 @@ export default function ExtraGames() {
             <motion.div key="password" initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} className="bg-white p-10 rounded-[3rem] shadow-2xl text-center">
               <h2 className="text-4xl font-black mb-8 text-amber-600">Password Protector!</h2>
               <div className="bg-amber-50 p-8 rounded-3xl mb-6"><p className="text-lg mb-4">Remember the pattern: {PASSWORD_PATTERNS[0].pattern.join(' ')}</p><div className="text-6xl">{currentPassword.join(' ') || '___'}</div></div>
-              <div className="grid grid-cols-4 gap-4 mb-6">{['🔴','🔵','🟡','⭐','💎','🍎','🍊'].map((s,i) => (<button key={i} onClick={() => addToPassword(s)} className="bg-amber-200 p-6 rounded-2xl text-4xl hover:bg-amber-300">{s}</button>))}</div>
+              <div className="grid grid-cols-4 gap-4 mb-6">{['🔴', '🔵', '🟡', '⭐', '💎', '🍎', '🍊'].map((s, i) => (<button key={i} onClick={() => addToPassword(s)} className="bg-amber-200 p-6 rounded-2xl text-4xl hover:bg-amber-300">{s}</button>))}</div>
               <div className="flex gap-3"><button onClick={() => setView('menu')} className="bg-gray-100 p-6 rounded-2xl font-bold flex-1">Back</button><button onClick={checkPassword} className="bg-amber-600 text-white p-6 rounded-2xl font-black flex-1">CHECK</button><button onClick={() => setCurrentPassword([])} className="bg-red-500 text-white p-6 rounded-2xl font-bold flex-1">CLEAR</button></div>
             </motion.div>
           )}
@@ -646,7 +648,7 @@ export default function ExtraGames() {
           {view === 'timer' && (
             <motion.div key="timer" initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} className="bg-white p-10 rounded-[3rem] shadow-2xl text-center">
               <h2 className="text-4xl font-black mb-8 text-teal-600">Screen Time Helper!</h2>
-              <div className="text-8xl font-black mb-8">{Math.floor(screenTime/60)}:{(screenTime%60).toString().padStart(2,'0')}</div>
+              <div className="text-8xl font-black mb-8">{Math.floor(screenTime / 60)}:{(screenTime % 60).toString().padStart(2, '0')}</div>
               <button onClick={startScreenTimer} disabled={timerRunning} className="bg-teal-600 text-white p-8 rounded-3xl font-black text-xl w-full mb-6 disabled:opacity-50">{timerRunning ? 'Timer Running...' : 'START 5 MIN TIMER'}</button>
               <button onClick={() => setView('menu')} className="bg-gray-100 p-6 rounded-2xl font-bold w-full">Back</button>
             </motion.div>
@@ -668,7 +670,7 @@ export default function ExtraGames() {
               <h2 className="text-4xl font-black mb-8 text-indigo-600">Binary Lights!</h2>
               <p className="text-gray-600 mb-4">Click lights or press keys 1-4 to toggle ON (1) or OFF (0)</p>
               <p className="text-sm text-indigo-500 font-semibold mb-8">⌨️ Try keyboard numbers 1, 2, 3, 4!</p>
-              <div className="flex justify-center gap-6 mb-8">{binaryLights.map((light,i) => (<button key={i} onClick={() => toggleBinary(i)} className={`w-24 h-24 rounded-full ${light ? 'bg-yellow-400 shadow-[0_0_30px_gold]' : 'bg-gray-300'}`}><div className="text-3xl font-black">{light}</div></button>))}</div>
+              <div className="flex justify-center gap-6 mb-8">{binaryLights.map((light, i) => (<button key={i} onClick={() => toggleBinary(i)} className={`w-24 h-24 rounded-full ${light ? 'bg-yellow-400 shadow-[0_0_30px_gold]' : 'bg-gray-300'}`}><div className="text-3xl font-black">{light}</div></button>))}</div>
               <div className="text-2xl font-bold mb-8">Binary: {binaryLights.join('')}</div>
               <button onClick={() => setView('menu')} className="bg-gray-100 p-6 rounded-2xl font-bold w-full">Back</button>
             </motion.div>
@@ -698,8 +700,8 @@ export default function ExtraGames() {
           {view === 'music' && (
             <motion.div key="music" initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} className="bg-white p-10 rounded-[3rem] shadow-2xl text-center">
               <h2 className="text-4xl font-black mb-8 text-violet-600">Music Code Composer!</h2>
-              <div className="bg-violet-50 p-8 rounded-3xl mb-8 min-h-[100px] flex justify-center gap-2 flex-wrap">{musicSequence.map((note,i) => (<div key={i} className="text-4xl">{note}</div>))}</div>
-              <div className="grid grid-cols-4 gap-4 mb-6">{['🎵','🎶','🎼','🎹'].map((note,i) => (<button key={i} onClick={() => playMusicNote(note)} className="bg-violet-500 text-white p-8 rounded-2xl text-4xl hover:bg-violet-600">{note}</button>))}</div>
+              <div className="bg-violet-50 p-8 rounded-3xl mb-8 min-h-[100px] flex justify-center gap-2 flex-wrap">{musicSequence.map((note, i) => (<div key={i} className="text-4xl">{note}</div>))}</div>
+              <div className="grid grid-cols-4 gap-4 mb-6">{['🎵', '🎶', '🎼', '🎹'].map((note, i) => (<button key={i} onClick={() => playMusicNote(note)} className="bg-violet-500 text-white p-8 rounded-2xl text-4xl hover:bg-violet-600">{note}</button>))}</div>
               <div className="flex gap-3"><button onClick={() => setView('menu')} className="bg-gray-100 p-6 rounded-2xl font-bold flex-1">Back</button><button onClick={() => setMusicSequence([])} className="bg-violet-600 text-white p-6 rounded-2xl font-bold flex-1">CLEAR</button></div>
             </motion.div>
           )}
@@ -717,7 +719,7 @@ export default function ExtraGames() {
           {view === 'parts' && (
             <motion.div key="parts" initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} className="bg-white p-10 rounded-[3rem] shadow-2xl text-center">
               <h2 className="text-4xl font-black mb-8 text-red-600">Parts Puzzle!</h2>
-              <div className="grid grid-cols-4 gap-4 mb-8" style={{gridTemplateRows: 'repeat(4, 100px)'}}>{COMPUTER_PARTS.map(part => (<button key={part.id} onClick={() => placePart(part)} className={`text-6xl ${partsPlaced.includes(part.id) ? 'opacity-30' : ''}`} style={{gridColumn: part.position.x, gridRow: part.position.y}}>{part.icon}</button>))}</div>
+              <div className="grid grid-cols-4 gap-4 mb-8" style={{ gridTemplateRows: 'repeat(4, 100px)' }}>{COMPUTER_PARTS.map(part => (<button key={part.id} onClick={() => placePart(part)} className={`text-6xl ${partsPlaced.includes(part.id) ? 'opacity-30' : ''}`} style={{ gridColumn: part.position.x, gridRow: part.position.y }}>{part.icon}</button>))}</div>
               <p className="text-2xl font-bold mb-6">Parts Placed: {partsPlaced.length}/4</p>
               <button onClick={() => setView('menu')} className="bg-gray-100 p-6 rounded-2xl font-bold w-full">Back</button>
             </motion.div>
@@ -756,7 +758,7 @@ export default function ExtraGames() {
           {view === 'photos' && (
             <motion.div key="photos" initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} className="bg-white p-10 rounded-[3rem] shadow-2xl text-center">
               <h2 className="text-4xl font-black mb-8 text-rose-600">Photo Memory!</h2>
-              <div className="bg-rose-50 p-8 rounded-3xl mb-8 min-h-[200px] grid grid-cols-4 gap-4">{photoGallery.map((photo,i) => (<div key={i} className="text-6xl">{photo}</div>))}</div>
+              <div className="bg-rose-50 p-8 rounded-3xl mb-8 min-h-[200px] grid grid-cols-4 gap-4">{photoGallery.map((photo, i) => (<div key={i} className="text-6xl">{photo}</div>))}</div>
               <button onClick={takePhoto} className="bg-rose-600 text-white p-8 rounded-3xl font-black text-xl w-full mb-6">📷 TAKE PHOTO</button>
               <div className="flex gap-3"><button onClick={() => setView('menu')} className="bg-gray-100 p-6 rounded-2xl font-bold flex-1">Back</button><button onClick={() => setPhotoGallery([])} className="bg-rose-200 p-6 rounded-2xl font-bold flex-1">Clear Gallery</button></div>
             </motion.div>
@@ -943,7 +945,7 @@ export default function ExtraGames() {
               </div>
               <div className="flex gap-3">
                 <button onClick={() => setView('menu')} className="bg-gray-100 text-gray-700 p-6 rounded-2xl font-bold flex-1">Back</button>
-                <button onClick={() => { speak("Let's dance the code together!"); setDanceSequence([]); setScore(s => s+10); }} className="bg-fuchsia-600 text-white p-6 rounded-2xl font-black flex-[2] text-xl">PLAY DANCE CODE</button>
+                <button onClick={() => { speak("Let's dance the code together!"); setDanceSequence([]); setScore(s => s + 10); }} className="bg-fuchsia-600 text-white p-6 rounded-2xl font-black flex-[2] text-xl">PLAY DANCE CODE</button>
               </div>
             </motion.div>
           )}
@@ -1074,7 +1076,7 @@ export default function ExtraGames() {
                   <div key={i} className="relative bg-slate-100 p-8 rounded-2xl text-6xl">
                     {dir === 'up' ? '⬆️' : dir === 'down' ? '⬇️' : dir === 'left' ? '⬅️' : '➡️'}
                     {i === BUG_LEVELS[bugLevel].bugIndex && (
-                      <button onClick={() => { setScore(s=>s+20); speak("Yay! I fixed the bug!"); setBugLevel((bugLevel+1)%2); }} className="absolute -top-4 -right-4 bg-red-500 text-white p-3 rounded-full animate-pulse hover:scale-110 transition-transform"><Bug size={32}/></button>
+                      <button onClick={() => { setScore(s => s + 20); speak("Yay! I fixed the bug!"); setBugLevel((bugLevel + 1) % 2); }} className="absolute -top-4 -right-4 bg-red-500 text-white p-3 rounded-full animate-pulse hover:scale-110 transition-transform"><Bug size={32} /></button>
                     )}
                   </div>
                 ))}
@@ -1138,9 +1140,9 @@ export default function ExtraGames() {
               </div>
               <div className="flex gap-3">
                 <button onClick={() => setView('menu')} className="bg-gray-100 p-6 rounded-2xl font-bold flex-1">Back</button>
-                <button onClick={() => { 
-                  const n = signalPos + 25; 
-                  if(n > 90) { setSignalPos(0); setScore(s=>s+20); speak("My message sent! Wow!"); }
+                <button onClick={() => {
+                  const n = signalPos + 25;
+                  if (n > 90) { setSignalPos(0); setScore(s => s + 20); speak("My message sent! Wow!"); }
                   else setSignalPos(n);
                 }} className="bg-blue-600 text-white p-8 rounded-3xl font-black text-2xl flex-[2]">BOOST SIGNAL</button>
               </div>

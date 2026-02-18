@@ -2,10 +2,10 @@ import React, { useState } from 'react';
 import { motion } from 'framer-motion';
 import { Link } from 'react-router-dom';
 import { createPageUrl } from '@/utils';
-import { base44 } from '@/api/base44Client';
+import { studentService, missionSessionService } from '@/api/dataService';
 import { useQuery } from '@tanstack/react-query';
-import { 
-  ArrowLeft, Users, Trophy, Lightbulb, Clock, 
+import {
+  ArrowLeft, Users, Trophy, Lightbulb, Clock,
   TrendingUp, AlertCircle, CheckCircle2, Loader2,
   BarChart3
 } from 'lucide-react';
@@ -19,12 +19,12 @@ export default function TeacherDashboard() {
 
   const { data: students = [], isLoading: studentsLoading } = useQuery({
     queryKey: ['students'],
-    queryFn: () => base44.entities.Student.list()
+    queryFn: () => studentService.list()
   });
 
   const { data: sessions = [], isLoading: sessionsLoading } = useQuery({
     queryKey: ['sessions'],
-    queryFn: () => base44.entities.MissionSession.list('-created_date', 100)
+    queryFn: () => missionSessionService.list(100)
   });
 
   const isLoading = studentsLoading || sessionsLoading;
@@ -32,10 +32,10 @@ export default function TeacherDashboard() {
   // Calculate stats
   const totalStudents = students.length;
   const totalMissionsCompleted = sessions.filter(s => s.completed).length;
-  const avgHintsPerSession = sessions.length > 0 
-    ? (sessions.reduce((acc, s) => acc + (s.hints_used || 0), 0) / sessions.length).toFixed(1)
+  const avgHintsPerSession = sessions.length > 0
+    ? (sessions.reduce((acc, s) => acc + (s.metadata?.hints_used || s.hints_used || 0), 0) / sessions.length).toFixed(1)
     : 0;
-  
+
   const studentsNeedingHelp = students.filter(s => (s.total_hints_used || 0) > 3);
 
   // Get recent activity
@@ -158,7 +158,7 @@ export default function TeacherDashboard() {
                     {students.map(student => {
                       const studentSessions = sessions.filter(s => s.student_id === student.id);
                       const completedCount = studentSessions.filter(s => s.completed).length;
-                      const totalHints = studentSessions.reduce((acc, s) => acc + (s.hints_used || 0), 0);
+                      const totalHints = studentSessions.reduce((acc, s) => acc + (s.metadata?.hints_used || s.hints_used || 0), 0);
                       const needsHelp = totalHints > 3;
 
                       return (
@@ -215,7 +215,7 @@ export default function TeacherDashboard() {
                               ) : (
                                 <div className="space-y-2">
                                   {studentSessions.slice(0, 5).map(session => (
-                                    <div 
+                                    <div
                                       key={session.id}
                                       className="flex items-center justify-between p-3 bg-gray-50 rounded-lg"
                                     >
@@ -228,7 +228,7 @@ export default function TeacherDashboard() {
                                         <span className="font-medium">{session.mission_name}</span>
                                       </div>
                                       <div className="flex items-center gap-4 text-sm text-gray-500">
-                                        <span>{session.hints_used || 0} hints</span>
+                                        <span>{session.metadata?.hints_used || session.hints_used || 0} hints</span>
                                         {session.time_spent_seconds && (
                                           <span>{Math.round(session.time_spent_seconds / 60)}m</span>
                                         )}
@@ -275,13 +275,13 @@ export default function TeacherDashboard() {
                           )}
                           <div>
                             <p className="font-medium text-gray-800">
-                              {session.student_name} - {session.mission_name}
+                              {session.students?.name || session.metadata?.student_name || 'Student'} - {session.mission_name}
                             </p>
                             <p className="text-sm text-gray-500">
-                              {session.hints_used || 0} hints used
-                              {session.struggles?.length > 0 && (
+                              {session.metadata?.hints_used || session.hints_used || 0} hints used
+                              {(session.metadata?.struggles || session.struggles)?.length > 0 && (
                                 <span className="ml-2 text-orange-500">
-                                  • Struggled with: {session.struggles.join(', ')}
+                                  • Struggled with: {(session.metadata?.struggles || session.struggles).join(', ')}
                                 </span>
                               )}
                             </p>

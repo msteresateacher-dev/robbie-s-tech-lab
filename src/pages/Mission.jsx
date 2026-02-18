@@ -2,7 +2,7 @@ import React, { useState, useRef } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import { Link, useNavigate } from 'react-router-dom';
 import { createPageUrl } from '@/utils';
-import { base44 } from '@/api/base44Client';
+import { studentService, missionSessionService } from '@/api/dataService';
 import { useQuery, useMutation, useQueryClient } from '@tanstack/react-query';
 import { ArrowLeft, Home, Lightbulb, Loader2 } from 'lucide-react';
 import { Button } from '@/components/ui/button';
@@ -42,11 +42,11 @@ export default function Mission() {
   const urlParams = new URLSearchParams(window.location.search);
   const studentId = urlParams.get('studentId');
   const missionId = urlParams.get('missionId') || 'wake_up_robbie';
-  
+
   const missionData = MISSION_CONFIGS[missionId];
   const MissionComponent = missionData?.component;
   const missionConfig = missionData?.config;
-  
+
   const [currentPhase, setCurrentPhase] = useState('playing');
   const [robbieEmotion, setRobbieEmotion] = useState(missionConfig?.emotion || 'happy');
   const [isSpeaking, setIsSpeaking] = useState(false);
@@ -58,20 +58,17 @@ export default function Mission() {
 
   const { data: student, isLoading } = useQuery({
     queryKey: ['student', studentId],
-    queryFn: async () => {
-      const students = await base44.entities.Student.filter({ id: studentId });
-      return students[0];
-    },
+    queryFn: () => studentService.get(studentId),
     enabled: !!studentId
   });
 
   const updateStudentMutation = useMutation({
-    mutationFn: ({ id, data }) => base44.entities.Student.update(id, data),
-    onSuccess: () => queryClient.invalidateQueries(['student', studentId])
+    mutationFn: ({ id, data }) => studentService.update(id, data),
+    onSuccess: () => queryClient.invalidateQueries({ queryKey: ['student', studentId] })
   });
 
   const createSessionMutation = useMutation({
-    mutationFn: (data) => base44.entities.MissionSession.create(data)
+    mutationFn: (data) => missionSessionService.create(data)
   });
 
   const handleNeedHint = () => {
@@ -80,7 +77,7 @@ export default function Mission() {
       setShowHint(true);
       setHintsUsed(prev => prev + 1);
       setRobbieEmotion('encouraging');
-      
+
       setTimeout(() => {
         setShowHint(false);
         setRobbieEmotion(missionConfig?.emotion || 'happy');
@@ -101,12 +98,16 @@ export default function Mission() {
     // Create session record
     await createSessionMutation.mutateAsync({
       student_id: studentId,
-      student_name: student?.name,
       mission_name: missionData?.title || 'Mission',
       completed: true,
-      hints_used: hintsUsed,
+      completed_at: new Date().toISOString(),
       time_spent_seconds: timeSpent,
-      struggles: hintsUsed > 1 ? [missionId] : []
+      attempts: attempts,
+      metadata: {
+        hints_used: hintsUsed,
+        struggles: hintsUsed > 1 ? [missionId] : [],
+        student_name: student?.name // Keep for easy display
+      }
     });
 
     // Update student stats
@@ -177,7 +178,7 @@ export default function Mission() {
 
       <main className="px-4 py-6 max-w-2xl mx-auto">
         {/* Robbie */}
-        <motion.div 
+        <motion.div
           className="flex flex-col items-center mb-6"
           layout
         >

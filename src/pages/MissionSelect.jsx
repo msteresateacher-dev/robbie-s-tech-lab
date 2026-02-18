@@ -2,7 +2,7 @@ import React from 'react';
 import { motion } from 'framer-motion';
 import { Link, useNavigate } from 'react-router-dom';
 import { createPageUrl } from '@/utils';
-import { base44 } from '@/api/base44Client';
+import { studentService, missionSessionService } from '@/api/dataService';
 import { useQuery } from '@tanstack/react-query';
 import { ArrowLeft, Lock, CheckCircle2, Loader2, Sparkles } from 'lucide-react';
 import { Button } from '@/components/ui/button';
@@ -58,16 +58,13 @@ export default function MissionSelect() {
 
   const { data: student, isLoading } = useQuery({
     queryKey: ['student', studentId],
-    queryFn: async () => {
-      const students = await base44.entities.Student.filter({ id: studentId });
-      return students[0];
-    },
+    queryFn: () => studentService.get(studentId),
     enabled: !!studentId
   });
 
   const { data: sessions = [] } = useQuery({
     queryKey: ['student-sessions', studentId],
-    queryFn: () => base44.entities.MissionSession.filter({ student_id: studentId }),
+    queryFn: () => missionSessionService.getByStudent(studentId),
     enabled: !!studentId
   });
 
@@ -149,8 +146,8 @@ export default function MissionSelect() {
                   disabled={isLocked}
                   className={`
                     w-full text-left p-6 rounded-3xl shadow-xl border-4 transition-all
-                    ${isLocked 
-                      ? 'bg-gray-100 border-gray-300 opacity-60 cursor-not-allowed' 
+                    ${isLocked
+                      ? 'bg-gray-100 border-gray-300 opacity-60 cursor-not-allowed'
                       : 'bg-white border-transparent hover:scale-105 hover:shadow-2xl active:scale-95'
                     }
                   `}

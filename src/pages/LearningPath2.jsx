@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import { Link, useSearchParams } from 'react-router-dom';
 import { createPageUrl } from '@/utils';
-import { base44 } from '@/api/base44Client';
+import { studentService, missionSessionService } from '@/api/dataService';
 import { useQuery } from '@tanstack/react-query';
 import { motion } from 'framer-motion';
 import {
@@ -110,7 +110,7 @@ export default function LearningPath2() {
   const { data: student, isLoading: studentLoading } = useQuery({
     queryKey: ['student', studentId],
     queryFn: async () => {
-      const students = await base44.entities.Student.list();
+      const students = await studentService.list();
       return students.find(s => s.id === studentId);
     },
     enabled: !!studentId && studentId !== 'null' && studentId !== 'undefined'
@@ -118,7 +118,7 @@ export default function LearningPath2() {
 
   const { data: sessions = [], isLoading: sessionsLoading } = useQuery({
     queryKey: ['sessions', studentId],
-    queryFn: () => base44.entities.MissionSession.filter({ student_id: studentId }),
+    queryFn: () => missionSessionService.getByStudent(studentId),
     enabled: !!studentId && studentId !== 'null' && studentId !== 'undefined'
   });
 
@@ -159,10 +159,10 @@ export default function LearningPath2() {
     return false;
   };
 
-  const completedWeeks = WEEKLY_THEMES_ADVANCED.filter(week => 
+  const completedWeeks = WEEKLY_THEMES_ADVANCED.filter(week =>
     week.tasks.every(t => getTaskProgress(t))
   ).map(w => w.week);
-  
+
   const totalCompleted = completedTasks.length;
   const totalHintsUsed = student?.total_hints_used || 0;
 
@@ -310,14 +310,14 @@ export default function LearningPath2() {
                       absolute transform -translate-x-1/2 -translate-y-1/2
                       w-36 h-36 rounded-full transition-all
                       ${progress.isComplete
-                        ? 'bg-gradient-to-br from-yellow-400 via-orange-500 to-red-500 shadow-2xl border-8 border-white' 
+                        ? 'bg-gradient-to-br from-yellow-400 via-orange-500 to-red-500 shadow-2xl border-8 border-white'
                         : isLocked
-                        ? 'bg-gray-400 border-4 border-gray-500 opacity-40 cursor-not-allowed'
-                        : 'bg-gradient-to-br ' + week.color + ' shadow-2xl border-8 border-white hover:shadow-3xl'
+                          ? 'bg-gray-400 border-4 border-gray-500 opacity-40 cursor-not-allowed'
+                          : 'bg-gradient-to-br ' + week.color + ' shadow-2xl border-8 border-white hover:shadow-3xl'
                       }
                     `}
-                    style={{ 
-                      left: `${week.mapPosition.x}%`, 
+                    style={{
+                      left: `${week.mapPosition.x}%`,
                       top: `${week.mapPosition.y}%`,
                       zIndex: 10
                     }}
@@ -389,8 +389,8 @@ export default function LearningPath2() {
 
             {/* Badges Section */}
             <div className="mb-8">
-              <BadgeSystem 
-                completedWeeks={completedWeeks} 
+              <BadgeSystem
+                completedWeeks={completedWeeks}
                 totalCompleted={totalCompleted}
                 hintsUsed={totalHintsUsed}
               />
@@ -461,7 +461,7 @@ export default function LearningPath2() {
                       <Sparkles className="w-6 h-6 text-purple-500" />
                       Advanced Challenges
                     </h3>
-                    
+
                     <div className="grid md:grid-cols-2 gap-4">
                       {currentWeek.tasks.map((task, index) => {
                         const isCompleted = getTaskProgress(task);
@@ -476,11 +476,11 @@ export default function LearningPath2() {
                           >
                             <Card className={`
                               relative overflow-hidden border-4 transition-all
-                              ${isCompleted 
-                                ? 'border-green-400 bg-gradient-to-br from-green-50 to-emerald-50' 
-                                : isLocked 
-                                ? 'border-gray-300 bg-gray-100 opacity-60'
-                                : 'border-purple-300 bg-gradient-to-br from-white to-purple-50 hover:shadow-2xl hover:scale-105'
+                              ${isCompleted
+                                ? 'border-green-400 bg-gradient-to-br from-green-50 to-emerald-50'
+                                : isLocked
+                                  ? 'border-gray-300 bg-gray-100 opacity-60'
+                                  : 'border-purple-300 bg-gradient-to-br from-white to-purple-50 hover:shadow-2xl hover:scale-105'
                               }
                             `}>
                               <CardContent className="p-6">
@@ -498,7 +498,7 @@ export default function LearningPath2() {
                                         <span className="text-sm text-gray-600">Advanced Challenge</span>
                                       </div>
                                     )}
-                                    
+
                                     {isCompleted ? (
                                       <div className="flex items-center gap-2 text-green-600 font-bold">
                                         <CheckCircle className="w-5 h-5" />
@@ -510,7 +510,7 @@ export default function LearningPath2() {
                                         <span>Complete previous task</span>
                                       </div>
                                     ) : (
-                                      <Button 
+                                      <Button
                                         className="mt-2 bg-gradient-to-r from-purple-500 to-pink-500"
                                         onClick={() => alert(`Coming soon! This is Level 2 content. 🚀`)}
                                       >
