@@ -49,19 +49,41 @@ export default function Home() {
 
       {/* Main content */}
       <main className="px-4 pb-12">
-        {/* Robbie Section */}
+        {/* Robbie & Bonnie Section */}
         <motion.div
           initial={{ scale: 0.8, opacity: 0 }}
           animate={{ scale: 1, opacity: 1 }}
           transition={{ delay: 0.2 }}
           className="flex flex-col items-center mt-8"
         >
-          <RobbieFace 
-            emotion={robbieEmotion} 
-            speaking={isSpeaking}
-            size="large"
-            onClick={handleRobbieClick}
-          />
+          {/* Sibling duo */}
+          <div className="flex items-end justify-center gap-4 mb-2">
+            <motion.div
+              className="flex flex-col items-center"
+              initial={{ x: -30, opacity: 0 }}
+              animate={{ x: 0, opacity: 1 }}
+              transition={{ delay: 0.3 }}
+            >
+              <RobbieFace
+                emotion={robbieEmotion}
+                speaking={isSpeaking}
+                size="large"
+                onClick={handleRobbieClick}
+              />
+              <span className="mt-2 text-sm font-bold text-fuchsia-600 bg-white/80 px-3 py-1 rounded-full shadow-sm">Robbie 🤖</span>
+            </motion.div>
+
+            <motion.div
+              className="flex flex-col items-center mb-4"
+              initial={{ x: 30, opacity: 0 }}
+              animate={{ x: 0, opacity: 1 }}
+              transition={{ delay: 0.5 }}
+            >
+              <BonnieFace emotion="happy" size="medium" />
+              <span className="mt-2 text-sm font-bold text-sky-500 bg-white/80 px-3 py-1 rounded-full shadow-sm">Bonnie 🌟</span>
+              <p className="text-xs text-gray-500 mt-1 text-center">Baby Bot Sister</p>
+            </motion.div>
+          </div>
           
           <div className="mt-8 w-full max-w-md">
             <SpeechBubble
