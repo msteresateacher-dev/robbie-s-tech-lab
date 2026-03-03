@@ -51,12 +51,13 @@ import ExtraGames from './pages/ExtraGames';
 import Home from './pages/Home';
 import LearningMap from './pages/LearningMap';
 import LearningPath from './pages/LearningPath';
+import LearningPath2 from './pages/LearningPath2';
+import Login from './pages/Login';
 import Mission from './pages/Mission';
 import MissionSelect from './pages/MissionSelect';
 import StudentPortal from './pages/StudentPortal';
 import TeacherDashboard from './pages/TeacherDashboard';
 import TeacherResources from './pages/TeacherResources';
-import LearningPath2 from './pages/LearningPath2';
 import __Layout from './Layout.jsx';
 
 
@@ -65,12 +66,13 @@ export const PAGES = {
     "Home": Home,
     "LearningMap": LearningMap,
     "LearningPath": LearningPath,
+    "LearningPath2": LearningPath2,
+    "Login": Login,
     "Mission": Mission,
     "MissionSelect": MissionSelect,
     "StudentPortal": StudentPortal,
     "TeacherDashboard": TeacherDashboard,
     "TeacherResources": TeacherResources,
-    "LearningPath2": LearningPath2,
 }
 
 export const pagesConfig = {

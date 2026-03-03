@@ -5,6 +5,7 @@ import { createPageUrl } from '@/utils';
 import { GraduationCap, Users, Sparkles } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import RobbieFace from '@/components/RobbieFace';
+import BonnieFace from '@/components/BonnieFace';
 import SpeechBubble from '@/components/SpeechBubble';
 import VoiceSelector, { VOICE_OPTIONS } from '@/components/VoiceSelector';
 import { useLanguage } from '@/components/LanguageContext';
