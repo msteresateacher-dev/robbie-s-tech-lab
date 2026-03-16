@@ -1,4 +1,4 @@
-import { base44 } from '@/api/base44Client';
+import { supabase } from './supabaseClient';
 
 // ============================================
 // STUDENTS SERVICE
@@ -6,35 +6,68 @@ import { base44 } from '@/api/base44Client';
 
 export const studentService = {
     async list() {
-        return base44.entities.Student.list('-created_date', 100);
+        const { data, error } = await supabase
+            .from('students')
+            .select('*')
+            .order('created_at', { ascending: false });
+        if (error) throw error;
+        return data;
     },
 
     async get(id) {
-        return base44.entities.Student.filter({ id }).then(r => r[0]);
+        const { data, error } = await supabase
+            .from('students')
+            .select('*')
+            .eq('id', id)
+            .single();
+        if (error) throw error;
+        return data;
     },
 
     async getByUserId(userId) {
-        const results = await base44.entities.Student.filter({ created_by: userId });
-        return results[0] || null;
+        const { data, error } = await supabase
+            .from('students')
+            .select('*')
+            .eq('user_id', userId)
+            .single();
+        if (error && error.code !== 'PGRST116') throw error; // PGRST116 = no rows returned
+        return data;
     },
 
     async create(studentData) {
-        return base44.entities.Student.create(studentData);
+        const { data, error } = await supabase
+            .from('students')
+            .insert([studentData])
+            .select()
+            .single();
+        if (error) throw error;
+        return data;
     },
 
     async update(id, updates) {
-        return base44.entities.Student.update(id, updates);
+        const { data, error } = await supabase
+            .from('students')
+            .update(updates)
+            .eq('id', id)
+            .select()
+            .single();
+        if (error) throw error;
+        return data;
     },
 
     async delete(id) {
-        return base44.entities.Student.delete(id);
+        const { error } = await supabase
+            .from('students')
+            .delete()
+            .eq('id', id);
+        if (error) throw error;
     },
 
     async getStats(studentId) {
-        const sessions = await missionSessionService.getByStudent(studentId);
-        const completed = sessions.filter(s => s.completed).length;
-        const totalHints = sessions.reduce((acc, s) => acc + (s.hints_used || 0), 0);
-        return { completed, totalHints };
+        const { data, error } = await supabase
+            .rpc('get_student_stats', { student_uuid: studentId });
+        if (error) throw error;
+        return data;
     },
 };
 
@@ -44,51 +77,139 @@ export const studentService = {
 
 export const missionSessionService = {
     async list(limit = 100) {
-        return base44.entities.MissionSession.list('-created_date', limit);
+        const { data, error } = await supabase
+            .from('mission_sessions')
+            .select('*, students(name, email)')
+            .order('created_at', { ascending: false })
+            .limit(limit);
+        if (error) throw error;
+        return data;
     },
 
     async get(id) {
-        const results = await base44.entities.MissionSession.filter({ id });
-        return results[0];
+        const { data, error } = await supabase
+            .from('mission_sessions')
+            .select('*, students(name, email)')
+            .eq('id', id)
+            .single();
+        if (error) throw error;
+        return data;
     },
 
     async getByStudent(studentId) {
-        return base44.entities.MissionSession.filter({ student_id: studentId }, '-created_date');
+        const { data, error } = await supabase
+            .from('mission_sessions')
+            .select('*')
+            .eq('student_id', studentId)
+            .order('created_at', { ascending: false });
+        if (error) throw error;
+        return data;
     },
 
     async getCompletedByStudent(studentId) {
-        return base44.entities.MissionSession.filter({ student_id: studentId, completed: true }, '-created_date');
+        const { data, error } = await supabase
+            .from('mission_sessions')
+            .select('*')
+            .eq('student_id', studentId)
+            .eq('completed', true)
+            .order('completed_at', { ascending: false });
+        if (error) throw error;
+        return data;
     },
 
     async create(sessionData) {
-        return base44.entities.MissionSession.create(sessionData);
+        const { data, error } = await supabase
+            .from('mission_sessions')
+            .insert([sessionData])
+            .select()
+            .single();
+        if (error) throw error;
+        return data;
     },
 
     async update(id, updates) {
-        return base44.entities.MissionSession.update(id, updates);
+        const { data, error } = await supabase
+            .from('mission_sessions')
+            .update(updates)
+            .eq('id', id)
+            .select()
+            .single();
+        if (error) throw error;
+        return data;
     },
 
     async markCompleted(id, score = null) {
-        const updates = { completed: true };
-        if (score !== null) updates.score = score;
-        return base44.entities.MissionSession.update(id, updates);
+        const updates = {
+            completed: true,
+            completed_at: new Date().toISOString(),
+        };
+        if (score !== null) {
+            updates.score = score;
+        }
+
+        const { data, error } = await supabase
+            .from('mission_sessions')
+            .update(updates)
+            .eq('id', id)
+            .select()
+            .single();
+        if (error) throw error;
+        return data;
     },
 
     async delete(id) {
-        return base44.entities.MissionSession.delete(id);
+        const { error } = await supabase
+            .from('mission_sessions')
+            .delete()
+            .eq('id', id);
+        if (error) throw error;
     },
 };
 
 // ============================================
-// USER LOGS SERVICE (no-op stub)
+// USER LOGS SERVICE
 // ============================================
 
 export const userLogService = {
     async log(studentId, pageName, action = null, metadata = null) {
-        // Logging not required with Base44 — no-op
+        try {
+            const { error } = await supabase
+                .from('user_logs')
+                .insert([
+                    {
+                        student_id: studentId,
+                        page_name: pageName,
+                        action,
+                        metadata,
+                    },
+                ]);
+            if (error) console.error('Logging error:', error);
+        } catch (err) {
+            // Silent fail for logging
+            console.error('Failed to log user activity:', err);
+        }
     },
-    async getByStudent() { return []; },
-    async getRecentActivity() { return []; },
+
+    async getByStudent(studentId, limit = 100) {
+        const { data, error } = await supabase
+            .from('user_logs')
+            .select('*')
+            .eq('student_id', studentId)
+            .order('created_at', { ascending: false })
+            .limit(limit);
+        if (error) throw error;
+        return data;
+    },
+
+    async getRecentActivity(limit = 50) {
+        const { data, error } = await supabase
+            .from('user_logs')
+            .select('*, students(name, email)')
+            .order('created_at', { ascending: false })
+            .limit(limit);
+        if (error) throw error;
+        return data;
+    },
 };
 
 // ============================================
@@ -97,7 +218,9 @@ export const userLogService = {
 
 export const leaderboardService = {
     async getTop(limit = 10) {
-        const students = await base44.entities.Student.list('-missions_completed', limit);
-        return students;
+        const { data, error } = await supabase
+            .rpc('get_leaderboard', { limit_count: limit });
+        if (error) throw error;
+        return data;
     },
 };
