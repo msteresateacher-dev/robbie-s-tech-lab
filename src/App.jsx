@@ -15,7 +15,7 @@ const MainPage = mainPageKey ? Pages[mainPageKey] : <></>;
 
 const LayoutWrapper = ({ children, currentPageName }) => Layout ?
   <Layout currentPageName={currentPageName}>{children}</Layout>
-  : <>{children}</>;
+  : <>{children}</>; 
 
 import Login from '@/pages/Login';
 
