@@ -1,10 +1,3 @@
-import { createClient } from '@supabase/supabase-js';
-
-const supabaseUrl = import.meta.env.VITE_SUPABASE_URL?.trim();
-const supabaseAnonKey = import.meta.env.VITE_SUPABASE_ANON_KEY?.trim();
-
-if (!supabaseUrl || !supabaseAnonKey) {
-    throw new Error('Missing Supabase environment variables. Please add VITE_SUPABASE_URL and VITE_SUPABASE_ANON_KEY to your .env.local file');
-}
-
-export const supabase = createClient(supabaseUrl, supabaseAnonKey);
+// Supabase has been replaced by the Base44 SDK.
+// This file is kept as a stub to avoid import errors during migration.
+export const supabase = null;
