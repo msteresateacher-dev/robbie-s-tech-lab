@@ -1,4 +1,7 @@
-import { supabase } from './supabaseClient';
+import { base44 } from '@/api/base44Client';
+
+const Students = base44.entities.Student;
+const MissionSessions = base44.entities.MissionSession;
 
 // ============================================
 // STUDENTS SERVICE
@@ -6,68 +9,36 @@ import { supabase } from './supabaseClient';
 
 export const studentService = {
     async list() {
-        const { data, error } = await supabase
-            .from('students')
-            .select('*')
-            .order('created_at', { ascending: false });
-        if (error) throw error;
-        return data;
+        return Students.list('-created_date');
     },
 
     async get(id) {
-        const { data, error } = await supabase
-            .from('students')
-            .select('*')
-            .eq('id', id)
-            .single();
-        if (error) throw error;
-        return data;
+        return Students.get(id);
     },
 
     async getByUserId(userId) {
-        const { data, error } = await supabase
-            .from('students')
-            .select('*')
-            .eq('user_id', userId)
-            .single();
-        if (error && error.code !== 'PGRST116') throw error; // PGRST116 = no rows returned
-        return data;
+        const results = await Students.filter({ created_by: userId });
+        return results[0] || null;
     },
 
     async create(studentData) {
-        const { data, error } = await supabase
-            .from('students')
-            .insert([studentData])
-            .select()
-            .single();
-        if (error) throw error;
-        return data;
+        return Students.create(studentData);
     },
 
     async update(id, updates) {
-        const { data, error } = await supabase
-            .from('students')
-            .update(updates)
-            .eq('id', id)
-            .select()
-            .single();
-        if (error) throw error;
-        return data;
+        return Students.update(id, updates);
     },
 
     async delete(id) {
-        const { error } = await supabase
-            .from('students')
-            .delete()
-            .eq('id', id);
-        if (error) throw error;
+        return Students.delete(id);
     },
 
     async getStats(studentId) {
-        const { data, error } = await supabase
-            .rpc('get_student_stats', { student_uuid: studentId });
-        if (error) throw error;
-        return data;
+        const student = await Students.get(studentId);
+        return {
+            missions_completed: student?.missions_completed || 0,
+            total_hints_used: student?.total_hints_used || 0,
+        };
     },
 };
 
@@ -77,138 +48,55 @@ export const studentService = {
 
 export const missionSessionService = {
     async list(limit = 100) {
-        const { data, error } = await supabase
-            .from('mission_sessions')
-            .select('*, students(name, email)')
-            .order('created_at', { ascending: false })
-            .limit(limit);
-        if (error) throw error;
-        return data;
+        return MissionSessions.list('-created_date', limit);
     },
 
     async get(id) {
-        const { data, error } = await supabase
-            .from('mission_sessions')
-            .select('*, students(name, email)')
-            .eq('id', id)
-            .single();
-        if (error) throw error;
-        return data;
+        return MissionSessions.get(id);
     },
 
     async getByStudent(studentId) {
-        const { data, error } = await supabase
-            .from('mission_sessions')
-            .select('*')
-            .eq('student_id', studentId)
-            .order('created_at', { ascending: false });
-        if (error) throw error;
-        return data;
+        return MissionSessions.filter({ student_id: studentId }, '-created_date');
     },
 
     async getCompletedByStudent(studentId) {
-        const { data, error } = await supabase
-            .from('mission_sessions')
-            .select('*')
-            .eq('student_id', studentId)
-            .eq('completed', true)
-            .order('completed_at', { ascending: false });
-        if (error) throw error;
-        return data;
+        return MissionSessions.filter({ student_id: studentId, completed: true }, '-created_date');
     },
 
     async create(sessionData) {
-        const { data, error } = await supabase
-            .from('mission_sessions')
-            .insert([sessionData])
-            .select()
-            .single();
-        if (error) throw error;
-        return data;
+        return MissionSessions.create(sessionData);
     },
 
     async update(id, updates) {
-        const { data, error } = await supabase
-            .from('mission_sessions')
-            .update(updates)
-            .eq('id', id)
-            .select()
-            .single();
-        if (error) throw error;
-        return data;
+        return MissionSessions.update(id, updates);
     },
 
     async markCompleted(id, score = null) {
-        const updates = {
-            completed: true,
-            completed_at: new Date().toISOString(),
-        };
-        if (score !== null) {
-            updates.score = score;
-        }
-
-        const { data, error } = await supabase
-            .from('mission_sessions')
-            .update(updates)
-            .eq('id', id)
-            .select()
-            .single();
-        if (error) throw error;
-        return data;
+        const updates = { completed: true };
+        if (score !== null) updates.score = score;
+        return MissionSessions.update(id, updates);
     },
 
     async delete(id) {
-        const { error } = await supabase
-            .from('mission_sessions')
-            .delete()
-            .eq('id', id);
-        if (error) throw error;
+        return MissionSessions.delete(id);
     },
 };
 
 // ============================================
-// USER LOGS SERVICE
+// USER LOGS SERVICE (silent no-op — Base44 tracks analytics natively)
 // ============================================
 
 export const userLogService = {
     async log(studentId, pageName, action = null, metadata = null) {
-        try {
-            const { error } = await supabase
-                .from('user_logs')
-                .insert([
-                    {
-                        student_id: studentId,
-                        page_name: pageName,
-                        action,
-                        metadata,
-                    },
-                ]);
-            if (error) console.error('Logging error:', error);
-        } catch (err) {
-            // Silent fail for logging
-            console.error('Failed to log user activity:', err);
-        }
+        // No-op: use base44.analytics.track() for event tracking if needed
     },
 
     async getByStudent(studentId, limit = 100) {
-        const { data, error } = await supabase
-            .from('user_logs')
-            .select('*')
-            .eq('student_id', studentId)
-            .order('created_at', { ascending: false })
-            .limit(limit);
-        if (error) throw error;
-        return data;
+        return [];
     },
 
     async getRecentActivity(limit = 50) {
-        const { data, error } = await supabase
-            .from('user_logs')
-            .select('*, students(name, email)')
-            .order('created_at', { ascending: false })
-            .limit(limit);
-        if (error) throw error;
-        return data;
+        return [];
     },
 };
 
@@ -218,9 +106,12 @@ export const userLogService = {
 
 export const leaderboardService = {
     async getTop(limit = 10) {
-        const { data, error } = await supabase
-            .rpc('get_leaderboard', { limit_count: limit });
-        if (error) throw error;
-        return data;
+        const students = await Students.list('-missions_completed', limit);
+        return students.map(s => ({
+            id: s.id,
+            name: s.name,
+            missions_completed: s.missions_completed || 0,
+            total_hints_used: s.total_hints_used || 0,
+        }));
     },
 };
