@@ -7,7 +7,7 @@ export default defineConfig({
   plugins: [react(), base44()],
   server: {
     allowedHosts: ["all", "ta-01km6wkfmynsn3zztvadxgb106-5173-jezurb22a97sginal8qilv8y5.w.modal.host", ".modal.host"],
-    host: true, ta-01km6wkfmynsn3zztvadxgb106-5173-jezurb22a97sginal8qilv8y5.w.modal.host
+    host: true,
   },
   resolve: {
     alias: {
