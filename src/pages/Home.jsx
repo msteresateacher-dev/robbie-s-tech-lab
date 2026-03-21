@@ -127,7 +127,7 @@ export default function Home() {
             </Button>
           </Link>
 
-          <Link to={createPageUrl('LearningPath')} className="block">
+          <Link to={createPageUrl('StudentPortal')} className="block">
             <Button
               size="lg"
               className="w-full h-16 text-lg rounded-2xl bg-gradient-to-r from-yellow-400 to-orange-500 hover:from-yellow-500 hover:to-orange-600 shadow-lg"
