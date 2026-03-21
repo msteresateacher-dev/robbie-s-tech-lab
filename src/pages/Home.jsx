@@ -70,7 +70,7 @@ export default function Home() {
                 size="large"
                 onClick={handleRobbieClick}
               />
-              <span className="mt-2 text-sm font-bold text-fuchsia-600 bg-white/80 px-3 py-1 rounded-full shadow-sm">Robbie 🤖</span>
+              <span className="mt-2 text-sm font-bold text-gray-600 bg-white/80 px-3 py-1 rounded-full shadow-sm">Robbie the Robot 🤖</span>
             </motion.div>
 
             <motion.div
