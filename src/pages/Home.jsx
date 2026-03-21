@@ -26,6 +26,14 @@ export default function Home() {
     setTimeout(() => setRobbieEmotion('happy'), 2000);
   };
 
+  const handleBonnieClick = () => {
+    const utterance = new SpeechSynthesisUtterance("I like learning about computers with my big brother Robbie.");
+    utterance.pitch = 1.6;
+    utterance.rate = 0.9;
+    window.speechSynthesis.cancel();
+    window.speechSynthesis.speak(utterance);
+  };
+
   const handleVoiceChange = (voice) => {
     setCurrentVoice(voice.id);
     setVoiceSettings(voice);
