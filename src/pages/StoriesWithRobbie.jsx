@@ -13,6 +13,10 @@ const STORIES = [
   { title: "Story 6", emoji: "🌐", url: "https://gemini.google.com/share/e7c88c485df3" },
   { title: "Story 7", emoji: "🚀", url: "https://gemini.google.com/share/72cf165290a3" },
   { title: "Story 8", emoji: "🎉", url: "https://gemini.google.com/share/3cf74b0b2e59" },
+  { title: "Story 9", emoji: "🎨", url: "https://gemini.google.com/share/a49ff1b964bd" },
+  { title: "Story 10", emoji: "🔭", url: "https://gemini.google.com/share/9d26c8e53864" },
+  { title: "Story 11", emoji: "🎮", url: "https://gemini.google.com/share/64d9662d2d8f" },
+  { title: "Story 12", emoji: "⭐", url: "https://gemini.google.com/share/342ceadeb7df" },
 ];
 
 export default function StoriesWithRobbie() {
