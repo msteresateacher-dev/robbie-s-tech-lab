@@ -49,9 +49,9 @@ export default function BonnieFace({ emotion = 'happy', speaking = false, size =
     >
       {/* Robot Head - smaller, rounder, more pastel */}
       <motion.div
-        className="w-full h-full rounded-[2.5rem] bg-gradient-to-b from-sky-300 to-cyan-400 shadow-2xl relative overflow-hidden border-4 border-sky-200"
+        className="w-full h-full rounded-[2.5rem] bg-gradient-to-b from-pink-300 to-pink-400 shadow-2xl relative overflow-hidden border-4 border-pink-200"
         animate={speaking ? {
-          boxShadow: ['0 20px 40px -10px rgba(125, 211, 252, 0.4)', '0 20px 40px -10px rgba(125, 211, 252, 0.8)', '0 20px 40px -10px rgba(125, 211, 252, 0.4)']
+          boxShadow: ['0 20px 40px -10px rgba(249, 168, 212, 0.4)', '0 20px 40px -10px rgba(249, 168, 212, 0.8)', '0 20px 40px -10px rgba(249, 168, 212, 0.4)']
         } : {}}
         transition={{ repeat: speaking ? Infinity : 0, duration: 0.5 }}
       >
