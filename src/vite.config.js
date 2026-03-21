@@ -7,7 +7,7 @@ export default defineConfig({
   plugins: [react(), base44()],
   cacheDir: '.vite_cache_fresh',
   server: {
-    allowedHosts: 'all',
+    allowedHosts: true,
     host: true,
     port: 5173,
     hmr: {
