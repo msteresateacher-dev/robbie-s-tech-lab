@@ -6,7 +6,7 @@ import base44 from '@base44/vite-plugin'
 export default defineConfig({
   plugins: [react(), base44()],
   server: {
-    allowedHosts: true,
+    allowedHosts: "all",
     host: true,
   },
   resolve: {
