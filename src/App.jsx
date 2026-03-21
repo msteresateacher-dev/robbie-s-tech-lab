@@ -18,6 +18,7 @@ const LayoutWrapper = ({ children, currentPageName }) => Layout ?
   : <>{children}</>; 
 
 import Login from '@/pages/Login';
+import StoriesWithRobbie from '@/pages/StoriesWithRobbie';
 
 const AuthenticatedApp = () => {
   const { user, isAuthenticated, isLoadingAuth, isLoadingPublicSettings, authError } = useAuth();
