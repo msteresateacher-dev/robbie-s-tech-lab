@@ -127,6 +127,16 @@ export default function Home() {
             </Button>
           </Link>
 
+          <a href="https://gemini.google.com/share/342ceadeb7df" target="_blank" rel="noopener noreferrer" className="block">
+            <Button
+              size="lg"
+              className="w-full h-16 text-lg rounded-2xl bg-gradient-to-r from-rose-400 to-pink-500 hover:from-rose-500 hover:to-pink-600 shadow-lg"
+            >
+              <span className="text-2xl mr-2">📖</span>
+              Stories with Robbie
+            </Button>
+          </a>
+
           <Link to={createPageUrl('ExtraGames')} className="block">
             <Button
               size="lg"
