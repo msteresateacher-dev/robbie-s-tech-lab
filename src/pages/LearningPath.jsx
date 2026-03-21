@@ -14,6 +14,7 @@ import { Card, CardContent } from '@/components/ui/card';
 import RobbieFace from '@/components/RobbieFace';
 import BadgeSystem from '@/components/BadgeSystem';
 import SkillTracker from '@/components/SkillTracker';
+import MissionAchievementMap from '@/components/MissionAchievementMap';
 
 const WEEKLY_THEMES = [
   {
