@@ -3,6 +3,7 @@ import react from '@vitejs/plugin-react'
 import path from 'path'
 import base44 from '@base44/vite-plugin'
 
+// updated
 export default defineConfig({
   plugins: [react(), base44()],
   server: {
