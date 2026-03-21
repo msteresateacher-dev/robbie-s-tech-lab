@@ -111,7 +111,7 @@ export default function Home() {
           <Link to={createPageUrl('StudentPortal')} className="block">
             <Button
               size="lg"
-              className="w-full h-20 text-xl rounded-2xl bg-gradient-to-r from-fuchsia-400 to-pink-500 hover:from-fuchsia-500 hover:to-pink-600 shadow-lg shadow-pink-200"
+              className="w-full h-20 text-xl rounded-2xl bg-gradient-to-r from-green-400 to-emerald-500 hover:from-green-500 hover:to-emerald-600 shadow-lg shadow-green-200"
             >
               <Users className="w-8 h-8 mr-3" />
               {getTranslation(language, 'startLearning')}
