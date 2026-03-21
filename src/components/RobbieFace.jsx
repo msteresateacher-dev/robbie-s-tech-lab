@@ -134,6 +134,13 @@ export default function RobbieFace({ emotion = 'neutral', speaking = false, size
         <div className="absolute left-0 top-1/2 -translate-y-1/2 -translate-x-1 w-4 h-8 bg-gray-400 rounded-full" />
         <div className="absolute right-0 top-1/2 -translate-y-1/2 translate-x-1 w-4 h-8 bg-gray-400 rounded-full" />
 
+        {/* Pink bow tie at the bottom */}
+        <div className="absolute bottom-2 left-1/2 -translate-x-1/2 flex items-center gap-0.5">
+          <div className="w-5 h-4 bg-pink-400 rounded-full border-2 border-pink-300 transform -rotate-12 shadow-md" />
+          <div className="w-3 h-3 bg-pink-500 rounded-full border-2 border-pink-300 shadow-md z-10" />
+          <div className="w-5 h-4 bg-pink-400 rounded-full border-2 border-pink-300 transform rotate-12 shadow-md" />
+        </div>
+
         {/* Screen reflection */}
         <div className="absolute top-2 left-2 right-8 h-8 bg-white/20 rounded-full blur-sm" />
       </motion.div>
