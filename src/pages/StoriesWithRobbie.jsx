@@ -47,8 +47,7 @@ export default function StoriesWithRobbie() {
             <div className="flex items-center gap-4">
               <span className="text-5xl">{story.emoji}</span>
               <div className="flex-1">
-                <h2 className="text-lg font-black text-gray-800 mb-1">Story {index + 1}: {story.title}</h2>
-                <p className="text-sm text-gray-500">{story.description}</p>
+                <h2 className="text-lg font-black text-gray-800">{story.title}</h2>
               </div>
               <span className="text-2xl">▶️</span>
             </div>
