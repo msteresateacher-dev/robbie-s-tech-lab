@@ -27,10 +27,15 @@ export default function Home() {
   };
 
   const handleBonnieClick = () => {
-    const utterance = new SpeechSynthesisUtterance("I like learning about computers with my big brother Robbie.");
-    utterance.pitch = 1.6;
-    utterance.rate = 0.9;
+    const utterance = new SpeechSynthesisUtterance("I wike learning about compooters with my big bwother Wobbie!");
+    utterance.pitch = 2.0;
+    utterance.rate = 0.75;
+    utterance.volume = 1;
     window.speechSynthesis.cancel();
+    // Try to pick a child/female voice
+    const voices = window.speechSynthesis.getVoices();
+    const preferred = voices.find(v => /samantha|karen|victoria|female|girl|child/i.test(v.name)) || voices[0];
+    if (preferred) utterance.voice = preferred;
     window.speechSynthesis.speak(utterance);
   };
 
