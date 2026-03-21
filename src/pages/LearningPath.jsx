@@ -173,10 +173,28 @@ export default function LearningPath() {
     return () => window.removeEventListener('keydown', handleKeyPress);
   }, [selectedWeek, completedWeeks]);
 
+  if (!studentId) {
+    return (
+      <div className="min-h-screen bg-gradient-to-b from-purple-50 to-pink-50 flex flex-col items-center justify-center gap-6 p-6">
+        <div className="text-6xl">🗺️</div>
+        <h2 className="text-2xl font-black text-gray-800 text-center">Choose a Student First!</h2>
+        <p className="text-gray-500 text-center">You need to select a student profile to view their Learning Path.</p>
+        <Link to={createPageUrl('StudentPortal')}>
+          <Button size="lg" className="bg-gradient-to-r from-fuchsia-500 to-pink-500 text-white font-bold text-lg rounded-2xl">
+            Go to Student Portal
+          </Button>
+        </Link>
+      </div>
+    );
+  }
+
   if (!student) {
     return (
       <div className="min-h-screen bg-gradient-to-b from-purple-50 to-pink-50 flex items-center justify-center">
-        <p className="text-gray-500">Loading...</p>
+        <div className="flex flex-col items-center gap-4">
+          <div className="w-10 h-10 border-4 border-purple-200 border-t-purple-500 rounded-full animate-spin" />
+          <p className="text-gray-500">Loading student data...</p>
+        </div>
       </div>
     );
   }
