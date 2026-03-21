@@ -161,6 +161,24 @@ export default function Home() {
               {getTranslation(language, 'teacherDashboard')}
             </Button>
           </Link>
+
+          <Button
+            size="lg"
+            onClick={() => {
+              const text = `Let's Get Hooked. We all know that by age five, children are already digital natives—but there's a massive difference between a child who can swipe on a tablet and a child who understands why the computer reacts. In the critical window of early childhood, we aren't just teaching skills; we're wiring brains for logic. But most STEM tools are either too abstract or too passive. That's why we built Robbie's Tech Lab. The Problem and The Solution. Early learners need tactile, immediate feedback to understand cause and effect. Robbie's Tech Lab isn't just another app—it's a Remote Engineering Hub. Through our live interface of Robbie the Robot's Tech Lab, we turn complex concepts of computer vocabulary and hardware identification into a gamified experience. When a child uses Robbie, they aren't just playing a game; they have a low tech mascot companion alongside them. We are moving them from being consumers of technology to the architects of it. The Value Proposition. The value here is three-fold. Confidence: We create a How-to experience to test real-world hardware like mouse, speakers, and monitor. Digital Literacy: We are teaching the Grammar of Robotics—sequencing, algorithms and logic—before they even learn to write a full sentence. Engagement: By linking the app to a physical character like Robbie, we create an emotional connection to STEM that sticks for a lifetime. Final Reflection. Robbie's Tech Lab is the bridge between a child's imagination and the physical world of engineering. We're not just building robots; we're building the next generation of problem solvers.`;
+              window.speechSynthesis.cancel();
+              const utterance = new SpeechSynthesisUtterance(text);
+              utterance.pitch = 1.0;
+              utterance.rate = 0.95;
+              utterance.volume = 1;
+              window.speechSynthesis.speak(utterance);
+            }}
+            className="w-full h-16 text-lg rounded-2xl shadow-lg"
+            style={{ backgroundColor: '#fefce8', color: '#78350f', border: '2px solid #fde68a' }}
+          >
+            <span className="text-2xl mr-2">🤖</span>
+            Why Robbie?
+          </Button>
         </motion.div>
 
         {/* Fun facts section */}
