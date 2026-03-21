@@ -106,8 +106,8 @@ export default function RobbieFace({ emotion = 'neutral', speaking = false, size
                 animate={{ opacity: 0.6 }}
                 exit={{ opacity: 0 }}
               >
-                <div className="w-6 h-4 md:w-8 md:h-5 bg-pink-300 rounded-full blur-sm" />
-                <div className="w-6 h-4 md:w-8 md:h-5 bg-pink-300 rounded-full blur-sm" />
+                <div className="w-6 h-4 md:w-8 md:h-5 bg-gray-200 rounded-full blur-sm" />
+                <div className="w-6 h-4 md:w-8 md:h-5 bg-gray-200 rounded-full blur-sm" />
               </motion.div>
             )}
           </AnimatePresence>
