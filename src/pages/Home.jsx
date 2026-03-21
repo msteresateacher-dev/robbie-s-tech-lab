@@ -151,7 +151,7 @@ export default function Home() {
             <Button
               size="lg"
               variant="outline"
-              className="w-full h-16 text-lg rounded-2xl border-2 border-orange-300 text-orange-600 hover:bg-orange-50"
+              className="w-full h-16 text-lg rounded-2xl bg-gradient-to-r from-sky-400 to-cyan-500 hover:from-sky-500 hover:to-cyan-600 text-white shadow-lg"
             >
               <GraduationCap className="w-6 h-6 mr-2" />
               {getTranslation(language, 'teacherDashboard')}
