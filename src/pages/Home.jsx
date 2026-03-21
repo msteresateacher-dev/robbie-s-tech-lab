@@ -80,7 +80,7 @@ export default function Home() {
               transition={{ delay: 0.5 }}
             >
               <BonnieFace emotion="happy" size="medium" />
-              <span className="mt-2 text-sm font-bold text-sky-500 bg-white/80 px-3 py-1 rounded-full shadow-sm">Bonnie 🌟</span>
+              <span className="mt-2 text-sm font-bold text-pink-500 bg-white/80 px-3 py-1 rounded-full shadow-sm">Bonnie Bit 🌟</span>
               <p className="text-xs text-gray-500 mt-1 text-center">Baby Bot Sister</p>
             </motion.div>
           </div>
