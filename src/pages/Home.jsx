@@ -98,16 +98,7 @@ export default function Home() {
             />
           </div>
 
-          {/* Voice Selector */}
-          <motion.div
-            initial={{ opacity: 0 }}
-            animate={{ opacity: 1 }}
-            transition={{ delay: 0.3 }}
-            className="mt-6 bg-white/80 backdrop-blur rounded-2xl p-4 shadow-lg"
-          >
-            <p className="text-sm text-gray-600 text-center mb-3 font-medium">{getTranslation(language, 'chooseVoice')}</p>
-            <VoiceSelector currentVoice={currentVoice} onVoiceChange={handleVoiceChange} />
-          </motion.div>
+
         </motion.div>
 
         {/* Action Buttons */}
