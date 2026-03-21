@@ -6,7 +6,6 @@ import base44 from '@base44/vite-plugin'
 export default defineConfig({
   plugins: [react(), base44()],
   server: {
-    // This is the most permissive setting for Vite 6+ to allow all proxy hosts
     allowedHosts: 'all',
     host: true,
     port: 5173,
