@@ -381,6 +381,9 @@ export default function LearningPath() {
               </motion.div>
             )}
 
+            {/* Mission Achievement Map */}
+            <MissionAchievementMap completedMissions={completedTasks} />
+
             {/* Badges Section */}
             <div className="mb-8">
               <BadgeSystem
