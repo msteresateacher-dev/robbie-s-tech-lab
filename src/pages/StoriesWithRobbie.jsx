@@ -5,30 +5,14 @@ import { ArrowLeft } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 
 const STORIES = [
-  {
-    title: "Robbie's First Adventure",
-    emoji: "🤖",
-    description: "Join Robbie on an exciting first journey into the world of technology!",
-    url: "https://gemini.google.com/share/342ceadeb7df"
-  },
-  {
-    title: "Robbie Learns to Code",
-    emoji: "💻",
-    description: "Watch Robbie discover the magic of coding and how computers think!",
-    url: "https://gemini.google.com/share/a49ff1b964bd"
-  },
-  {
-    title: "Robbie and the Internet",
-    emoji: "🌐",
-    description: "Explore the internet with Robbie and learn how to stay safe online!",
-    url: "https://gemini.google.com/share/9d26c8e53864"
-  },
-  {
-    title: "Robbie Solves a Problem",
-    emoji: "🧩",
-    description: "Help Robbie use computational thinking to solve a tricky puzzle!",
-    url: "https://gemini.google.com/share/64d9662d2d8f"
-  }
+  { title: "Story 1", emoji: "📖", url: "https://gemini.google.com/share/66775f24e0d2" },
+  { title: "Story 2", emoji: "🤖", url: "https://gemini.google.com/share/d6c4e3c4f1d0" },
+  { title: "Story 3", emoji: "💻", url: "https://gemini.google.com/share/428099325ad8" },
+  { title: "Story 4", emoji: "🌟", url: "https://gemini.google.com/share/06b7cc4f5e8e" },
+  { title: "Story 5", emoji: "🧩", url: "https://gemini.google.com/share/81c16ba503de" },
+  { title: "Story 6", emoji: "🌐", url: "https://gemini.google.com/share/e7c88c485df3" },
+  { title: "Story 7", emoji: "🚀", url: "https://gemini.google.com/share/72cf165290a3" },
+  { title: "Story 8", emoji: "🎉", url: "https://gemini.google.com/share/3cf74b0b2e59" },
 ];
 
 export default function StoriesWithRobbie() {
