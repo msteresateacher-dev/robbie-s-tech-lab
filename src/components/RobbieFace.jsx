@@ -51,9 +51,9 @@ export default function RobbieFace({ emotion = 'neutral', speaking = false, size
     >
       {/* Robot Head */}
       <motion.div
-        className="w-full h-full rounded-[2rem] bg-gradient-to-b from-fuchsia-400 to-pink-500 shadow-2xl relative overflow-hidden border-4 border-fuchsia-300"
+        className="w-full h-full rounded-[2rem] bg-gradient-to-b from-gray-300 to-gray-400 shadow-2xl relative overflow-hidden border-4 border-gray-200"
         animate={speaking ? { 
-          boxShadow: ['0 25px 50px -12px rgba(232, 121, 249, 0.4)', '0 25px 50px -12px rgba(232, 121, 249, 0.7)', '0 25px 50px -12px rgba(232, 121, 249, 0.4)']
+          boxShadow: ['0 25px 50px -12px rgba(156, 163, 175, 0.4)', '0 25px 50px -12px rgba(156, 163, 175, 0.7)', '0 25px 50px -12px rgba(156, 163, 175, 0.4)']
         } : {}}
         transition={{ repeat: speaking ? Infinity : 0, duration: 0.5 }}
       >
