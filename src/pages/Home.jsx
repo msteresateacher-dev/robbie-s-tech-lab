@@ -179,6 +179,14 @@ export default function Home() {
             <span className="text-2xl mr-2">🤖</span>
             Why Robbie?
           </Button>
+
+          <Button
+            size="lg"
+            className="w-full h-16 text-lg rounded-2xl shadow-lg bg-purple-500 hover:bg-purple-600 text-white"
+          >
+            <span className="text-2xl mr-2">🍎</span>
+            Food
+          </Button>
         </motion.div>
 
         {/* Fun facts section */}
