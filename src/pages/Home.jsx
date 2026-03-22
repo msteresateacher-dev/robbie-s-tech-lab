@@ -184,7 +184,7 @@ export default function Home() {
             size="lg"
             className="w-full h-16 text-lg rounded-2xl shadow-lg text-white font-bold"
             style={{ background: 'linear-gradient(to right, red, orange, yellow, green, blue, indigo, violet)' }}
-            onClick={() => speak("Rainbows are beautiful! Just like learning!")}
+
           >
             <span className="text-2xl mr-2">🌈</span>
             Rainbow
