@@ -180,15 +180,7 @@ export default function Home() {
             Why Robbie?
           </Button>
 
-          <Button
-            size="lg"
-            className="w-full h-16 text-lg rounded-2xl shadow-lg text-white font-bold"
-            style={{ background: 'linear-gradient(to right, red, orange, yellow, green, blue, indigo, violet)' }}
 
-          >
-            <span className="text-2xl mr-2">🌈</span>
-            Rainbow
-          </Button>
 
 
         </motion.div>
