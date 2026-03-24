@@ -5,8 +5,9 @@ import {
   Palette, Bug, Music, Share2, Filter, Lightbulb, Home, Droplets, ArrowLeft,
   Spade, Plus, Minus, Users, Volume2, Backpack, Trash2, Monitor, Keyboard,
   Power, Lock, Timer, Heart, Binary, Database, Network, Headphones, Cable,
-  Puzzle, Tablet, MapPin, Cloud, Image
+  Puzzle, Tablet, MapPin, Cloud, Image, Hash
 } from 'lucide-react';
+import SymbolsGame from '@/components/games/SymbolsGame';
 import { Link } from 'react-router-dom';
 import { createPageUrl } from '@/utils';
 import { motion, AnimatePresence } from 'framer-motion';
