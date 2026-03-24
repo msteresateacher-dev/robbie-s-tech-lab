@@ -108,6 +108,8 @@ const DATA_ITEMS = [
 ];
 
 export default function ExtraGames() {
+  if (view === 'symbols') return <SymbolsGame onBack={() => setView('menu')} />;
+
   const [view, setView] = useState('menu');
   const [score, setScore] = useState(0);
   const [isSpeaking, setIsSpeaking] = useState(false);
