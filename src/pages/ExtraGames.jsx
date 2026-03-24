@@ -573,6 +573,9 @@ export default function ExtraGames() {
               <MenuBtn icon={<Cloud />} label="Weather" color="bg-cyan-500" onClick={() => setView('weather')} />
               <MenuBtn icon={<Image />} label="Photo Memory" color="bg-rose-500" onClick={() => setView('photos')} />
 
+              {/* NYS Test Prep */}
+              <MenuBtn icon={<Hash />} label="Symbols" color="bg-indigo-600" onClick={() => setView('symbols')} />
+
               {/* Original Games */}
               <MenuBtn icon={<Spade />} label="Go Fish" color="bg-teal-600" onClick={() => { setView('gofish'); startGoFish(); }} />
               <MenuBtn icon={<Plus />} label="Math Fun" color="bg-rose-600" onClick={() => { setView('math'); generateMathProblem(); }} />
