@@ -17,6 +17,7 @@ const STORIES = [
   { title: "Story 10", emoji: "🔭", url: "https://gemini.google.com/share/9d26c8e53864" },
   { title: "Story 11", emoji: "🎮", url: "https://gemini.google.com/share/64d9662d2d8f" },
   { title: "Story 12", emoji: "⭐", url: "https://gemini.google.com/share/342ceadeb7df" },
+  { title: "Story 13", emoji: "🌈", url: "https://gemini.google.com/share/71425b1cf736" },
 ];
 
 export default function StoriesWithRobbie() {
