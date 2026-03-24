@@ -584,6 +584,13 @@ export default function ExtraGames() {
             </motion.div>
           )}
 
+          {/* SYMBOLS */}
+          {view === 'symbols' && (
+            <motion.div key="symbols" initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }}>
+              <SymbolsGame onBack={() => setView('menu')} />
+            </motion.div>
+          )}
+
           {/* MOUSE SKILLS */}
           {view === 'mouse' && (
             <motion.div key="mouse" initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} className="bg-white p-10 rounded-[3rem] shadow-2xl">
