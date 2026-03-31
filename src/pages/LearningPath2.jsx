@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect, useMemo } from 'react';
 import { Link, useSearchParams } from 'react-router-dom';
 import { createPageUrl } from '@/utils';
 import { studentService, missionSessionService } from '@/api/dataService';
@@ -124,6 +124,31 @@ export default function LearningPath2() {
 
   const completedTasks = sessions.filter(s => s.completed).map(s => s.mission_name);
 
+  const completedWeeksEarly = useMemo(() => {
+    return WEEKLY_THEMES_ADVANCED.filter(week =>
+      week.tasks.every(t => t.type === 'game' ? completedTasks.includes(t.game) : false)
+    ).map(w => w.week);
+  }, [completedTasks]);
+
+  useEffect(() => {
+    const handleKeyPress = (e) => {
+      if (e.key === 'Escape' && selectedWeek !== null) {
+        setSelectedWeek(null);
+      }
+      if (selectedWeek === null) {
+        const numKey = parseInt(e.key);
+        if (numKey >= 1 && numKey <= 6) {
+          const isAvailable = numKey === 1 || completedWeeksEarly.includes(numKey - 1);
+          if (isAvailable) {
+            setSelectedWeek(numKey);
+          }
+        }
+      }
+    };
+    window.addEventListener('keydown', handleKeyPress);
+    return () => window.removeEventListener('keydown', handleKeyPress);
+  }, [selectedWeek, completedWeeksEarly]);
+
   if (!studentId) {
     return (
       <div className="min-h-screen bg-gradient-to-b from-purple-100 to-pink-100 flex items-center justify-center p-4">
@@ -176,25 +201,7 @@ export default function LearningPath2() {
     };
   };
 
-  React.useEffect(() => {
-    const handleKeyPress = (e) => {
-      if (e.key === 'Escape' && selectedWeek !== null) {
-        setSelectedWeek(null);
-      }
-      if (selectedWeek === null) {
-        const numKey = parseInt(e.key);
-        if (numKey >= 1 && numKey <= 6) {
-          const weekToSelect = WEEKLY_THEMES_ADVANCED[numKey - 1];
-          const isAvailable = numKey === 1 || completedWeeks.includes(numKey - 1);
-          if (isAvailable) {
-            setSelectedWeek(numKey);
-          }
-        }
-      }
-    };
-    window.addEventListener('keydown', handleKeyPress);
-    return () => window.removeEventListener('keydown', handleKeyPress);
-  }, [selectedWeek, completedWeeks]);
+
 
   return (
     <div className="min-h-screen bg-gradient-to-b from-purple-100 via-pink-100 to-orange-100 pb-12">

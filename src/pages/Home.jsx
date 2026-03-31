@@ -162,6 +162,16 @@ export default function Home() {
             </Button>
           </Link>
 
+          <a href="https://www.typing.com/student/lessons" target="_blank" rel="noopener noreferrer" className="block">
+            <Button
+              size="lg"
+              className="w-full h-16 text-lg rounded-2xl bg-gradient-to-r from-orange-400 to-amber-500 hover:from-orange-500 hover:to-amber-600 text-white shadow-lg"
+            >
+              <span className="text-2xl mr-2">⌨️</span>
+              Typing
+            </Button>
+          </a>
+
           <Button
             size="lg"
             onClick={() => {
