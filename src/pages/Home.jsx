@@ -1,5 +1,5 @@
-import React, { useState } from 'react';
-import { motion } from 'framer-motion';
+import React, { useState, useRef } from 'react';
+import { motion, AnimatePresence } from 'framer-motion';
 import { Link } from 'react-router-dom';
 import { createPageUrl } from '@/utils';
 import { GraduationCap, Users, Sparkles } from 'lucide-react';
@@ -11,14 +11,43 @@ import VoiceSelector, { VOICE_OPTIONS } from '@/components/VoiceSelector';
 import { useLanguage } from '@/components/LanguageContext';
 import { getTranslation } from '@/components/translations';
 import LanguageToggle from '@/components/LanguageToggle';
+import WelcomeSplash from '@/components/WelcomeSplash';
 
 export default function Home() {
   const { language } = useLanguage();
   const [robbieEmotion, setRobbieEmotion] = useState('happy');
   const [isSpeaking, setIsSpeaking] = useState(false);
   const [hasInteracted, setHasInteracted] = useState(false);
+  const [showSplash, setShowSplash] = useState(true);
   const [currentVoice, setCurrentVoice] = useState('friendly');
   const [voiceSettings, setVoiceSettings] = useState(VOICE_OPTIONS[0]);
+  const speechBubbleRef = useRef(null);
+
+  const handleSplashStart = () => {
+    setShowSplash(false);
+    // Small delay to let the speech bubble render, then auto-speak
+    setTimeout(() => {
+      const message = getTranslation(language, 'welcomeInitial');
+      if (!('speechSynthesis' in window)) return;
+      window.speechSynthesis.cancel();
+      const utterance = new SpeechSynthesisUtterance(message);
+      utterance.rate = voiceSettings.rate ?? 0.85;
+      utterance.pitch = voiceSettings.pitch ?? 1.2;
+      utterance.volume = 1;
+      const voices = window.speechSynthesis.getVoices();
+      const friendly = voices.find(v =>
+        v.name.includes('Samantha') ||
+        v.name.includes('Google US English') ||
+        v.name.includes('Microsoft Zira') ||
+        (v.lang === 'en-US' && v.localService)
+      ) || voices.find(v => v.lang?.startsWith('en')) || voices[0];
+      if (friendly) utterance.voice = friendly;
+      utterance.onstart = () => setIsSpeaking(true);
+      utterance.onend   = () => setIsSpeaking(false);
+      utterance.onerror = () => setIsSpeaking(false);
+      window.speechSynthesis.speak(utterance);
+    }, 400);
+  };
 
   const handleRobbieClick = () => {
     setHasInteracted(true);
@@ -46,6 +75,9 @@ export default function Home() {
 
   return (
     <div className="min-h-screen bg-gradient-to-b from-amber-50 via-orange-50 to-sky-50">
+      <AnimatePresence>
+        {showSplash && <WelcomeSplash onStart={handleSplashStart} />}
+      </AnimatePresence>
       <LanguageToggle />
       
       {/* Header */}
