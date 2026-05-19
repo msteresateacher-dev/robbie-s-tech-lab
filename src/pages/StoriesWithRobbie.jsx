@@ -18,6 +18,7 @@ const STORIES = [
   { title: "Story 11", emoji: "🎮", url: "https://gemini.google.com/share/64d9662d2d8f" },
   { title: "Story 12", emoji: "⭐", url: "https://gemini.google.com/share/342ceadeb7df" },
   { title: "Story 13", emoji: "🌈", url: "https://gemini.google.com/share/71425b1cf736" },
+  { title: "Story 14: Robbie & Bonnie's Big Night at the Hall des Lumières", emoji: "🎩", url: "https://gemini.google.com/share/b63c2b898c76" },
 ];
 
 export default function StoriesWithRobbie() {
