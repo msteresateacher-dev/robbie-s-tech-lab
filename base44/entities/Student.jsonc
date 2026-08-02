@@ -1,0 +1,36 @@
+{
+  "name": "Student",
+  "type": "object",
+  "properties": {
+    "name": {
+      "type": "string",
+      "description": "Student's first name"
+    },
+    "avatar_color": {
+      "type": "string",
+      "description": "Color for student's avatar"
+    },
+    "missions_completed": {
+      "type": "number",
+      "default": 0,
+      "description": "Number of missions completed"
+    },
+    "total_hints_used": {
+      "type": "number",
+      "default": 0,
+      "description": "Total hints used across all sessions"
+    },
+    "current_mission": {
+      "type": "string",
+      "default": "wake_up_robbie",
+      "description": "Current mission the student is on"
+    },
+    "motor_skill_notes": {
+      "type": "string",
+      "description": "Teacher notes on motor skill development"
+    }
+  },
+  "required": [
+    "name"
+  ]
+}

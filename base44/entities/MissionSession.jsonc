@@ -1,0 +1,43 @@
+{
+  "name": "MissionSession",
+  "type": "object",
+  "properties": {
+    "student_id": {
+      "type": "string",
+      "description": "Reference to the student"
+    },
+    "student_name": {
+      "type": "string",
+      "description": "Student name for easy display"
+    },
+    "mission_name": {
+      "type": "string",
+      "description": "Name of the mission"
+    },
+    "completed": {
+      "type": "boolean",
+      "default": false,
+      "description": "Whether the mission was completed"
+    },
+    "hints_used": {
+      "type": "number",
+      "default": 0,
+      "description": "Number of hints used in this session"
+    },
+    "time_spent_seconds": {
+      "type": "number",
+      "description": "Time spent on the mission in seconds"
+    },
+    "struggles": {
+      "type": "array",
+      "items": {
+        "type": "string"
+      },
+      "description": "List of areas where student struggled"
+    }
+  },
+  "required": [
+    "student_id",
+    "mission_name"
+  ]
+}
